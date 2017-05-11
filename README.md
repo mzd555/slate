@@ -1,3 +1,9 @@
+### Build (for Vagrant)
+1. ```vagrant ssh```
+2. If requests login/password use vagrant/vagrant
+3. ```cd /vagrant```
+4. ```bundle exec middleman build --clean```
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/lord/img/master/logo-slate.png" alt="Slate: API Documentation Generator" width="226">
   <br>
