@@ -11,7 +11,7 @@ includes:
 search: true
 ---
 
-# Resources overview
+# Models
 
 ## Retailer Store
 Property | Type | Required | Description
@@ -154,7 +154,8 @@ exception_notification | string | true | Exception Notification : List<Notificat
 delivery_time | timestamp | true | Delivery Time : Time
 custom_fields | List<CustomFields> | true | CustomFields : List<CustomFields>
 
-# Functions
+# Store Resource
+
 ## List Stores
 ### HTTP Request
 
@@ -244,7 +245,7 @@ curl "api_endpoint_here"
 ]
 ```
 
-## Retrieve Store by ID
+## Get Store by ID
 
 ### HTTP Request
 
@@ -330,7 +331,7 @@ ID | Store ID
   }
 ```
 
-## Retrieve Store by Alias
+## Get Store by Alias
 
 ### HTTP Request
 
@@ -416,8 +417,9 @@ alias | Store's alias
   }
 ```
 
-## Get Estimate
+# Estimate Resource
 
+## Get Estimate
 ### HTTP Request
 
 `GET http://api.gateway.com/estimate/<id>`
@@ -501,25 +503,7 @@ id | estimate id
   }
 ```
 
-## Create Order (with or without estimate)
-
-### HTTP Request
-
-`POST http://api.gateway.com/order`
-
-> Request body
-
-```json
-{
-  "price": 123
-}
-```
-
-> Response
-
-```json
-{"test":"test"}
-```
+# Order Resource
 
 ## Get Order
 
@@ -538,6 +522,47 @@ id | Order id
     "id": 123,
     "price": 123
   }
+```
+
+## Get Order Status
+
+### HTTP Request
+
+`PUT http://api.gateway.com/order/<id>/status`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+id | Order id
+
+> Response
+
+```json
+  {
+    "status": "CANCELED",
+    "updated_at": 123123123
+  }
+```
+
+## Create Order
+
+### HTTP Request
+
+`POST http://api.gateway.com/order`
+
+> Request body
+
+```json
+{
+  "price": 123
+}
+```
+
+> Response
+
+```json
+{"test":"test"}
 ```
 
 ## Update Order
@@ -591,25 +616,4 @@ id | Order id
   "price": 123,
   "status": "CANCELED"
 }
-```
-
-## Get Order Status
-
-### HTTP Request
-
-`PUT http://api.gateway.com/order/<id>/status`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-id | Order id
-
-> Response
-
-```json
-  {
-    "status": "CANCELED",
-    "updated_at": 123123123
-  }
 ```

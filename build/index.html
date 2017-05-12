@@ -222,7 +222,7 @@
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <h1 id="resources-overview">Resources overview</h1>
+        <h1 id="models">Models</h1>
 
 <h2 id="retailer-store">Retailer Store</h2>
 
@@ -902,7 +902,7 @@
 </tr>
 </tbody></table>
 
-<h1 id="functions">Functions</h1>
+<h1 id="store-resource">Store Resource</h1>
 
 <h2 id="list-stores">List Stores</h2>
 
@@ -989,7 +989,7 @@ curl <span class="s2">"api_endpoint_here"</span>
   </span><span class="p">}</span><span class="w">
 </span><span class="p">]</span><span class="w">
 </span></code></pre>
-<h2 id="retrieve-store-by-id">Retrieve Store by ID</h2>
+<h2 id="get-store-by-id">Get Store by ID</h2>
 
 <h3 id="http-request">HTTP Request</h3>
 
@@ -1079,7 +1079,7 @@ curl <span class="s2">"api_endpoint_here"</span>
     </span><span class="p">}]</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<h2 id="retrieve-store-by-alias">Retrieve Store by Alias</h2>
+<h2 id="get-store-by-alias">Get Store by Alias</h2>
 
 <h3 id="http-request">HTTP Request</h3>
 
@@ -1169,6 +1169,8 @@ curl <span class="s2">"api_endpoint_here"</span>
     </span><span class="p">}]</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span></code></pre>
+<h1 id="estimate-resource">Estimate Resource</h1>
+
 <h2 id="get-estimate">Get Estimate</h2>
 
 <h3 id="http-request">HTTP Request</h3>
@@ -1259,24 +1261,8 @@ curl <span class="s2">"api_endpoint_here"</span>
     </span><span class="p">}]</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<h2 id="create-order-with-or-without-estimate">Create Order (with or without estimate)</h2>
+<h1 id="order-resource">Order Resource</h1>
 
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">POST http://api.gateway.com/order</code></p>
-
-<blockquote>
-<p>Request body</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<blockquote>
-<p>Response</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="s2">"test"</span><span class="p">:</span><span class="s2">"test"</span><span class="p">}</span><span class="w">
-</span></code></pre>
 <h2 id="get-order">Get Order</h2>
 
 <h3 id="http-request">HTTP Request</h3>
@@ -1300,6 +1286,52 @@ curl <span class="s2">"api_endpoint_here"</span>
     </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w">
     </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="w">
   </span><span class="p">}</span><span class="w">
+</span></code></pre>
+<h2 id="get-order-status">Get Order Status</h2>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">PUT http://api.gateway.com/order/&lt;id&gt;/status</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>Order id</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CANCELED"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">123123123</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre>
+<h2 id="create-order">Create Order</h2>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST http://api.gateway.com/order</code></p>
+
+<blockquote>
+<p>Request body</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="s2">"test"</span><span class="p">:</span><span class="s2">"test"</span><span class="p">}</span><span class="w">
 </span></code></pre>
 <h2 id="update-order">Update Order</h2>
 
@@ -1357,34 +1389,6 @@ curl <span class="s2">"api_endpoint_here"</span>
   </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w">
   </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CANCELED"</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre>
-<h2 id="get-order-status">Get Order Status</h2>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">PUT http://api.gateway.com/order/&lt;id&gt;/status</code></p>
-
-<h3 id="url-parameters">URL Parameters</h3>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>id</td>
-<td>Order id</td>
-</tr>
-</tbody></table>
-
-<blockquote>
-<p>Response</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="w">  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CANCELED"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="mi">123123123</span><span class="w">
-  </span><span class="p">}</span><span class="w">
 </span></code></pre>
       </div>
       <div class="dark-box">
