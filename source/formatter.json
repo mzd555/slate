@@ -1,0 +1,75 @@
+[
+  {
+    "_id": "591c4c18b9d21c04c34612e0",
+    "name": "MidTown",
+    "description": "",
+    "contact": {
+      "name": "John Doe",
+      "phone": "2342354544"
+    },
+    "deliveryInstructions": "",
+    "address": {
+      "street": "123 Main St",
+      "street2": "",
+      "secondary": "",
+      "city": "Dallas",
+      "state": "TX",
+      "zipcode": "75963"
+    },
+    "departments": [
+      {
+        "name": "Electronics",
+        "description": "",
+        "deliveryInstructions": ""
+      }
+    ],
+    "DSPs": [
+      {
+        "name": "fedex"
+      },
+      {
+        "name": "postmate"
+      }
+    ],
+    "active": true
+  },
+  {
+    "_id": "590905dc55776b47decb4870",
+    "name": "Uptown-Store77",
+    "description": "Uptown Store 77",
+    "contact": {
+      "name": "Michael Stevenson",
+      "phone": "971-175-4446"
+    },
+    "deliveryInstructions": "Ensure package is not damaged before handing it over.",
+    "address": {
+      "street": "4100 Midway St",
+      "street2": "",
+      "secondary": "2120",
+      "city": "Carrollton",
+      "state": "TX",
+      "zipcode": "75007"
+    },
+    "departments": [
+      {
+        "name": "General",
+        "description": "",
+        "deliveryInstructions": ""
+      },
+      {
+        "name": "Alcohol",
+        "description": "",
+        "deliveryInstructions": ""
+      }
+    ],
+    "DSPs": [
+      {
+        "name": "postmate"
+      },
+      {
+        "name": "fedex"
+      }
+    ],
+    "active": true
+  }
+]

@@ -13,16 +13,18 @@ search: true
 
 # Models
 
-## Retailer Store
+## Store
 Property | Type | Required | Description
 -------- | ---- | -------- | -----------
 id | integer | true | Store ID's
 retailer_id | integer | true | Retailer ID
 alias | string | true | Store ID alias
-phone | Phone | true | Phone Number : Phone
-address | Address | true | Store Address : Address
+*phone | Phone | true | Phone Number : Phone
+*address | Address | true | Store Address : Address
 
-## Delivery Customer Location
+*required only if the store does not exist in the system.
+
+## Location
 Property | Type | Required | Description
 -------- | ---- | -------- | -----------
 id | int | true | ID
@@ -32,7 +34,7 @@ city | string | true | City
 state | string | true | State
 zip | string | true | Zip
 
-## Delivery Customer Info
+## Customer Info
 Property | Type | Required | Description
 -------- | ---- | -------- | -----------
 id | int | true | ID
@@ -53,15 +55,12 @@ id | int | true | ID
 retailer_order_id | int | true | Retailer Order ID
 order_total | decimal | true | Order Total
 packages_count | int | true | No. of Packages
-height | decimal | true | Height
-width | decimal | true | Width
-depth | decimal | true | Depth
-weight | decimal | true | Weight
-has_beer_or_wine | string | true | Has Beer/Wine(Y/N)
+size | Size| true | Size of the package
+has_beer_or_wine | bool | true | Has Beer/Wine(Y/N)
 has_spirits | bool | true | Has Spirits(Y/N)
 has_refrigerated_items | string | true | Has Refrigerated items(Y/N)
 has_perishable_items | string | true | Has Perishable Items(Y/N)
-list_of_products | string | true | Items : list of Product
+list_of_products | string | false | Items : list of Product
 custom_fields | string | true | CustomFields : List<CustomFields>
 
 ## Time
@@ -135,24 +134,35 @@ type | string | true | (json, string, csv)
 Property | Type | Required | Description
 -------- | ---- | -------- | -----------
 id | int | true | ID
-delivery_customer_info | string | true | Delivery Customer Info
+delivery_customer_info | string | true | Location
 store_id | int | true | StoreId
 order_details | string | true | Order Details
 customer_zip | string | true | Customer ZipCode
-delivery_customer_location | string | true | Delivery Customer Location
+delivery_customer_location | string | true | Location
 custom_fields | List<CustomFields> | true | CustomFields : List<CustomFields>
 
 ## Order
 Property | Type | Required | Description
 -------- | ---- | -------- | -----------
 id | int | true | ID
-delivery_customer_info | string | true | Delivery Customer Info
+delivery_customer_info | string | true | Customer Info
 store_id | int | true | StoreId
 order_details | string | true | Order Details
 status_update_notification | List<Notification> | true | Status Update Notification : List<Notification>
 exception_notification | string | true | Exception Notification : List<Notification>
 delivery_time | timestamp | true | Delivery Time : Time
 custom_fields | List<CustomFields> | true | CustomFields : List<CustomFields>
+
+## Size
+Property | Type | Required | Description
+-------- | ---- | -------- | -----------
+name | string | false | custom measurements already defined such as 'small','medium' etc.
+height | decimal | false | Height
+width | decimal | false | Width
+depth | decimal | false | Depth
+weight | decimal | false | Weight
+
+Note: name or height/width/depth/weight is required.
 
 # Store Resource
 
@@ -161,174 +171,139 @@ custom_fields | List<CustomFields> | true | CustomFields : List<CustomFields>
 
 `GET http://api.gateway.com/stores`
 
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
-```
-
-
-> The above command returns JSON structured like this:
+> Response
 
 ```json
 [
   {
-    "kind": "delivery",
-    "id": "del_3vDjjkd21b",
-    "created": "2014-08-26T10:04:03Z",
-    "updated": "2014-08-26T11:21:16Z",
-    "status": "pickup",
-    "complete": false,
-    "pickup_eta": "2014-08-26T10:16:00Z",
-    "dropoff_eta": "2014-08-26T10:29:00Z",
-    "dropoff_deadline": "2014-08-26T10:45:00Z",
-    "quote_id": "dqt_qUdje83jhdk",
-    "fee": 799,
-    "currency": "usd",
-    "manifest": {
-      "reference": "SP 937-215"
-      "description": "10kg cardboard box",
+    "_id": "591c4c18b9d21c04c34612e0",
+    "name": "MidTown",
+    "description": "",
+    "contact": {
+      "name": "John Doe",
+      "phone": "2342354544"
     },
-    "dropoff_identifier": "Picard",
-    "pickup": {
-      "name": "The Warehouse",
-      "phone_number": "5558675309",
-      "address": "20 McAllister St, San Francisco, CA 94102",
-      "detailed_address": {
-        "street_address_1": "20 McAllister St",
-        "street_address_2": "",
-        "city": "San Francisco",
-        "state": "CA",
-        "zip_code": "94102",
-        "country": "US",
-      },
-      "notes": "Invoice #123",
-      "location" : {
-          "lat" : 37.781116,
-          "lng" : -122.412339
-      },
+    "deliveryInstructions": "",
+    "address": {
+      "street": "123 Main St",
+      "street2": "",
+      "secondary": "",
+      "city": "Dallas",
+      "state": "TX",
+      "zipcode": "75963"
     },
-    "dropoff": {
-      "name": "Alice Customer"
-      "phone_number": "4155555555",
-      "address": "101 Market St, San Francisco, CA 94105",
-      "detailed_address": {
-        "street_address_1": "101 Market St",
-        "street_address_2": "",
-        "city": "San Francisco",
-        "state": "CA",
-        "zip_code": "94105",
-        "country": "US",
+    "departments": [
+      {
+        "name": "Electronics",
+        "description": "",
+        "deliveryInstructions": ""
+      }
+    ],
+    "DSPs": [
+      {
+        "name": "fedex"
       },
-      "notes": "Ring the bell, meow loudly.",
-      "location" : {
-          "lat" : 37.793274,
-          "lng" : -122.395934
-      },
+      {
+        "name": "postmate"
+      }
+    ],
+    "active": true
+  },
+  {
+    "_id": "590905dc55776b47decb4870",
+    "name": "Uptown-Store77",
+    "description": "Uptown Store 77",
+    "contact": {
+      "name": "Michael Stevenson",
+      "phone": "971-175-4446"
     },
-    "courier": {
-      "name": "Robo Courier",
-      "rating": "5.0",
-      "vehicle_type": "bicycle",
-      "phone_number": "+14151234567"
-      "location" : {
-          "lat" : 37.42291810,
-          "lng" : -122.08542120
-      },
-      "img_href": "https://images.postmates.com/06c9a53c-f89f-4eac-8861-60e34039d9ea/121.jpg"
+    "deliveryInstructions": "Ensure package is not damaged before handing it over.",
+    "address": {
+      "street": "4100 Midway St",
+      "street2": "",
+      "secondary": "2120",
+      "city": "Carrollton",
+      "state": "TX",
+      "zipcode": "75007"
     },
-    "related_deliveries": [{
-      "id": "del_9A3jsld89s",
-      "relationship": "original"
-    }]
+    "departments": [
+      {
+        "name": "General",
+        "description": "",
+        "deliveryInstructions": ""
+      },
+      {
+        "name": "Alcohol",
+        "description": "",
+        "deliveryInstructions": ""
+      }
+    ],
+    "DSPs": [
+      {
+        "name": "postmate"
+      },
+      {
+        "name": "fedex"
+      }
+    ],
+    "active": true
   }
 ]
+
+
 ```
 
 ## Get Store by ID
 
 ### HTTP Request
 
-`GET http://api.gateway.com/stores/<ID>`
+`GET http://api.gateway.com/stores/<id>`
 
 ### URL Parameters
 
-Parameter | Description
---------- | -----------
-ID | Store ID
+Parameter | Type | Description
+--------- | ------- | -----------
+ID | string |Store ID
 
+> Response
 
 ```json
-  {
-    "kind": "delivery",
-    "id": "del_3vDjjkd21b",
-    "created": "2014-08-26T10:04:03Z",
-    "updated": "2014-08-26T11:21:16Z",
-    "status": "pickup",
-    "complete": false,
-    "pickup_eta": "2014-08-26T10:16:00Z",
-    "dropoff_eta": "2014-08-26T10:29:00Z",
-    "dropoff_deadline": "2014-08-26T10:45:00Z",
-    "quote_id": "dqt_qUdje83jhdk",
-    "fee": 799,
-    "currency": "usd",
-    "manifest": {
-      "reference": "SP 937-215"
-      "description": "10kg cardboard box",
+
+{
+    "_id": "591c4c18b9d21c04c34612e0",
+    "name": "MidTown",
+    "description": "",
+    "contact": {
+      "name": "John Doe",
+      "phone": "2342354544"
     },
-    "dropoff_identifier": "Picard",
-    "pickup": {
-      "name": "The Warehouse",
-      "phone_number": "5558675309",
-      "address": "20 McAllister St, San Francisco, CA 94102",
-      "detailed_address": {
-        "street_address_1": "20 McAllister St",
-        "street_address_2": "",
-        "city": "San Francisco",
-        "state": "CA",
-        "zip_code": "94102",
-        "country": "US",
-      },
-      "notes": "Invoice #123",
-      "location" : {
-          "lat" : 37.781116,
-          "lng" : -122.412339
-      },
+    "deliveryInstructions": "",
+    "address": {
+      "street": "123 Main St",
+      "street2": "",
+      "secondary": "",
+      "city": "Dallas",
+      "state": "TX",
+      "zipcode": "75963"
     },
-    "dropoff": {
-      "name": "Alice Customer"
-      "phone_number": "4155555555",
-      "address": "101 Market St, San Francisco, CA 94105",
-      "detailed_address": {
-        "street_address_1": "101 Market St",
-        "street_address_2": "",
-        "city": "San Francisco",
-        "state": "CA",
-        "zip_code": "94105",
-        "country": "US",
+    "departments": [
+      {
+        "name": "Electronics",
+        "description": "",
+        "deliveryInstructions": ""
+      }
+    ],
+    "DSPs": [
+      {
+        "name": "fedex"
       },
-      "notes": "Ring the bell, meow loudly.",
-      "location" : {
-          "lat" : 37.793274,
-          "lng" : -122.395934
-      },
-    },
-    "courier": {
-      "name": "Robo Courier",
-      "rating": "5.0",
-      "vehicle_type": "bicycle",
-      "phone_number": "+14151234567"
-      "location" : {
-          "lat" : 37.42291810,
-          "lng" : -122.08542120
-      },
-      "img_href": "https://images.postmates.com/06c9a53c-f89f-4eac-8861-60e34039d9ea/121.jpg"
-    },
-    "related_deliveries": [{
-      "id": "del_9A3jsld89s",
-      "relationship": "original"
-    }]
+      {
+        "name": "postmate"
+      }
+    ],
+    "active": true
   }
+  
 ```
 
 ## Get Store by Alias
@@ -339,82 +314,49 @@ ID | Store ID
 
 ### URL Parameters
 
-Parameter | Description
---------- | -----------
-alias | Store's alias
+Parameter | Type | Description
+--------- | ----------- | -----
+alias | string | Store's alias
 
+> Response
 
 ```json
-  {
-    "kind": "delivery",
-    "id": "del_3vDjjkd21b",
-    "created": "2014-08-26T10:04:03Z",
-    "updated": "2014-08-26T11:21:16Z",
-    "status": "pickup",
-    "complete": false,
-    "pickup_eta": "2014-08-26T10:16:00Z",
-    "dropoff_eta": "2014-08-26T10:29:00Z",
-    "dropoff_deadline": "2014-08-26T10:45:00Z",
-    "quote_id": "dqt_qUdje83jhdk",
-    "fee": 799,
-    "currency": "usd",
-    "manifest": {
-      "reference": "SP 937-215"
-      "description": "10kg cardboard box",
+
+{
+    "_id": "591c4c18b9d21c04c34612e0",
+    "name": "MidTown",
+    "description": "",
+    "contact": {
+      "name": "John Doe",
+      "phone": "2342354544"
     },
-    "dropoff_identifier": "Picard",
-    "pickup": {
-      "name": "The Warehouse",
-      "phone_number": "5558675309",
-      "address": "20 McAllister St, San Francisco, CA 94102",
-      "detailed_address": {
-        "street_address_1": "20 McAllister St",
-        "street_address_2": "",
-        "city": "San Francisco",
-        "state": "CA",
-        "zip_code": "94102",
-        "country": "US",
-      },
-      "notes": "Invoice #123",
-      "location" : {
-          "lat" : 37.781116,
-          "lng" : -122.412339
-      },
+    "deliveryInstructions": "",
+    "address": {
+      "street": "123 Main St",
+      "street2": "",
+      "secondary": "",
+      "city": "Dallas",
+      "state": "TX",
+      "zipcode": "75963"
     },
-    "dropoff": {
-      "name": "Alice Customer"
-      "phone_number": "4155555555",
-      "address": "101 Market St, San Francisco, CA 94105",
-      "detailed_address": {
-        "street_address_1": "101 Market St",
-        "street_address_2": "",
-        "city": "San Francisco",
-        "state": "CA",
-        "zip_code": "94105",
-        "country": "US",
+    "departments": [
+      {
+        "name": "Electronics",
+        "description": "",
+        "deliveryInstructions": ""
+      }
+    ],
+    "DSPs": [
+      {
+        "name": "fedex"
       },
-      "notes": "Ring the bell, meow loudly.",
-      "location" : {
-          "lat" : 37.793274,
-          "lng" : -122.395934
-      },
-    },
-    "courier": {
-      "name": "Robo Courier",
-      "rating": "5.0",
-      "vehicle_type": "bicycle",
-      "phone_number": "+14151234567"
-      "location" : {
-          "lat" : 37.42291810,
-          "lng" : -122.08542120
-      },
-      "img_href": "https://images.postmates.com/06c9a53c-f89f-4eac-8861-60e34039d9ea/121.jpg"
-    },
-    "related_deliveries": [{
-      "id": "del_9A3jsld89s",
-      "relationship": "original"
-    }]
+      {
+        "name": "postmate"
+      }
+    ],
+    "active": true
   }
+  
 ```
 
 # Estimate Resource
@@ -616,4 +558,89 @@ id | Order id
   "price": 123,
   "status": "CANCELED"
 }
+```
+
+
+
+# Alcohol Compliance
+
+## Get Alcohol Compliance
+
+### HTTP Request
+
+`POST http://api.gateway.com/getalcoholcompliance`
+
+### POST Parameters
+
+Parameter |  Type | Required
+--------- | ----------- | ---------
+delivery_from | Location | true
+delivery_to | Location | true
+has_beer_or_wine | Boolean | true
+has_spirits | Boolean | true
+
+> Request
+
+```json
+{
+  "delivery_from": {
+    address_1 : "123 Main St.",
+    address_2 : "",
+    city : "Plano",
+    state : "tx",
+    zip : "75024"
+  },
+  "delivery_to": {
+      address_1 : "555 Macarthur Avenue.",
+      address_2 : "",
+      city : "Richardson",
+      state : "tx",
+      zip : "75045"
+    },
+    "has_been_or_wine" : true,
+    "has_spirits" : false
+}
+```
+> Response
+
+```json
+{
+  "result": {
+    "status" : "wet"
+  }
+}
+```
+> Request
+
+```json
+{
+  "delivery_from": {
+    address_1 : "123 Main St.",
+    address_2 : "",
+    city : "Plano",
+    state : "tx",
+    zip : "75024"
+  },
+  "delivery_to": {
+      address_1 : "333 Modella Ave",
+      address_2 : "",
+      city : "Arlington",
+      state : "tx",
+      zip : "75006"
+    },
+         "has_been_or_wine" : true,
+         "has_spirits" : false
+}
+
+```
+> Response
+
+```json
+{
+  "result": {
+    "error" : "CROSS_COUNTY_RULE_FAILURE",
+    "description" : "same county delivery rule violated."
+  }
+}
+
 ```
