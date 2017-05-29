@@ -130,17 +130,6 @@ Property | Type | Required | Description
 id | string | true | string
 type | string | true | (json, string, csv)
 
-## Delivery Estimate
-Property | Type | Required | Description
--------- | ---- | -------- | -----------
-id | int | true | ID
-delivery_customer_info | string | true | Location
-store_id | int | true | StoreId
-order_details | string | true | Order Details
-customer_zip | string | true | Customer ZipCode
-delivery_customer_location | string | true | Location
-custom_fields | List<CustomFields> | true | CustomFields : List<CustomFields>
-
 ## Order
 Property | Type | Required | Description
 -------- | ---- | -------- | -----------
@@ -153,16 +142,27 @@ exception_notification | string | true | Exception Notification : List<Notificat
 delivery_time | timestamp | true | Delivery Time : Time
 custom_fields | List<CustomFields> | true | CustomFields : List<CustomFields>
 
+
 ## Size
 Property | Type | Required | Description
 -------- | ---- | -------- | -----------
-name | string | false | custom measurements already defined such as 'small','medium' etc.
 height | decimal | false | Height
 width | decimal | false | Width
 depth | decimal | false | Depth
-weight | decimal | false | Weight
 
-Note: name or height/width/depth/weight is required.
+## Dimension
+Property | Type | Required | Description
+-------- | ---- | -------- | -----------
+name | string | false | custom measurements already defined such as 'small','medium' etc.
+weight | decimal | false | Weight
+size | Size | false | height, width , depth in inches.
+
+Note: name or weight & size is required.
+
+
+## Dates, Times and Timezones
+All dates and times in the API are expressed in <a href='http://en.wikipedia.org/wiki/ISO_8601'> ISO 8601 </a>, with a UTC offset (denoted by the Z).
+
 
 # Store Resource
 
@@ -170,6 +170,8 @@ Note: name or height/width/depth/weight is required.
 ### HTTP Request
 
 `GET http://api.gateway.com/stores`
+
+Get all the configured stores in the system.
 
 > Response
 
@@ -361,97 +363,234 @@ alias | string | Store's alias
 
 # Estimate Resource
 
-## Get Estimate
-### HTTP Request
+## Create an Estimate
 
-`GET http://api.gateway.com/estimate/<id>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-id | estimate id
+> Sample Request
 
 ```json
-  {
-    "kind": "delivery",
-    "id": "del_3vDjjkd21b",
-    "created": "2014-08-26T10:04:03Z",
-    "updated": "2014-08-26T11:21:16Z",
-    "status": "pickup",
-    "complete": false,
-    "pickup_eta": "2014-08-26T10:16:00Z",
-    "dropoff_eta": "2014-08-26T10:29:00Z",
-    "dropoff_deadline": "2014-08-26T10:45:00Z",
-    "quote_id": "dqt_qUdje83jhdk",
-    "fee": 799,
-    "currency": "usd",
-    "manifest": {
-      "reference": "SP 937-215"
-      "description": "10kg cardboard box",
-    },
-    "dropoff_identifier": "Picard",
-    "pickup": {
-      "name": "The Warehouse",
-      "phone_number": "5558675309",
-      "address": "20 McAllister St, San Francisco, CA 94102",
-      "detailed_address": {
-        "street_address_1": "20 McAllister St",
-        "street_address_2": "",
-        "city": "San Francisco",
-        "state": "CA",
-        "zip_code": "94102",
-        "country": "US",
-      },
-      "notes": "Invoice #123",
-      "location" : {
-          "lat" : 37.781116,
-          "lng" : -122.412339
-      },
-    },
-    "dropoff": {
-      "name": "Alice Customer"
-      "phone_number": "4155555555",
-      "address": "101 Market St, San Francisco, CA 94105",
-      "detailed_address": {
-        "street_address_1": "101 Market St",
-        "street_address_2": "",
-        "city": "San Francisco",
-        "state": "CA",
-        "zip_code": "94105",
-        "country": "US",
-      },
-      "notes": "Ring the bell, meow loudly.",
-      "location" : {
-          "lat" : 37.793274,
-          "lng" : -122.395934
-      },
-    },
-    "courier": {
-      "name": "Robo Courier",
-      "rating": "5.0",
-      "vehicle_type": "bicycle",
-      "phone_number": "+14151234567"
-      "location" : {
-          "lat" : 37.42291810,
-          "lng" : -122.08542120
-      },
-      "img_href": "https://images.postmates.com/06c9a53c-f89f-4eac-8861-60e34039d9ea/121.jpg"
-    },
-    "related_deliveries": [{
-      "id": "del_9A3jsld89s",
-      "relationship": "original"
-    }]
-  }
-```
+ {
+   "store": {
+     "alias": "LASH at Lamar"
+   },
+   "order_external_id": "XAPTM-ADC001",
+   "department": "Jewellery",
+   "order_value": 323.22,
+   "pickup_time": "2014-01-29T04:30:00Z",
+   "drop_off_time": null,
+   "delivery_contact": {
+     "name": "John Doe",
+     "phone": "233-232-3232"
+   },
+   "delivery_address": {
+     "address_1": "123 London Dr",
+     "address_2": "",
+     "city": "Arlington",
+     "state": "TX",
+     "zip": "75060"
+   },
+   "packages": [
+     {
+       "size": {
+         "length": 12,
+         "width": 12,
+         "height": 6
+       },
+       "weight": 15
+     }
+   ],
+   "has_spirits": true,
+   "has_beer_or_wine": true,
+   "is_fragile": true,
+   "has_refrigerated_items": true,
+   "has_perishable_items": true
+ }
+ ```
+ 
+ > Sample Response
+ 
+ ```json
+ {
+   "estimates": [
+     {
+       "provider": "fedex",
+       "service_type": "PR",
+       "estimated_pickup_time": "2017-05-28T08:46:00.000Z",
+       "estimated_delivery_time": "2017-05-28T09:30:00.000Z",
+       "expires": null,
+       "currency": "cents",
+       "amount": 5273,
+     },
+     {
+       "provider": "postmates",
+       "estimated_pickup_time": "2017-05-28T08:46:00.000Z",
+       "estimated_delivery_time": "2017-05-28T09:46:00.000Z",
+       "expires": null,
+       "currency": "cents",
+       "amount": 6354
+     }
+   ],
+   "estimate_id": "592a60ac34df3a5ed908bccd"
+ }
+ 
+ 
+ ```
+ 
+  <h3>HTTP Request</h3>
+ 
+ `POST http://api.gateway.com/estimate`
+ 
+  <h3> POST Parameters </h3>
+ 
+ Property | Type | Required | Description
+ -------- | ---- | -------- | -----------
+ store | Store | true | Store
+ order_external_id | string | false | Any Id that the corporate system wants to assign to this request.
+ department | string | false | Department 
+ order_value | decimal | false | Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur
+ pickup_time | string | false | ISO 8601 standard e.g. 2014-01-29T04:30:00Z
+ dropoff_time | string | false | ISO 8601 standard e.g. 2014-01-29T04:30:00Z
+ delivery_contact | Delivery Contact | true | Minimum customer information to obtain an estimate.
+ delivery_address | Location | true | Address to deliver the package to.
+ packages | [Dimension[ ]](#dimension) | true | Array of Dimension of each package.
+ has_spirits | bool | true | Contains Spirits
+ has_beer_or_wine | bool | false | Contains beer or wine
+ is_fragile | bool | false | Is Fragile.
+ has_refrigerated_items | bool | false | Has refrigerated items
+ has_perishable_items | bool | false | Has perishable items
+ custom_fields | CustomFields[] | false | optional custom fields;
 
 # Order Resource
+
+## Create Order
+
+> Sample Request
+
+```json
+{
+  "store": {
+    "alias": "LASH at Lamar"
+  },
+  "order_external_id": "XAPTM-ADC001",
+  "department": "Jewellery",
+  "order_value": 323.22,
+  "pickup_time": "2014-01-29T04:30:00Z",
+  "drop_off_time": null,
+  "delivery_contact": {
+    "name": "John Doe",
+    "phone": "233-232-3232"
+  },
+  "delivery_address": {
+    "address_1": "123 London Dr",
+    "address_2": "",
+    "city": "Arlington",
+    "state": "TX",
+    "zip": "75060"
+  },
+  "packages": [
+    {
+      "size": {
+        "length": 12,
+        "width": 12,
+        "height": 6
+      },
+      "weight": 15
+    }
+  ],
+  "has_spirits": true,
+  "has_beer_or_wine": true,
+  "is_fragile": true,
+  "has_refrigerated_items": true,
+  "has_perishable_items": true
+}
+```
+
+> Sample Response
+
+```json
+{
+   "provider": "fedex",
+   "tracking_number": "220088057510",
+   "status": "RECEIVED_BY_LMA",
+   "estimated_pickup_time": "2014-01-29T04:30:00Z",
+   "estimated_delivery_time": "2014-01-29T04:30:00Z",
+   "currency": "cents",
+   "amount": 4115,
+   "labels": [
+     {
+       "tracking_number": "220088057510",
+       "url": "https://staging.fedexsameday.com/fdx_getlabel.aspx?id=5181131558901765435944766360",
+       "code": "FXF2200880575102200880575100528172",
+       "pdf": "<base_64_encoded_image>",
+       "qr_code_image": "<base_64_encoded_image>"
+     }
+   ],
+   "order_id": "592b6f7b34df3a5ed908bccf"
+ }
+```
+
 
 ## Get Order
 
 ### HTTP Request
 
-`POST http://api.gateway.com/order/<id>`
+> Sample Response
+
+```json
+ {
+   "order_id": "592b6f7b34df3a5ed908bccf",
+   "store": {
+     "alias": "LASH at Lamar"
+   },
+   "order_external_id": "XAPTM-ADC001",
+   "department": "Jewellery",
+   "order_value": 323.22,
+   "pickup_time": "2014-01-29T04:30:00Z",
+   "drop_off_time": null,
+   "delivery_contact": {
+     "name": "John Doe",
+     "phone": "233-232-3232"
+   },
+   "delivery_address": {
+     "address_1": "123 London Dr",
+     "address_2": "",
+     "city": "Arlington",
+     "state": "TX",
+     "zip": "75060"
+   },
+   "packages": [
+     {
+       "size": {
+         "length": 12,
+         "width": 12,
+         "height": 6
+       },
+       "weight": 15
+     }
+   ],
+   "has_spirits": true,
+   "has_beer_or_wine": true,
+   "is_fragile": true,
+   "has_refrigerated_items": true,
+   "has_perishable_items": true,
+   "provider": "fedex",
+   "tracking_number": "220088057510",
+   "status": "RECEIVED_BY_LMA",
+   "estimated_pickup_time": "2014-01-29T04:30:00Z",
+   "estimated_delivery_time": "2014-01-29T04:30:00Z",
+   "currency": "cents",
+   "amount": 4115,
+   "labels": [
+     {
+       "tracking_number": "220088057510",
+       "url": "https://staging.fedexsameday.com/fdx_getlabel.aspx?id=5181131558901765435944766360",
+       "code": "FXF2200880575102200880575100528172",
+       "pdf": "<base_64_encoded_image>",
+       "qr_code_image": "<base_64_encoded_image>"
+     }
+   ]
+ }
+```
+`GET http://api.gateway.com/order/<id>`
 
 ### URL Parameters
 
@@ -459,14 +598,19 @@ Parameter | Description
 --------- | -----------
 id | Order id
 
+
+## Get Order Status
+
+> Response
+
 ```json
   {
-    "id": 123,
-    "price": 123
+    "status": "ORDER_PLACED",
+    "status_description" : "DSP has accepted the order",
+    "updated_at": "2014-01-29T04:30:00Z"
   }
 ```
 
-## Get Order Status
 
 ### HTTP Request
 
@@ -478,69 +622,8 @@ Parameter | Description
 --------- | -----------
 id | Order id
 
-> Response
-
-```json
-  {
-    "status": "CANCELED",
-    "updated_at": 123123123
-  }
-```
-
-## Create Order
-
-### HTTP Request
-
-`POST http://api.gateway.com/order`
-
-> Request body
-
-```json
-{
-  "price": 123
-}
-```
-
-> Response
-
-```json
-{"test":"test"}
-```
-
-## Update Order
-
-### HTTP Request
-
-`PUT http://api.gateway.com/order/<id>`
-
-> Request body
-
-```json
-{
-  "price": 123
-}
-```
-
-> Response
-
-```json
-{
-  "id": 123,
-  "price": 123
-}
-```
-
 ## Cancel Order
 
-### HTTP Request
-
-`PUT http://api.gateway.com/order/<id>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-id | Order id
 
 > Request body
 
@@ -559,12 +642,79 @@ id | Order id
   "status": "CANCELED"
 }
 ```
+### HTTP Request
 
+`PUT http://api.gateway.com/order/<id>`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+id | Order id
 
 
 # Alcohol Compliance
 
 ## Get Alcohol Compliance
+
+> Sample Request
+
+```json
+{
+  "delivery_from": {
+    "address_1" : "123 Main St.",
+    "address_2" : "",
+    "city" : "Plano",
+    "state" : "tx",
+    "zip" : "75024"
+  },
+  "delivery_to": {
+      "address_1" : "555 Macarthur Avenue.",
+      "address_2" : "",
+      "city" : "Richardson",
+      "state": "tx",
+      "zip" : "75045"
+    }
+}
+```
+
+> Sample Response
+
+```json
+{
+  "compliance": {
+    "alcohol" : "wet",
+    "zoning" : 
+      { 
+        "result" : true
+      }
+  }
+}
+```
+
+> Sample Response
+
+```json
+{
+  "compliance": {
+    "alcohol" : "wet",
+    "zoning" :
+     {
+      "result" : false,
+      "errors":
+    [ 
+      { "type" : "CROSS_COUNTY_RULE_FAILURE",
+        "description" : "same county delivery rule violated."
+      },
+      { 
+        "type" : "CROSS_STATE_RULE_FAILURE",
+        "description" : "same state delivery rule violated."  
+       }
+     ]
+     }
+  }
+}
+```
 
 ### HTTP Request
 
@@ -576,71 +726,5 @@ Parameter |  Type | Required
 --------- | ----------- | ---------
 delivery_from | Location | true
 delivery_to | Location | true
-has_beer_or_wine | Boolean | true
-has_spirits | Boolean | true
 
-> Request
 
-```json
-{
-  "delivery_from": {
-    address_1 : "123 Main St.",
-    address_2 : "",
-    city : "Plano",
-    state : "tx",
-    zip : "75024"
-  },
-  "delivery_to": {
-      address_1 : "555 Macarthur Avenue.",
-      address_2 : "",
-      city : "Richardson",
-      state : "tx",
-      zip : "75045"
-    },
-    "has_been_or_wine" : true,
-    "has_spirits" : false
-}
-```
-> Response
-
-```json
-{
-  "result": {
-    "status" : "wet"
-  }
-}
-```
-> Request
-
-```json
-{
-  "delivery_from": {
-    address_1 : "123 Main St.",
-    address_2 : "",
-    city : "Plano",
-    state : "tx",
-    zip : "75024"
-  },
-  "delivery_to": {
-      address_1 : "333 Modella Ave",
-      address_2 : "",
-      city : "Arlington",
-      state : "tx",
-      zip : "75006"
-    },
-         "has_been_or_wine" : true,
-         "has_spirits" : false
-}
-
-```
-> Response
-
-```json
-{
-  "result": {
-    "error" : "CROSS_COUNTY_RULE_FAILURE",
-    "description" : "same county delivery rule violated."
-  }
-}
-
-```

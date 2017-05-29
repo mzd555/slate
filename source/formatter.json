@@ -1,75 +1,53 @@
-[
-  {
-    "_id": "591c4c18b9d21c04c34612e0",
-    "name": "MidTown",
-    "description": "",
-    "contact": {
-      "name": "John Doe",
-      "phone": "2342354544"
-    },
-    "deliveryInstructions": "",
-    "address": {
-      "street": "123 Main St",
-      "street2": "",
-      "secondary": "",
-      "city": "Dallas",
-      "state": "TX",
-      "zipcode": "75963"
-    },
-    "departments": [
-      {
-        "name": "Electronics",
-        "description": "",
-        "deliveryInstructions": ""
-      }
-    ],
-    "DSPs": [
-      {
-        "name": "fedex"
-      },
-      {
-        "name": "postmate"
-      }
-    ],
-    "active": true
+{
+  "order_id": "592b6f7b34df3a5ed908bccf",
+  "store": {
+    "alias": "LASH at Lamar"
   },
-  {
-    "_id": "590905dc55776b47decb4870",
-    "name": "Uptown-Store77",
-    "description": "Uptown Store 77",
-    "contact": {
-      "name": "Michael Stevenson",
-      "phone": "971-175-4446"
-    },
-    "deliveryInstructions": "Ensure package is not damaged before handing it over.",
-    "address": {
-      "street": "4100 Midway St",
-      "street2": "",
-      "secondary": "2120",
-      "city": "Carrollton",
-      "state": "TX",
-      "zipcode": "75007"
-    },
-    "departments": [
-      {
-        "name": "General",
-        "description": "",
-        "deliveryInstructions": ""
+  "order_external_id": "XAPTM-ADC001",
+  "department": "Jewellery",
+  "order_value": 323.22,
+  "pickup_time": "2014-01-29T04:30:00Z",
+  "drop_off_time": null,
+  "delivery_contact": {
+    "name": "John Doe",
+    "phone": "233-232-3232"
+  },
+  "delivery_address": {
+    "address_1": "123 London Dr",
+    "address_2": "",
+    "city": "Arlington",
+    "state": "TX",
+    "zip": "75060"
+  },
+  "packages": [
+    {
+      "size": {
+        "length": 12,
+        "width": 12,
+        "height": 6
       },
-      {
-        "name": "Alcohol",
-        "description": "",
-        "deliveryInstructions": ""
-      }
-    ],
-    "DSPs": [
-      {
-        "name": "postmate"
-      },
-      {
-        "name": "fedex"
-      }
-    ],
-    "active": true
-  }
-]
+      "weight": 15
+    }
+  ],
+  "has_spirits": true,
+  "has_beer_or_wine": true,
+  "is_fragile": true,
+  "has_refrigerated_items": true,
+  "has_perishable_items": true,
+  "provider": "fedex",
+  "tracking_number": "220088057510",
+  "status": "RECEIVED_BY_LMA",
+  "estimated_pickup_time": "2014-01-29T04:30:00Z",
+  "estimated_delivery_time": "2014-01-29T04:30:00Z",
+  "currency": "cents",
+  "amount": 4115,
+  "labels": [
+    {
+      "tracking_number": "220088057510",
+      "url": "https://staging.fedexsameday.com/fdx_getlabel.aspx?id=5181131558901765435944766360",
+      "code": "FXF2200880575102200880575100528172",
+      "pdf": "<base_64_encoded_image>",
+      "qr_code_image": "<base_64_encoded_image>"
+    }
+  ]
+}
