@@ -1,53 +1,38 @@
 {
-  "order_id": "592b6f7b34df3a5ed908bccf",
-  "store": {
-    "alias": "LASH at Lamar"
-  },
-  "order_external_id": "XAPTM-ADC001",
-  "department": "Jewellery",
-  "order_value": 323.22,
-  "pickup_time": "2014-01-29T04:30:00Z",
-  "drop_off_time": null,
-  "delivery_contact": {
+  "_id": "5948c0a31da414722237c1f4",
+  "tenantId": "D-mart",
+  "active": true,
+  "name": "GP-01",
+  "description": "",
+  "timeZone": "America/Chicago",
+  "contact": {
     "name": "John Doe",
-    "phone": "233-232-3232"
+    "phone": "232-323-2323"
   },
-  "delivery_address": {
-    "address_1": "123 London Dr",
-    "address_2": "",
-    "city": "Arlington",
+  "deliveryInstructions": "",
+  "address": {
+    "street": "232 main st",
+    "street2": "",
+    "secondary": "",
+    "city": "irving",
     "state": "TX",
-    "zip": "75060"
+    "zipcode": "85933"
   },
-  "packages": [
+  "departments": [
     {
-      "size": {
-        "length": 12,
-        "width": 12,
-        "height": 6
-      },
-      "weight": 15
+      "name": "grocery",
+      "description": "",
+      "deliveryInstructions": ""
     }
   ],
-  "has_spirits": true,
-  "has_beer_or_wine": true,
-  "is_fragile": true,
-  "has_refrigerated_items": true,
-  "has_perishable_items": true,
-  "provider": "fedex",
-  "tracking_number": "220088057510",
-  "status": "RECEIVED_BY_LMA",
-  "estimated_pickup_time": "2014-01-29T04:30:00Z",
-  "estimated_delivery_time": "2014-01-29T04:30:00Z",
-  "currency": "cents",
-  "amount": 4115,
-  "labels": [
+  "DSPs": [
     {
-      "tracking_number": "220088057510",
-      "url": "https://staging.fedexsameday.com/fdx_getlabel.aspx?id=5181131558901765435944766360",
-      "code": "FXF2200880575102200880575100528172",
-      "pdf": "<base_64_encoded_image>",
-      "qr_code_image": "<base_64_encoded_image>"
+      "name": "FedEx",
+      "corporateDspId": "59310bd733f00c2543f67570"
+    },
+    {
+      "name": "Postmates",
+      "corporateDspId": "59311f2533f00c2543f67574"
     }
   ]
 }

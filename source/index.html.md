@@ -5,39 +5,67 @@ language_tabs:
   - shell
 
 toc_footers:
+- <h2><a href='http://deliverysolutions.co'>Back to Site</a></h2>
 
 includes:
 
 search: true
 ---
 
+# Introduction
+
+## Authentication
+
+> Example call with API key passed in the request header
+
+```shell
+  curl -X GET https://api.gateway.com/stores \
+    --header "Content-Type:application/json" \
+    --header "apikey:8153ae5698c34cc51212bef9de23a1df1"  
+```
+
+After your account has been setup, you will be provided with an API key. Please make sure to keep this key secured and never embed it in client-side code.
+You must pass the <code>API Key</code> in the request header with the value <code>apikey</code>.
+
+Requests made without an API key will return a <code> 401 Unauthorized response</code>.
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+## Status Codes
+
+The API uses conventional HTTP response codes to indicate success or failure on all requests.
+
+Status Code	| Result
+------------- | --------
+<b>200 OK</b> |	Request completed as expected.
+<b>201 Created</b>	 | Used for requests that create new objects (i.e. DeliveryEstimate, Delivery).
+<b>204 No Content</b> |	The server has completed the request but does not need to return a body (i.e. DELETE requests).
+<b>400 Bad Request </b>|	The request contains invalid/missing information or is out of context. The status text will contain more specific message(s).
+<b>401 Unauthorized </b>|	Authentication credentials were missing or incorrect.
+<b>403 Forbidden</b> |	The request is understood, but it has been refused or access is not allowed.
+<b>404 Not Found </b> |	The requested resource could not be found.
+<b>429 Client Error </b>|	 The request was refused per our rate limiting policy.
+<b>50X Errors </b> |	Occur when something goes wrong in the API.
+
 # Models
 
-## Store
+## Contact
 Property | Type | Required | Description
 -------- | ---- | -------- | -----------
-id | integer | true | Store ID's
-retailer_id | integer | true | Retailer ID
-alias | string | true | Store ID alias
-*phone | Phone | true | Phone Number : Phone
-*address | Address | true | Store Address : Address
-
-*required only if the store does not exist in the system.
-
-## Location
-Property | Type | Required | Description
--------- | ---- | -------- | -----------
-id | int | true | ID
-address_1 | string | true | Address Line 1
-address_2 | string | true | Address Line 2
-city | string | true | City
-state | string | true | State
-zip | string | true | Zip
+name | string | true | Full name
+phone | string | true | Phone
 
 ## Customer Info
 Property | Type | Required | Description
 -------- | ---- | -------- | -----------
-id | int | true | ID
 first_name | string | true | First Name
 last_name | string | true | Last Name
 middle_name | string | true | Middle Name
@@ -48,26 +76,22 @@ should_email | bool | false | Should Email
 should_sms | bool | false | Should SMS
 custom_fields | List<CustomFields> | false | CustomFields : List<CustomFields>
 
-## Order Details
+## CustomFields
 Property | Type | Required | Description
 -------- | ---- | -------- | -----------
-id | int | true | ID
-retailer_order_id | int | true | Retailer Order ID
-order_total | decimal | true | Order Total
-packages_count | int | true | No. of Packages
-size | Size| true | Size of the package
-has_beer_or_wine | bool | true | Has Beer/Wine(Y/N)
-has_spirits | bool | true | Has Spirits(Y/N)
-has_refrigerated_items | string | true | Has Refrigerated items(Y/N)
-has_perishable_items | string | true | Has Perishable Items(Y/N)
-list_of_products | string | false | Items : list of Product
-custom_fields | string | true | CustomFields : List<CustomFields>
+name | string | true | Name
+value | string | true | Value
+type | string | true | CustomFieldValueType : Default(string)
 
-## Time
+## CustomFieldValueType
 Property | Type | Required | Description
 -------- | ---- | -------- | -----------
-ready_for_pick_up | string | true | Ready for Pick up
-deliver_by | string | true | Deliver by
+type | string | true | (json, string, csv)
+
+
+## Dates, Times
+All dates and times in the API are expressed in <a href='http://en.wikipedia.org/wiki/ISO_8601'> ISO 8601 </a>, with a UTC offset (denoted by the Z).
+
 
 ## Delivery Details
 Property | Type | Required | Description
@@ -80,16 +104,73 @@ dropoff_notes | string | true | Dropoff Notes
 dropoff_signature | string | true | Dropoff Signature
 dropoff_photo | string | true | Dropoff Photo
 
-## Order Status
+## Dimension
 Property | Type | Required | Description
 -------- | ---- | -------- | -----------
-code | string | true | code(see global Order Status)
-description | string | true | description
+name | string | false | custom measurements already defined such as 'small','medium' etc.
+weight | decimal | false | Weight
+size | Size | false | height, width , depth in inches.
+
+Note: name or weight & size is required.
+
+## Department
+
+Property | Type | Required | Description
+-------- | ---- | -------- | -----------
+name | string | true | Name of the department.
+description | string | false | Description of the department.
+deliveryInstructions | string | false | Delivery instructions for the driver / label / packaging.
+
+## Generic Entity
+Property | Type | Required | Description
+---- | ----- | ---- | ----
+name | string | true | name of the entity
+value | string | false | value of the entity
+
+## Location
+Property | Type | Required | Description
+-------- | ---- | -------- | -----------
+address_1 | string | true | Address Line 1
+address_2 | string | true | Address Line 2
+city | string | true | City
+state | string | true | State
+zip | string | true | Zip
+
+
+## Notification
+Property | Type | Required | Description
+-------- | ---- | -------- | -----------
+email | string | true | Email
+sms | string | true | SMS
+url | string | true | Url (might not need it at all)
+
+
+## Order Status
+
+Name | Key |  Description
+-------- |  -------- | -----------
+Order Placed | order_placed | Order has been placed and excepted by the DSP.
+Received | order_received |  a request has been received by the system and it is being processed.
+Failed | request_failed | an estimate or order request has failed.
+Estimates Received | estimates_received | one or more estimates have been obtained for the request.
+Estimates Failed | estimates_failed | no valid estimates received against the request.
+Dispatched to DSP | dispatched_to_dsp | Order has been dispatched to the DSP.
+Order Confirmed | order_confirmed | a dispatched order has been confirmed.
+Pickup Complete | pickup_complete | DSP has successfully acquired the package.
+Shipping | shipping | package is en-route.
+Delivered | order_delivered | order has been delivered.
+Canceled | order_canceled | order has been canceled.
+
+## Phone
+Property | Type | Required | Description
+-------- | ---- | -------- | -----------
+number | string | true | Number
+extension | string | true | Extension
+department | string | true | Department
 
 ## Product
 Property | Type | Required | Description
 -------- | ---- | -------- | -----------
-id | int | true | ID
 name | string | true | Name
 price | decimal | true | Price
 sku | string | true | Sku
@@ -100,49 +181,6 @@ weight | decimal | true | Weight
 is_fragile | bool | true | IsFragile
 custom_fields | List<CustomFields> | true | CustomFields : List<CustomFields>
 
-## Phone
-Property | Type | Required | Description
--------- | ---- | -------- | -----------
-id | int | true | ID
-number | string | true | Number
-extension | string | true | Extension
-department | string | true | Department
-
-## Notification
-Property | Type | Required | Description
--------- | ---- | -------- | -----------
-id | int | true | ID
-email | string | true | Email
-sms | string | true | SMS
-url | string | true | Url (might not need it at all)
-
-## CustomFields
-Property | Type | Required | Description
--------- | ---- | -------- | -----------
-id | string | true | Name
-name | string | true | Name
-value | string | true | Value
-type | string | true | CustomFieldValueType : Default(string)
-
-## CustomFieldValueType
-Property | Type | Required | Description
--------- | ---- | -------- | -----------
-id | string | true | string
-type | string | true | (json, string, csv)
-
-## Order
-Property | Type | Required | Description
--------- | ---- | -------- | -----------
-id | int | true | ID
-delivery_customer_info | string | true | Customer Info
-store_id | int | true | StoreId
-order_details | string | true | Order Details
-status_update_notification | List<Notification> | true | Status Update Notification : List<Notification>
-exception_notification | string | true | Exception Notification : List<Notification>
-delivery_time | timestamp | true | Delivery Time : Time
-custom_fields | List<CustomFields> | true | CustomFields : List<CustomFields>
-
-
 ## Size
 Property | Type | Required | Description
 -------- | ---- | -------- | -----------
@@ -150,21 +188,139 @@ height | decimal | false | Height
 width | decimal | false | Width
 depth | decimal | false | Depth
 
-## Dimension
+## Store
 Property | Type | Required | Description
 -------- | ---- | -------- | -----------
-name | string | false | custom measurements already defined such as 'small','medium' etc.
-weight | decimal | false | Weight
-size | Size | false | height, width , depth in inches.
+id | string | true | Store ID assigned by the system when creating the store and retrieved by the GetStoreList api call.
+name | string | true | Store name provided when creating the store.
 
-Note: name or weight & size is required.
+* either id or name is required.
 
+## Time
+Property | Type | Required | Description
+-------- | ---- | -------- | -----------
+ready_for_pick_up | string | true | Ready for Pick up
+deliver_by | string | true | Deliver by
 
-## Dates, Times and Timezones
-All dates and times in the API are expressed in <a href='http://en.wikipedia.org/wiki/ISO_8601'> ISO 8601 </a>, with a UTC offset (denoted by the Z).
+## Timezones
+
+Name | Description
+-----| -----------
+America/Los_Angeles | Pacific Time (PT)
+America/Edmonton | Mountain Time (MT)
+America/Chicago | Central Time (CT)
+America/New_York | Eastern Time (ET)
 
 
 # Store Resource
+
+## Create Store
+### HTTP Request
+
+`POST http://api.gateway.com/stores`
+
+> Request
+
+```json
+
+ {
+   "name": "HighlandPark-53",
+   "description": "General Store in Highland Park",
+   "timeZone": "America/Chicago",
+   "contact": {
+     "name": "Peter Brown",
+     "phone": "214-234-2232"
+   },
+   "deliveryInstructions": "always be smiling",
+   "address": {
+     "street": "123 Main St",
+     "street2": "",
+     "secondary": "",
+     "city": "Highland Park",
+     "state": "TX",
+     "zipcode": "75062"
+   },
+   "departments": [
+     {
+       "name": "Produce",
+       "description": "Fresh Produce and Vegetables",
+       "deliveryInstructions": "might be wet"
+     },
+     {
+       "name": "Electronics",
+       "description": "Electronics and Phones",
+       "deliveryInstructions": "Handle with care"
+     }
+   ],
+   "DSPs": [
+     {
+       "name": "FedEx"
+     },
+     {
+       "name": "Postmates"
+     }
+   ]
+ }
+
+```
+> Response
+
+```json
+{
+  "_id": "5948c0a31da414722237c1f4",
+  "tenantId": "D-mart",
+  "active": true,
+   "name": "HighlandPark-53",
+   "description": "General Store in Highland Park",
+   "timeZone": "America/Chicago",
+   "contact": {
+     "name": "Peter Brown",
+     "phone": "214-234-2232"
+   },
+   "deliveryInstructions": "always be smiling",
+   "address": {
+     "street": "123 Main St",
+     "street2": "",
+     "secondary": "",
+     "city": "Highland Park",
+     "state": "TX",
+     "zipcode": "75062"
+   },
+   "departments": [
+     {
+       "name": "Produce",
+       "description": "Fresh Produce and Vegetables",
+       "deliveryInstructions": "might be wet"
+     },
+     {
+       "name": "Electronics",
+       "description": "Electronics and Phones",
+       "deliveryInstructions": "Handle with care"
+     }
+   ],
+   "DSPs": [
+     {
+       "name": "FedEx"
+     },
+     {
+       "name": "Postmates"
+     }
+   ]
+ }
+
+
+```
+
+Property | Type | Required | Description
+-------- | ---- | -------- | -----------
+name | string | true | Name of the store (must be unique among other stores)
+description | string| false | Description of the store.
+timeZone | [Timezone](#timezone) | true | Timezone that the store is located in.
+contact | [Contact](#contact) | true | Contact information for the store.
+deliveryInstructions | string | false | Delivery Instructions for the store.
+address | [Location](#location) | true | Location of the store.
+departments | Array of [Department](#department) | true | Departments.
+DSPs | [Generic Entity](#generic-entity) | false | List of the DSPs that the store would utilize for delivery.
 
 ## List Stores
 ### HTTP Request
@@ -272,7 +428,6 @@ ID | string |Store ID
 ```json
 
 {
-    "_id": "591c4c18b9d21c04c34612e0",
     "name": "MidTown",
     "description": "",
     "contact": {
@@ -291,19 +446,18 @@ ID | string |Store ID
     "departments": [
       {
         "name": "Electronics",
-        "description": "",
+        "description": "Electronic deparment",
         "deliveryInstructions": ""
       }
     ],
     "DSPs": [
       {
-        "name": "fedex"
+        "name": "Fedex"
       },
       {
-        "name": "postmate"
+        "name": "Postmates"
       }
-    ],
-    "active": true
+    ]
   }
   
 ```
@@ -370,7 +524,7 @@ alias | string | Store's alias
 ```json
  {
    "store": {
-     "alias": "LASH at Lamar"
+     "name": "HighlandPark #53"
    },
    "order_external_id": "XAPTM-ADC001",
    "department": "Jewellery",
@@ -418,7 +572,7 @@ alias | string | Store's alias
        "estimated_delivery_time": "2017-05-28T09:30:00.000Z",
        "expires": null,
        "currency": "cents",
-       "amount": 5273,
+       "amount": 5273
      },
      {
        "provider": "postmates",
@@ -449,7 +603,7 @@ alias | string | Store's alias
  order_value | decimal | false | Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur
  pickup_time | string | false | ISO 8601 standard e.g. 2014-01-29T04:30:00Z
  dropoff_time | string | false | ISO 8601 standard e.g. 2014-01-29T04:30:00Z
- delivery_contact | Delivery Contact | true | Minimum customer information to obtain an estimate.
+ delivery_contact | [Customer Info](#customer-info) | true | Customer information to obtain an estimate.
  delivery_address | Location | true | Address to deliver the package to.
  packages | [Dimension[ ]](#dimension) | true | Array of Dimension of each package.
  has_spirits | bool | true | Contains Spirits
@@ -457,6 +611,8 @@ alias | string | Store's alias
  is_fragile | bool | false | Is Fragile.
  has_refrigerated_items | bool | false | Has refrigerated items
  has_perishable_items | bool | false | Has perishable items
+ status_update_notification | Array of Notification | true | Status Update Notification
+ exception_notification | string | true | Exception Notification : List<Notification>
  custom_fields | CustomFields[] | false | optional custom fields;
 
 # Order Resource
@@ -468,7 +624,7 @@ alias | string | Store's alias
 ```json
 {
   "store": {
-    "alias": "LASH at Lamar"
+    "name": "HighlandPark #53"
   },
   "order_external_id": "XAPTM-ADC001",
   "department": "Jewellery",
@@ -500,7 +656,17 @@ alias | string | Store's alias
   "has_beer_or_wine": true,
   "is_fragile": true,
   "has_refrigerated_items": true,
-  "has_perishable_items": true
+  "has_perishable_items": true,
+  "notification": [
+      {
+        "email": "jane.doe@gmail.com",
+        "sms": "232-323-2323"
+      },
+      {
+        "url" :"listener.foobar.com?order_id=XPMT-AXDC",
+        "email" : "support@foobar.com"
+      }
+    ]
 }
 ```
 
@@ -527,6 +693,26 @@ alias | string | Store's alias
    "order_id": "592b6f7b34df3a5ed908bccf"
  }
 ```
+### Post Parameters
+
+Property | Type | Required | Description
+ -------- | ---- | -------- | -----------
+ store | Store | true | Store
+ order_external_id | string | false | Any Id that the corporate system wants to assign to this request.
+ department | string | false | Department 
+ order_value | decimal | false | Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur
+ pickup_time | string | false | ISO 8601 standard e.g. 2014-01-29T04:30:00Z
+ dropoff_time | string | false | ISO 8601 standard e.g. 2014-01-29T04:30:00Z
+ delivery_contact | [Customer Info](#customer-info) | true | Customer information to obtain an estimate.
+ delivery_address | [Location](#location) | true | Address to deliver the package to.
+ packages | [Dimension[ ]](#dimension) | true | Array of Dimension of each package.
+ has_spirits | bool | true | Contains Spirits
+ has_beer_or_wine | bool | false | Contains beer or wine
+ is_fragile | bool | false | Is Fragile.
+ has_refrigerated_items | bool | false | Has refrigerated items
+ has_perishable_items | bool | false | Has perishable items
+ notification | Array of [Notification](#notification)|false| email/sms/status update notification
+ custom_fields | CustomFields[] | false | optional custom fields;
 
 
 ## Get Order
@@ -614,7 +800,7 @@ id | Order id
 
 ### HTTP Request
 
-`PUT http://api.gateway.com/order/<id>/status`
+`PUT http://api.gateway.com/order/<id>`
 
 ### URL Parameters
 
@@ -629,7 +815,8 @@ id | Order id
 
 ```json
 {
-  "status": "CANCELED"
+  "status": "CANCELED",
+  "comment" : "client changed their mind."
 }
 ```
 
@@ -637,8 +824,6 @@ id | Order id
 
 ```json
 {
-  "id": 123,
-  "price": 123,
   "status": "CANCELED"
 }
 ```
@@ -683,11 +868,8 @@ id | Order id
 ```json
 {
   "compliance": {
-    "alcohol" : "wet",
-    "zoning" : 
-      { 
-        "result" : true
-      }
+    "result" : "COMPLIANT",
+    "status" : "wet"
   }
 }
 ```
@@ -697,21 +879,8 @@ id | Order id
 ```json
 {
   "compliance": {
-    "alcohol" : "wet",
-    "zoning" :
-     {
-      "result" : false,
-      "errors":
-    [ 
-      { "type" : "CROSS_COUNTY_RULE_FAILURE",
-        "description" : "same county delivery rule violated."
-      },
-      { 
-        "type" : "CROSS_STATE_RULE_FAILURE",
-        "description" : "same state delivery rule violated."  
-       }
-     ]
-     }
+    "result" : "NONCOMPLIANT",
+    "status" : null
   }
 }
 ```
@@ -726,5 +895,145 @@ Parameter |  Type | Required
 --------- | ----------- | ---------
 delivery_from | Location | true
 delivery_to | Location | true
+
+# Webhooks / SMS / Email
+
+> Sample Webhook Response
+
+```json
+{
+ "event" : "order_placed",
+ "event_time" : "2014-01-29T04:30:00Z",
+ "order" : {
+    "order_id": "592b6f7b34df3a5ed908bccf",
+    "store": {
+      "alias": "LASH at Lamar"
+    },
+    "order_external_id": "XAPTM-ADC001",
+    "department": "Jewellery",
+    "order_value": 323.22,
+    "pickup_time": "2014-01-29T04:30:00Z",
+    "drop_off_time": null,
+    "delivery_contact": {
+      "name": "John Doe",
+      "phone": "233-232-3232"
+    },
+    "delivery_address": {
+      "address_1": "123 London Dr",
+      "address_2": "",
+      "city": "Arlington",
+      "state": "TX",
+      "zip": "75060"
+    },
+    "packages": [
+      {
+        "size": {
+          "length": 12,
+          "width": 12,
+          "height": 6
+        },
+        "weight": 15
+      }
+    ],
+    "has_spirits": true,
+    "has_beer_or_wine": true,
+    "is_fragile": true,
+    "has_refrigerated_items": true,
+    "has_perishable_items": true,
+    "provider": "fedex",
+    "tracking_number": "220088057510",
+    "status": "RECEIVED_BY_LMA",
+    "estimated_pickup_time": "2014-01-29T04:30:00Z",
+    "estimated_delivery_time": "2014-01-29T04:30:00Z",
+    "currency": "cents",
+    "amount": 4115,
+    "labels": [
+      {
+        "tracking_number": "220088057510",
+        "url": "https://staging.fedexsameday.com/fdx_getlabel.aspx?id=5181131558901765435944766360",
+        "code": "FXF2200880575102200880575100528172",
+        "pdf": "<base_64_encoded_image>",
+        "qr_code_image": "<base_64_encoded_image>"
+      }
+    ]
+  }
+}
+```
+
+If you provided a notification item, when the order was created our platform can automatically POST to that URL, send an email, send a sms message with events that happen in the lifetime of the order.
+
+Event | Description
+--------- | -----------
+order_placed | Order has been placed with the DSP.
+order_picked | Package has been picked up by the DSP and is in enroute.
+order_delivered | Package has been delivered.
+driver_arrived | When the driver has arrived to pickup the delivery
+order_canceled | When the order has been canceled.
+order_exception | When an out of ordinary event happens in the process.
+
+<aside class="notice">
+The data included with every event type will differ based on the context. The exact structure of these responses will get established soon.
+</aside>
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

@@ -218,57 +218,90 @@
         <ul class="search-results"></ul>
       <div id="toc">
       </div>
+        <ul class="toc-footer">
+            <li><h2><a href='http://deliverysolutions.co'>Back to Site</a></h2></li>
+        </ul>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <h1 id="models">Models</h1>
+        <h1 id="introduction">Introduction</h1>
 
-<h2 id="store">Store</h2>
+<h2 id="authentication">Authentication</h2>
+
+<blockquote>
+<p>Example call with API key passed in the request header</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>  curl -X GET https://api.gateway.com/stores <span class="se">\</span>
+    --header <span class="s2">"Content-Type:application/json"</span> <span class="se">\</span>
+    --header <span class="s2">"apikey:8153ae5698c34cc51212bef9de23a1df1"</span>  
+</code></pre>
+<p>After your account has been setup, you will be provided with an API key. Please make sure to keep this key secured and never embed it in client-side code.
+You must pass the <code>API Key</code> in the request header with the value <code>apikey</code>.</p>
+
+<p>Requests made without an API key will return a <code> 401 Unauthorized response</code>.</p>
+
+<p><br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br /></p>
+
+<h2 id="status-codes">Status Codes</h2>
+
+<p>The API uses conventional HTTP response codes to indicate success or failure on all requests.</p>
 
 <table><thead>
 <tr>
-<th>Property</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
+<th>Status Code</th>
+<th>Result</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>integer</td>
-<td>true</td>
-<td>Store ID&rsquo;s</td>
+<td><b>200 OK</b></td>
+<td>Request completed as expected.</td>
 </tr>
 <tr>
-<td>retailer_id</td>
-<td>integer</td>
-<td>true</td>
-<td>Retailer ID</td>
+<td><b>201 Created</b></td>
+<td>Used for requests that create new objects (i.e. DeliveryEstimate, Delivery).</td>
 </tr>
 <tr>
-<td>alias</td>
-<td>string</td>
-<td>true</td>
-<td>Store ID alias</td>
+<td><b>204 No Content</b></td>
+<td>The server has completed the request but does not need to return a body (i.e. DELETE requests).</td>
 </tr>
 <tr>
-<td>*phone</td>
-<td>Phone</td>
-<td>true</td>
-<td>Phone Number : Phone</td>
+<td><b>400 Bad Request </b></td>
+<td>The request contains invalid/missing information or is out of context. The status text will contain more specific message(s).</td>
 </tr>
 <tr>
-<td>*address</td>
-<td>Address</td>
-<td>true</td>
-<td>Store Address : Address</td>
+<td><b>401 Unauthorized </b></td>
+<td>Authentication credentials were missing or incorrect.</td>
+</tr>
+<tr>
+<td><b>403 Forbidden</b></td>
+<td>The request is understood, but it has been refused or access is not allowed.</td>
+</tr>
+<tr>
+<td><b>404 Not Found </b></td>
+<td>The requested resource could not be found.</td>
+</tr>
+<tr>
+<td><b>429 Client Error </b></td>
+<td>The request was refused per our rate limiting policy.</td>
+</tr>
+<tr>
+<td><b>50X Errors </b></td>
+<td>Occur when something goes wrong in the API.</td>
 </tr>
 </tbody></table>
 
-<p>*required only if the store does not exist in the system.</p>
+<h1 id="models">Models</h1>
 
-<h2 id="location">Location</h2>
+<h2 id="contact">Contact</h2>
 
 <table><thead>
 <tr>
@@ -279,40 +312,16 @@
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>int</td>
-<td>true</td>
-<td>ID</td>
-</tr>
-<tr>
-<td>address_1</td>
+<td>name</td>
 <td>string</td>
 <td>true</td>
-<td>Address Line 1</td>
+<td>Full name</td>
 </tr>
 <tr>
-<td>address_2</td>
+<td>phone</td>
 <td>string</td>
 <td>true</td>
-<td>Address Line 2</td>
-</tr>
-<tr>
-<td>city</td>
-<td>string</td>
-<td>true</td>
-<td>City</td>
-</tr>
-<tr>
-<td>state</td>
-<td>string</td>
-<td>true</td>
-<td>State</td>
-</tr>
-<tr>
-<td>zip</td>
-<td>string</td>
-<td>true</td>
-<td>Zip</td>
+<td>Phone</td>
 </tr>
 </tbody></table>
 
@@ -326,12 +335,6 @@
 <th>Description</th>
 </tr>
 </thead><tbody>
-<tr>
-<td>id</td>
-<td>int</td>
-<td>true</td>
-<td>ID</td>
-</tr>
 <tr>
 <td>first_name</td>
 <td>string</td>
@@ -388,7 +391,7 @@
 </tr>
 </tbody></table>
 
-<h2 id="order-details">Order Details</h2>
+<h2 id="customfields">CustomFields</h2>
 
 <table><thead>
 <tr>
@@ -399,74 +402,26 @@
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>int</td>
-<td>true</td>
-<td>ID</td>
-</tr>
-<tr>
-<td>retailer_order_id</td>
-<td>int</td>
-<td>true</td>
-<td>Retailer Order ID</td>
-</tr>
-<tr>
-<td>order_total</td>
-<td>decimal</td>
-<td>true</td>
-<td>Order Total</td>
-</tr>
-<tr>
-<td>packages_count</td>
-<td>int</td>
-<td>true</td>
-<td>No. of Packages</td>
-</tr>
-<tr>
-<td>size</td>
-<td>Size</td>
-<td>true</td>
-<td>Size of the package</td>
-</tr>
-<tr>
-<td>has_beer_or_wine</td>
-<td>bool</td>
-<td>true</td>
-<td>Has Beer/Wine(Y/N)</td>
-</tr>
-<tr>
-<td>has_spirits</td>
-<td>bool</td>
-<td>true</td>
-<td>Has Spirits(Y/N)</td>
-</tr>
-<tr>
-<td>has_refrigerated_items</td>
+<td>name</td>
 <td>string</td>
 <td>true</td>
-<td>Has Refrigerated items(Y/N)</td>
+<td>Name</td>
 </tr>
 <tr>
-<td>has_perishable_items</td>
+<td>value</td>
 <td>string</td>
 <td>true</td>
-<td>Has Perishable Items(Y/N)</td>
+<td>Value</td>
 </tr>
 <tr>
-<td>list_of_products</td>
-<td>string</td>
-<td>false</td>
-<td>Items : list of Product</td>
-</tr>
-<tr>
-<td>custom_fields</td>
+<td>type</td>
 <td>string</td>
 <td>true</td>
-<td>CustomFields : List<CustomFields></td>
+<td>CustomFieldValueType : Default(string)</td>
 </tr>
 </tbody></table>
 
-<h2 id="time">Time</h2>
+<h2 id="customfieldvaluetype">CustomFieldValueType</h2>
 
 <table><thead>
 <tr>
@@ -477,18 +432,16 @@
 </tr>
 </thead><tbody>
 <tr>
-<td>ready_for_pick_up</td>
+<td>type</td>
 <td>string</td>
 <td>true</td>
-<td>Ready for Pick up</td>
-</tr>
-<tr>
-<td>deliver_by</td>
-<td>string</td>
-<td>true</td>
-<td>Deliver by</td>
+<td>(json, string, csv)</td>
 </tr>
 </tbody></table>
+
+<h2 id="dates-times">Dates, Times</h2>
+
+<p>All dates and times in the API are expressed in <a href='http://en.wikipedia.org/wiki/ISO_8601'> ISO 8601 </a>, with a UTC offset (denoted by the Z).</p>
 
 <h2 id="delivery-details">Delivery Details</h2>
 
@@ -544,7 +497,7 @@
 </tr>
 </tbody></table>
 
-<h2 id="order-status">Order Status</h2>
+<h2 id="dimension">Dimension</h2>
 
 <table><thead>
 <tr>
@@ -555,16 +508,246 @@
 </tr>
 </thead><tbody>
 <tr>
-<td>code</td>
+<td>name</td>
+<td>string</td>
+<td>false</td>
+<td>custom measurements already defined such as &lsquo;small&rsquo;,&lsquo;medium&rsquo; etc.</td>
+</tr>
+<tr>
+<td>weight</td>
+<td>decimal</td>
+<td>false</td>
+<td>Weight</td>
+</tr>
+<tr>
+<td>size</td>
+<td>Size</td>
+<td>false</td>
+<td>height, width , depth in inches.</td>
+</tr>
+</tbody></table>
+
+<p>Note: name or weight &amp; size is required.</p>
+
+<h2 id="department">Department</h2>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
 <td>string</td>
 <td>true</td>
-<td>code(see global Order Status)</td>
+<td>Name of the department.</td>
 </tr>
 <tr>
 <td>description</td>
 <td>string</td>
+<td>false</td>
+<td>Description of the department.</td>
+</tr>
+<tr>
+<td>deliveryInstructions</td>
+<td>string</td>
+<td>false</td>
+<td>Delivery instructions for the driver / label / packaging.</td>
+</tr>
+</tbody></table>
+
+<h2 id="generic-entity">Generic Entity</h2>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>string</td>
 <td>true</td>
-<td>description</td>
+<td>name of the entity</td>
+</tr>
+<tr>
+<td>value</td>
+<td>string</td>
+<td>false</td>
+<td>value of the entity</td>
+</tr>
+</tbody></table>
+
+<h2 id="location">Location</h2>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>address_1</td>
+<td>string</td>
+<td>true</td>
+<td>Address Line 1</td>
+</tr>
+<tr>
+<td>address_2</td>
+<td>string</td>
+<td>true</td>
+<td>Address Line 2</td>
+</tr>
+<tr>
+<td>city</td>
+<td>string</td>
+<td>true</td>
+<td>City</td>
+</tr>
+<tr>
+<td>state</td>
+<td>string</td>
+<td>true</td>
+<td>State</td>
+</tr>
+<tr>
+<td>zip</td>
+<td>string</td>
+<td>true</td>
+<td>Zip</td>
+</tr>
+</tbody></table>
+
+<h2 id="notification">Notification</h2>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>email</td>
+<td>string</td>
+<td>true</td>
+<td>Email</td>
+</tr>
+<tr>
+<td>sms</td>
+<td>string</td>
+<td>true</td>
+<td>SMS</td>
+</tr>
+<tr>
+<td>url</td>
+<td>string</td>
+<td>true</td>
+<td>Url (might not need it at all)</td>
+</tr>
+</tbody></table>
+
+<h2 id="order-status">Order Status</h2>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Order Placed</td>
+<td>order_placed</td>
+<td>Order has been placed and excepted by the DSP.</td>
+</tr>
+<tr>
+<td>Received</td>
+<td>order_received</td>
+<td>a request has been received by the system and it is being processed.</td>
+</tr>
+<tr>
+<td>Failed</td>
+<td>request_failed</td>
+<td>an estimate or order request has failed.</td>
+</tr>
+<tr>
+<td>Estimates Received</td>
+<td>estimates_received</td>
+<td>one or more estimates have been obtained for the request.</td>
+</tr>
+<tr>
+<td>Estimates Failed</td>
+<td>estimates_failed</td>
+<td>no valid estimates received against the request.</td>
+</tr>
+<tr>
+<td>Dispatched to DSP</td>
+<td>dispatched_to_dsp</td>
+<td>Order has been dispatched to the DSP.</td>
+</tr>
+<tr>
+<td>Order Confirmed</td>
+<td>order_confirmed</td>
+<td>a dispatched order has been confirmed.</td>
+</tr>
+<tr>
+<td>Pickup Complete</td>
+<td>pickup_complete</td>
+<td>DSP has successfully acquired the package.</td>
+</tr>
+<tr>
+<td>Shipping</td>
+<td>shipping</td>
+<td>package is en-route.</td>
+</tr>
+<tr>
+<td>Delivered</td>
+<td>order_delivered</td>
+<td>order has been delivered.</td>
+</tr>
+<tr>
+<td>Canceled</td>
+<td>order_canceled</td>
+<td>order has been canceled.</td>
+</tr>
+</tbody></table>
+
+<h2 id="phone">Phone</h2>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>number</td>
+<td>string</td>
+<td>true</td>
+<td>Number</td>
+</tr>
+<tr>
+<td>extension</td>
+<td>string</td>
+<td>true</td>
+<td>Extension</td>
+</tr>
+<tr>
+<td>department</td>
+<td>string</td>
+<td>true</td>
+<td>Department</td>
 </tr>
 </tbody></table>
 
@@ -578,12 +761,6 @@
 <th>Description</th>
 </tr>
 </thead><tbody>
-<tr>
-<td>id</td>
-<td>int</td>
-<td>true</td>
-<td>ID</td>
-</tr>
 <tr>
 <td>name</td>
 <td>string</td>
@@ -640,198 +817,6 @@
 </tr>
 </tbody></table>
 
-<h2 id="phone">Phone</h2>
-
-<table><thead>
-<tr>
-<th>Property</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>id</td>
-<td>int</td>
-<td>true</td>
-<td>ID</td>
-</tr>
-<tr>
-<td>number</td>
-<td>string</td>
-<td>true</td>
-<td>Number</td>
-</tr>
-<tr>
-<td>extension</td>
-<td>string</td>
-<td>true</td>
-<td>Extension</td>
-</tr>
-<tr>
-<td>department</td>
-<td>string</td>
-<td>true</td>
-<td>Department</td>
-</tr>
-</tbody></table>
-
-<h2 id="notification">Notification</h2>
-
-<table><thead>
-<tr>
-<th>Property</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>id</td>
-<td>int</td>
-<td>true</td>
-<td>ID</td>
-</tr>
-<tr>
-<td>email</td>
-<td>string</td>
-<td>true</td>
-<td>Email</td>
-</tr>
-<tr>
-<td>sms</td>
-<td>string</td>
-<td>true</td>
-<td>SMS</td>
-</tr>
-<tr>
-<td>url</td>
-<td>string</td>
-<td>true</td>
-<td>Url (might not need it at all)</td>
-</tr>
-</tbody></table>
-
-<h2 id="customfields">CustomFields</h2>
-
-<table><thead>
-<tr>
-<th>Property</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>id</td>
-<td>string</td>
-<td>true</td>
-<td>Name</td>
-</tr>
-<tr>
-<td>name</td>
-<td>string</td>
-<td>true</td>
-<td>Name</td>
-</tr>
-<tr>
-<td>value</td>
-<td>string</td>
-<td>true</td>
-<td>Value</td>
-</tr>
-<tr>
-<td>type</td>
-<td>string</td>
-<td>true</td>
-<td>CustomFieldValueType : Default(string)</td>
-</tr>
-</tbody></table>
-
-<h2 id="customfieldvaluetype">CustomFieldValueType</h2>
-
-<table><thead>
-<tr>
-<th>Property</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>id</td>
-<td>string</td>
-<td>true</td>
-<td>string</td>
-</tr>
-<tr>
-<td>type</td>
-<td>string</td>
-<td>true</td>
-<td>(json, string, csv)</td>
-</tr>
-</tbody></table>
-
-<h2 id="order">Order</h2>
-
-<table><thead>
-<tr>
-<th>Property</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>id</td>
-<td>int</td>
-<td>true</td>
-<td>ID</td>
-</tr>
-<tr>
-<td>delivery_customer_info</td>
-<td>string</td>
-<td>true</td>
-<td>Customer Info</td>
-</tr>
-<tr>
-<td>store_id</td>
-<td>int</td>
-<td>true</td>
-<td>StoreId</td>
-</tr>
-<tr>
-<td>order_details</td>
-<td>string</td>
-<td>true</td>
-<td>Order Details</td>
-</tr>
-<tr>
-<td>status_update_notification</td>
-<td>List<Notification></td>
-<td>true</td>
-<td>Status Update Notification : List<Notification></td>
-</tr>
-<tr>
-<td>exception_notification</td>
-<td>string</td>
-<td>true</td>
-<td>Exception Notification : List<Notification></td>
-</tr>
-<tr>
-<td>delivery_time</td>
-<td>timestamp</td>
-<td>true</td>
-<td>Delivery Time : Time</td>
-</tr>
-<tr>
-<td>custom_fields</td>
-<td>List<CustomFields></td>
-<td>true</td>
-<td>CustomFields : List<CustomFields></td>
-</tr>
-</tbody></table>
-
 <h2 id="size">Size</h2>
 
 <table><thead>
@@ -862,8 +847,183 @@
 </tr>
 </tbody></table>
 
-<h2 id="dimension">Dimension</h2>
+<h2 id="store">Store</h2>
 
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>string</td>
+<td>true</td>
+<td>Store ID assigned by the system when creating the store and retrieved by the GetStoreList api call.</td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>true</td>
+<td>Store name provided when creating the store.</td>
+</tr>
+</tbody></table>
+
+<ul>
+<li>either id or name is required.</li>
+</ul>
+
+<h2 id="time">Time</h2>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>ready_for_pick_up</td>
+<td>string</td>
+<td>true</td>
+<td>Ready for Pick up</td>
+</tr>
+<tr>
+<td>deliver_by</td>
+<td>string</td>
+<td>true</td>
+<td>Deliver by</td>
+</tr>
+</tbody></table>
+
+<h2 id="timezones">Timezones</h2>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>America/Los_Angeles</td>
+<td>Pacific Time (PT)</td>
+</tr>
+<tr>
+<td>America/Edmonton</td>
+<td>Mountain Time (MT)</td>
+</tr>
+<tr>
+<td>America/Chicago</td>
+<td>Central Time (CT)</td>
+</tr>
+<tr>
+<td>America/New_York</td>
+<td>Eastern Time (ET)</td>
+</tr>
+</tbody></table>
+
+<h1 id="store-resource">Store Resource</h1>
+
+<h2 id="create-store">Create Store</h2>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST http://api.gateway.com/stores</code></p>
+
+<blockquote>
+<p>Request</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+ </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HighlandPark-53"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"General Store in Highland Park"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"timeZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"America/Chicago"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"contact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Peter Brown"</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"214-234-2232"</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"always be smiling"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"street"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123 Main St"</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"street2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"secondary"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Highland Park"</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TX"</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"zipcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"75062"</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"departments"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+     </span><span class="p">{</span><span class="w">
+       </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Produce"</span><span class="p">,</span><span class="w">
+       </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fresh Produce and Vegetables"</span><span class="p">,</span><span class="w">
+       </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"might be wet"</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="p">{</span><span class="w">
+       </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Electronics"</span><span class="p">,</span><span class="w">
+       </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Electronics and Phones"</span><span class="p">,</span><span class="w">
+       </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Handle with care"</span><span class="w">
+     </span><span class="p">}</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"DSPs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+     </span><span class="p">{</span><span class="w">
+       </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FedEx"</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="p">{</span><span class="w">
+       </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Postmates"</span><span class="w">
+     </span><span class="p">}</span><span class="w">
+   </span><span class="p">]</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<blockquote>
+<p>Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5948c0a31da414722237c1f4"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"tenantId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"D-mart"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HighlandPark-53"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"General Store in Highland Park"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"timeZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"America/Chicago"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"contact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Peter Brown"</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"214-234-2232"</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"always be smiling"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"street"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123 Main St"</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"street2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"secondary"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Highland Park"</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TX"</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"zipcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"75062"</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="s2">"departments"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+     </span><span class="p">{</span><span class="w">
+       </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Produce"</span><span class="p">,</span><span class="w">
+       </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fresh Produce and Vegetables"</span><span class="p">,</span><span class="w">
+       </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"might be wet"</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="p">{</span><span class="w">
+       </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Electronics"</span><span class="p">,</span><span class="w">
+       </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Electronics and Phones"</span><span class="p">,</span><span class="w">
+       </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Handle with care"</span><span class="w">
+     </span><span class="p">}</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"DSPs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+     </span><span class="p">{</span><span class="w">
+       </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FedEx"</span><span class="w">
+     </span><span class="p">},</span><span class="w">
+     </span><span class="p">{</span><span class="w">
+       </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Postmates"</span><span class="w">
+     </span><span class="p">}</span><span class="w">
+   </span><span class="p">]</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+
+
+</span></code></pre>
 <table><thead>
 <tr>
 <th>Property</th>
@@ -875,30 +1035,52 @@
 <tr>
 <td>name</td>
 <td>string</td>
-<td>false</td>
-<td>custom measurements already defined such as &lsquo;small&rsquo;,&lsquo;medium&rsquo; etc.</td>
+<td>true</td>
+<td>Name of the store (must be unique among other stores)</td>
 </tr>
 <tr>
-<td>weight</td>
-<td>decimal</td>
+<td>description</td>
+<td>string</td>
 <td>false</td>
-<td>Weight</td>
+<td>Description of the store.</td>
 </tr>
 <tr>
-<td>size</td>
-<td>Size</td>
+<td>timeZone</td>
+<td><a href="#timezone">Timezone</a></td>
+<td>true</td>
+<td>Timezone that the store is located in.</td>
+</tr>
+<tr>
+<td>contact</td>
+<td><a href="#contact">Contact</a></td>
+<td>true</td>
+<td>Contact information for the store.</td>
+</tr>
+<tr>
+<td>deliveryInstructions</td>
+<td>string</td>
 <td>false</td>
-<td>height, width , depth in inches.</td>
+<td>Delivery Instructions for the store.</td>
+</tr>
+<tr>
+<td>address</td>
+<td><a href="#location">Location</a></td>
+<td>true</td>
+<td>Location of the store.</td>
+</tr>
+<tr>
+<td>departments</td>
+<td>Array of <a href="#department">Department</a></td>
+<td>true</td>
+<td>Departments.</td>
+</tr>
+<tr>
+<td>DSPs</td>
+<td><a href="#generic-entity">Generic Entity</a></td>
+<td>false</td>
+<td>List of the DSPs that the store would utilize for delivery.</td>
 </tr>
 </tbody></table>
-
-<p>Note: name or weight &amp; size is required.</p>
-
-<h2 id="dates-times-and-timezones">Dates, Times and Timezones</h2>
-
-<p>All dates and times in the API are expressed in <a href='http://en.wikipedia.org/wiki/ISO_8601'> ISO 8601 </a>, with a UTC offset (denoted by the Z).</p>
-
-<h1 id="store-resource">Store Resource</h1>
 
 <h2 id="list-stores">List Stores</h2>
 
@@ -1016,7 +1198,6 @@
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="w">
 </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"591c4c18b9d21c04c34612e0"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MidTown"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
     </span><span class="s2">"contact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
@@ -1035,19 +1216,18 @@
     </span><span class="s2">"departments"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
       </span><span class="p">{</span><span class="w">
         </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Electronics"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Electronic deparment"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
       </span><span class="p">}</span><span class="w">
     </span><span class="p">],</span><span class="w">
     </span><span class="s2">"DSPs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
       </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fedex"</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fedex"</span><span class="w">
       </span><span class="p">},</span><span class="w">
       </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"postmate"</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Postmates"</span><span class="w">
       </span><span class="p">}</span><span class="w">
-    </span><span class="p">],</span><span class="w">
-    </span><span class="s2">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="p">]</span><span class="w">
   </span><span class="p">}</span><span class="w">
 
 </span></code></pre>
@@ -1122,7 +1302,7 @@
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="w"> </span><span class="p">{</span><span class="w">
    </span><span class="s2">"store"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-     </span><span class="s2">"alias"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LASH at Lamar"</span><span class="w">
+     </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HighlandPark #53"</span><span class="w">
    </span><span class="p">},</span><span class="w">
    </span><span class="s2">"order_external_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"XAPTM-ADC001"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"department"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Jewellery"</span><span class="p">,</span><span class="w">
@@ -1169,7 +1349,7 @@
        </span><span class="s2">"estimated_delivery_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-05-28T09:30:00.000Z"</span><span class="p">,</span><span class="w">
        </span><span class="s2">"expires"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
        </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">5273</span><span class="p">,</span><span class="w">
+       </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">5273</span><span class="w">
      </span><span class="p">},</span><span class="w">
      </span><span class="p">{</span><span class="w">
        </span><span class="s2">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"postmates"</span><span class="p">,</span><span class="w">
@@ -1237,9 +1417,9 @@
 </tr>
 <tr>
 <td>delivery_contact</td>
-<td>Delivery Contact</td>
+<td><a href="#customer-info">Customer Info</a></td>
 <td>true</td>
-<td>Minimum customer information to obtain an estimate.</td>
+<td>Customer information to obtain an estimate.</td>
 </tr>
 <tr>
 <td>delivery_address</td>
@@ -1284,6 +1464,18 @@
 <td>Has perishable items</td>
 </tr>
 <tr>
+<td>status_update_notification</td>
+<td>Array of Notification</td>
+<td>true</td>
+<td>Status Update Notification</td>
+</tr>
+<tr>
+<td>exception_notification</td>
+<td>string</td>
+<td>true</td>
+<td>Exception Notification : List<Notification></td>
+</tr>
+<tr>
 <td>custom_fields</td>
 <td>CustomFields[]</td>
 <td>false</td>
@@ -1300,7 +1492,7 @@
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"store"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"alias"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LASH at Lamar"</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HighlandPark #53"</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="s2">"order_external_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"XAPTM-ADC001"</span><span class="p">,</span><span class="w">
   </span><span class="s2">"department"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Jewellery"</span><span class="p">,</span><span class="w">
@@ -1332,7 +1524,17 @@
   </span><span class="s2">"has_beer_or_wine"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
   </span><span class="s2">"is_fragile"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
   </span><span class="s2">"has_refrigerated_items"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"has_perishable_items"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+  </span><span class="s2">"has_perishable_items"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"notification"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jane.doe@gmail.com"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"sms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"232-323-2323"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"url"</span><span class="w"> </span><span class="p">:</span><span class="s2">"listener.foobar.com?order_id=XPMT-AXDC"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"email"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"support@foobar.com"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <blockquote>
@@ -1358,6 +1560,114 @@
    </span><span class="s2">"order_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"592b6f7b34df3a5ed908bccf"</span><span class="w">
  </span><span class="p">}</span><span class="w">
 </span></code></pre>
+<h3 id="post-parameters">Post Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>store</td>
+<td>Store</td>
+<td>true</td>
+<td>Store</td>
+</tr>
+<tr>
+<td>order_external_id</td>
+<td>string</td>
+<td>false</td>
+<td>Any Id that the corporate system wants to assign to this request.</td>
+</tr>
+<tr>
+<td>department</td>
+<td>string</td>
+<td>false</td>
+<td>Department</td>
+</tr>
+<tr>
+<td>order_value</td>
+<td>decimal</td>
+<td>false</td>
+<td>Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur</td>
+</tr>
+<tr>
+<td>pickup_time</td>
+<td>string</td>
+<td>false</td>
+<td>ISO 8601 standard e.g. 2014-01-29T04:30:00Z</td>
+</tr>
+<tr>
+<td>dropoff_time</td>
+<td>string</td>
+<td>false</td>
+<td>ISO 8601 standard e.g. 2014-01-29T04:30:00Z</td>
+</tr>
+<tr>
+<td>delivery_contact</td>
+<td><a href="#customer-info">Customer Info</a></td>
+<td>true</td>
+<td>Customer information to obtain an estimate.</td>
+</tr>
+<tr>
+<td>delivery_address</td>
+<td><a href="#location">Location</a></td>
+<td>true</td>
+<td>Address to deliver the package to.</td>
+</tr>
+<tr>
+<td>packages</td>
+<td><a href="#dimension">Dimension[ ]</a></td>
+<td>true</td>
+<td>Array of Dimension of each package.</td>
+</tr>
+<tr>
+<td>has_spirits</td>
+<td>bool</td>
+<td>true</td>
+<td>Contains Spirits</td>
+</tr>
+<tr>
+<td>has_beer_or_wine</td>
+<td>bool</td>
+<td>false</td>
+<td>Contains beer or wine</td>
+</tr>
+<tr>
+<td>is_fragile</td>
+<td>bool</td>
+<td>false</td>
+<td>Is Fragile.</td>
+</tr>
+<tr>
+<td>has_refrigerated_items</td>
+<td>bool</td>
+<td>false</td>
+<td>Has refrigerated items</td>
+</tr>
+<tr>
+<td>has_perishable_items</td>
+<td>bool</td>
+<td>false</td>
+<td>Has perishable items</td>
+</tr>
+<tr>
+<td>notification</td>
+<td>Array of <a href="#notification">Notification</a></td>
+<td>false</td>
+<td>email/sms/status update notification</td>
+</tr>
+<tr>
+<td>custom_fields</td>
+<td>CustomFields[]</td>
+<td>false</td>
+<td>optional custom fields;</td>
+</tr>
+</tbody></table>
+
 <h2 id="get-order">Get Order</h2>
 
 <h3 id="http-request">HTTP Request</h3>
@@ -1448,7 +1758,7 @@
 </span></code></pre>
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">PUT http://api.gateway.com/order/&lt;id&gt;/status</code></p>
+<p><code class="prettyprint">PUT http://api.gateway.com/order/&lt;id&gt;</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -1470,15 +1780,14 @@
 <p>Request body</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CANCELED"</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CANCELED"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"comment"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"client changed their mind."</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <blockquote>
 <p>Response</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"price"</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">,</span><span class="w">
   </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CANCELED"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
@@ -1529,11 +1838,8 @@
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"compliance"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"alcohol"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"wet"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"zoning"</span><span class="w"> </span><span class="p">:</span><span class="w"> 
-      </span><span class="p">{</span><span class="w"> 
-        </span><span class="s2">"result"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-      </span><span class="p">}</span><span class="w">
+    </span><span class="s2">"result"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"COMPLIANT"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"status"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"wet"</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
@@ -1542,21 +1848,8 @@
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
   </span><span class="s2">"compliance"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"alcohol"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"wet"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"zoning"</span><span class="w"> </span><span class="p">:</span><span class="w">
-     </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"result"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"errors"</span><span class="p">:</span><span class="w">
-    </span><span class="p">[</span><span class="w"> 
-      </span><span class="p">{</span><span class="w"> </span><span class="s2">"type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"CROSS_COUNTY_RULE_FAILURE"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"description"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"same county delivery rule violated."</span><span class="w">
-      </span><span class="p">},</span><span class="w">
-      </span><span class="p">{</span><span class="w"> 
-        </span><span class="s2">"type"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"CROSS_STATE_RULE_FAILURE"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"description"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"same state delivery rule violated."</span><span class="w">  
-       </span><span class="p">}</span><span class="w">
-     </span><span class="p">]</span><span class="w">
-     </span><span class="p">}</span><span class="w">
+    </span><span class="s2">"result"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"NONCOMPLIANT"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"status"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
@@ -1584,6 +1877,139 @@
 <td>true</td>
 </tr>
 </tbody></table>
+
+<h1 id="webhooks-sms-email">Webhooks / SMS / Email</h1>
+
+<blockquote>
+<p>Sample Webhook Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+ </span><span class="s2">"event"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"order_placed"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"event_time"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-01-29T04:30:00Z"</span><span class="p">,</span><span class="w">
+ </span><span class="s2">"order"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"order_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"592b6f7b34df3a5ed908bccf"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"store"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"alias"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LASH at Lamar"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"order_external_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"XAPTM-ADC001"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"department"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Jewellery"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"order_value"</span><span class="p">:</span><span class="w"> </span><span class="mf">323.22</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"pickup_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-01-29T04:30:00Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"drop_off_time"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"delivery_contact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"John Doe"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"233-232-3232"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"delivery_address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"address_1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123 London Dr"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"address_2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Arlington"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TX"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"zip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"75060"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"packages"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"size"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"length"</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"weight"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="s2">"has_spirits"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"has_beer_or_wine"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"is_fragile"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"has_refrigerated_items"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"has_perishable_items"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fedex"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"tracking_number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"220088057510"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RECEIVED_BY_LMA"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"estimated_pickup_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-01-29T04:30:00Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"estimated_delivery_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-01-29T04:30:00Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">4115</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"labels"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"tracking_number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"220088057510"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://staging.fedexsameday.com/fdx_getlabel.aspx?id=5181131558901765435944766360"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FXF2200880575102200880575100528172"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"pdf"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;base_64_encoded_image&gt;"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"qr_code_image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;base_64_encoded_image&gt;"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>If you provided a notification item, when the order was created our platform can automatically POST to that URL, send an email, send a sms message with events that happen in the lifetime of the order.</p>
+
+<table><thead>
+<tr>
+<th>Event</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>order_placed</td>
+<td>Order has been placed with the DSP.</td>
+</tr>
+<tr>
+<td>order_picked</td>
+<td>Package has been picked up by the DSP and is in enroute.</td>
+</tr>
+<tr>
+<td>order_delivered</td>
+<td>Package has been delivered.</td>
+</tr>
+<tr>
+<td>driver_arrived</td>
+<td>When the driver has arrived to pickup the delivery</td>
+</tr>
+<tr>
+<td>order_canceled</td>
+<td>When the order has been canceled.</td>
+</tr>
+<tr>
+<td>order_exception</td>
+<td>When an out of ordinary event happens in the process.</td>
+</tr>
+</tbody></table>
+
+<aside class="notice">
+The data included with every event type will differ based on the context. The exact structure of these responses will get established soon.
+</aside>
+
+<p><br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br /></p>
 
       </div>
       <div class="dark-box">
