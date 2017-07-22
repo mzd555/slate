@@ -5,7 +5,7 @@ language_tabs:
   - shell
 
 toc_footers:
-- <h2><a href='http://deliverysolutions.co'>Back to Site</a></h2>
+- <h2><a href='https://deliverysolutions.co'>Back to Site</a></h2>
 
 includes:
 
@@ -14,10 +14,14 @@ search: true
 
 # Introduction
 
-## Links
+## API URL 
 
-<h3>Sandbox API  : https://sandbox.deliverysolutions.co/sandbox </h3>
-<h3>Production API : https://production.deliverysolutions.co/production </h3>
+ <h3>Sandbox</b>
+ <h3> API  : https://sandbox.api.deliverysolutions.co/api/v1 </h3>
+ <h3> Portal : https://sandbox.portal.deliverysolutions.co </h3>
+<h3>Production</h4>
+<h3> API : https://production.deliverysolutions.co/api/v1 </h3>
+<h3> Portal : https://production.portal.deliverysolutions.co </h3>
 
 
 ## Authentication
@@ -25,13 +29,13 @@ search: true
 > Example call with API key passed in the request header
 
 ```shell
-  curl -X GET https://api.gateway.com/stores \
+  curl -X GET https://<BASE_URL>/stores \
     --header "Content-Type:application/json" \
     --header "x-api-key:8153ae5698c34cc51212bef9de23a1df1"  
 ```
 
 After your account has been setup, you will be provided with an API key. Please make sure to keep this key secured and never embed it in client-side code.
-You must pass the <code>API Key</code> in the request header with the value <code>apikey</code>.
+You must pass the <code>x-api-key</code> in the request header with the value <code>apikey</code>.
 
 <aside class='notice'> Requests made with an invalid API key will return <code> 401 Unauthorized response</code>.
 </aside>
@@ -74,32 +78,11 @@ phone | string | true | Phone
 ## Customer Info
 Property | Type | Required | Description
 -------- | ---- | -------- | -----------
-first_name | string | true | First Name
-last_name | string | true | Last Name
-middle_name | string | true | Middle Name
+name | string | true | Middle Name
 phone | string | true | Phone
-email | string | false | Email
-business_name | string | false | Business Name
-should_email | bool | false | Should Email
-should_sms | bool | false | Should SMS
-custom_fields | List<CustomFields> | false | CustomFields : List<CustomFields>
-
-## CustomFields
-Property | Type | Required | Description
--------- | ---- | -------- | -----------
-name | string | true | Name
-value | string | true | Value
-type | string | true | CustomFieldValueType : Default(string)
-
-## CustomFieldValueType
-Property | Type | Required | Description
--------- | ---- | -------- | -----------
-type | string | true | (json, string, csv)
-
 
 ## Dates, Times
 All dates and times in the API are expressed Unix Time / Epoch time in milliseconds. 
-
 
 ## Delivery Details
 Property | Type | Required | Description
@@ -115,11 +98,15 @@ dropoff_photo | string | true | Dropoff Photo
 ## Dimension
 Property | Type | Required | Description
 -------- | ---- | -------- | -----------
-name | string | false | custom measurements already defined such as 'small','medium' etc.
+name | string | false | either package name or 'custom'.
 weight | decimal | false | Weight
 size | Size | false | height, width , depth in inches.
 
-Note: name or weight & size is required.
+Note: 'name' should match the packages available for your account. 
+
+<aside class="success" >
+<a href='https://sandbox.portal.deliverysolutions.co/#/corporate/packages'>View Packages</a>
+</aside>
 
 ## Department
 
@@ -138,11 +125,13 @@ value | string | false | value of the entity
 ## Location
 Property | Type | Required | Description
 -------- | ---- | -------- | -----------
-address_1 | string | true | Address Line 1
-address_2 | string | true | Address Line 2
+street | string | true | Address Line 1
+street2 | string | true | Address Line 2
 city | string | true | City
 state | string | true | State
-zip | string | true | Zip
+zipcode | string | true | Zip
+apartment | string | true | yes/no
+apartmentNumber |string | false | Apartment number required if <code>apartment = 'yes' </code>
 
 
 ## Notification
@@ -333,9 +322,6 @@ address | [Location](#location) | true | Location of the store.
 departments | Array of [Department](#department) | true | Departments.
 DSPs | [Generic Entity](#generic-entity) | false | List of the DSPs that the store should be configured for delivery.
 
-<aside class="notice" >
-Attempt to create a store with the same 'name' or 'storeExternalId' will generate 400 - Bad Request
-</aside>
 
 ## List Stores
 ### HTTP Request
@@ -394,7 +380,7 @@ Attempt to create a store with the same 'name' or 'storeExternalId' will generat
 
 ```
 
-`GET http://<API_URL>/api/v1/store`
+`GET http://<BASE_URL>/store`
 
 Get all the configured stores for your account.
 
@@ -652,13 +638,12 @@ Get all the configured stores for your account.
  
  Property | Type | Required | Description
  -------- | ---- | -------- | -----------
- store | Store | true | Store
  storeExternalId | string | true | StoreId for which the estimate is being requested.
  orderExternalId | string | false | Any Id that the corporate system wants to assign to this request.
  department | string | false | Department 
  orderValue | decimal | false | Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur
- userPickupTime | string | false | Unix time in milliseocds e.g. 1500616800000
- dropOffTime | string | false | Unix time in milliseonds e.g. 1500616800000
+ userPickupTime | string | false | time at which the package will be ready to be picked up, Unix time in milliseconds e.g. 1500616800000
+ dropoffTime | string | false | last time to which the package must be delivered by, Unix time in milliseconds e.g. 1500616800000
  deliveryContact | [Customer Info](#customer-info) | true | Customer information to obtain an estimate.
  deliveryAddress | [Location](#location) | true | Address to deliver the package to.
  packages | [Dimension[ ]](#dimension) | true | Array of Dimension of each package.
@@ -763,26 +748,29 @@ Get all the configured stores for your account.
 Property | Type | Required | Description
  -------- | ---- | -------- | -----------
  store | Store | true | Store
- order_external_id | string | false | Any Id that the corporate system wants to assign to this request.
+ orderExternalId | string | false | Any Id that the corporate system wants to assign to this request.
  department | string | false | Department 
- order_value | decimal | false | Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur
- pickup_time | string | false | Unix time in milliseconds e.g. 1500616800000
- dropoff_time | string | false | Unix time in milliseconds e.g. 1500616800000
- delivery_contact | [Customer Info](#customer-info) | true | Customer information to obtain an estimate.
- delivery_address | [Location](#location) | true | Address to deliver the package to.
- packages | [Dimension[ ]](#dimension) | true | Array of Dimension of each package.
- has_spirits | bool | true | Contains Spirits
- has_beer_or_wine | bool | false | Contains beer or wine
- is_fragile | bool | false | Is Fragile.
- has_refrigerated_items | bool | false | Has refrigerated items
- has_perishable_items | bool | false | Has perishable items
- notification | Array of [Notification](#notification)|false| email/sms/status update notification
- custom_fields | CustomFields[] | false | optional custom fields;
+ orderValue | decimal | false | Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur
+ userPickupTime | string | false | time at which the package will be ready to be picked up, Unix time in milliseconds e.g. 1500616800000
+ dropoffTime | string | false | last time to which the package must be delivered by, Unix time in milliseconds e.g. 1500616800000
+ deliveryContact | [Customer Info](#customer-info) | true | Customer information to obtain an estimate.
+ deliveryAddress | [Location](#location) | true | Address to deliver the package to.
+ packages | [ Dimension[] ](#dimension) | true | Array of Dimension of each package.
+ isSpirit | bool | true | Contains Spirits
+ isBeerOrWine | bool | false | Contains beer or wine
+ isFragile | bool | false | Is Fragile.
+ hasRefrigeratedItems | bool | false | Has refrigerated items
+ hasPerishableItems | bool | false | Has perishable items
+ notifications | Array of [Notification](#notification)|false| email/sms/status update notification
  userEmail | string | true | User email
 
 ## Create Order From Estimate
 
-> Sample Response
+> Request
+
+`POST http://api.gateway.com/api/v1/order/createorderfromestimate/<estimateId>`
+
+> Response
 
 ```json
 {
@@ -810,7 +798,9 @@ Property | Type | Required | Description
 ```
 
 <h3>HTTP Request</h3>
+
 `POST http://api.gateway.com/api/v1/order/createorderfromestimate/<estimateId>`
+
 
 ### URL Parameters
 
@@ -818,12 +808,18 @@ Property | Type | Required | Description
 -------- | ---- | -------- | -----------
 estimateId | string | true | ID of an Estimate
 
+<aside class="success">
+<code>estimateId</code> The '_id' obtained from a GetEstimate response e.g. "_id":"59722a611f0b250001a03e2e"
+</aside>
+
+
 
 ## Get Order
 
 ### HTTP Request
 
-> Sample Response
+
+>  Response
 
 ```json
 {
@@ -991,7 +987,7 @@ estimateId | string | true | ID of an Estimate
     "estimatedId": "59722f0e7ea0420001ddad7b"
 }
 ```
-`GET http://api.gateway.com/api/v1/order/getById/<orderId>`
+`GET https://<BASE_URL>/order/getById/<orderId>`
 
 ### URL Parameters
 
@@ -1140,48 +1136,6 @@ Parameter |  Type | Required
 --------- | ----------- | ---------
 delivery_from | Location | true
 delivery_to | Location | true
-
-## List of Compliances
-
-### HTTP Request
-`GET http://api.gateway.com/api/v1/compliance?page={:page}&state={:state}`
-
-> Response
-
-```json
-{
-    "page": 1,
-    "pages": 2100,
-    "perPage": 20,
-    "itemsCount": 41986,
-    "items": [
-        {
-            "id": 1,
-            "state": "AK",
-            "city": "Akutan",
-            "metro_area": "N/A",
-            "county": "Aleutians East Borough",
-            "county_id": 68,
-            "county_status": null,
-            "city_status": null,
-            "other": null,
-            "complexities": null
-        },
-        {
-            "id": 2,
-            "state": "AK",
-            "city": "Cold Bay",
-            "metro_area": "N/A",
-            "county": "Aleutians East Borough",
-            "county_id": 68,
-            "county_status": null,
-            "city_status": null,
-            "other": null,
-            "complexities": null
-        }
-    ]
-}
-```
 
 
 # Webhooks / SMS / Email

@@ -219,7 +219,7 @@
       <div id="toc">
       </div>
         <ul class="toc-footer">
-            <li><h2><a href='http://deliverysolutions.co'>Back to Site</a></h2></li>
+            <li><h2><a href='https://deliverysolutions.co'>Back to Site</a></h2></li>
         </ul>
     </div>
     <div class="page-wrapper">
@@ -227,19 +227,32 @@
       <div class="content">
         <h1 id="introduction">Introduction</h1>
 
+<h2 id="api-url">API URL</h2>
+
+<p><h3>Sandbox</b>
+ <h3> API  : https://sandbox.api.deliverysolutions.co/api/v1 </h3>
+ <h3> Portal : https://sandbox.portal.deliverysolutions.co </h3>
+<h3>Production</h4>
+<h3> API : https://production.deliverysolutions.co/api/v1 </h3>
+<h3> Portal : https://production.portal.deliverysolutions.co </h3></p>
+
 <h2 id="authentication">Authentication</h2>
 
 <blockquote>
 <p>Example call with API key passed in the request header</p>
 </blockquote>
-<pre class="highlight shell tab-shell"><code>  curl -X GET https://api.gateway.com/stores <span class="se">\</span>
+<pre class="highlight shell tab-shell"><code>  curl -X GET https://&lt;BASE_URL&gt;/stores <span class="se">\</span>
     --header <span class="s2">"Content-Type:application/json"</span> <span class="se">\</span>
-    --header <span class="s2">"apikey:8153ae5698c34cc51212bef9de23a1df1"</span>  
+    --header <span class="s2">"x-api-key:8153ae5698c34cc51212bef9de23a1df1"</span>  
 </code></pre>
 <p>After your account has been setup, you will be provided with an API key. Please make sure to keep this key secured and never embed it in client-side code.
-You must pass the <code>API Key</code> in the request header with the value <code>apikey</code>.</p>
+You must pass the <code>x-api-key</code> in the request header with the value <code>apikey</code>.</p>
 
-<p>Requests made without an API key will return a <code> 401 Unauthorized response</code>.</p>
+<aside class='notice'> Requests made with an invalid API key will return <code> 401 Unauthorized response</code>.
+</aside>
+
+<aside class='notice'> Requests made without an API key will return <code> 403 Forbidden</code>.
+</aside>
 
 <p><br />
 <br />
@@ -336,19 +349,7 @@ You must pass the <code>API Key</code> in the request header with the value <cod
 </tr>
 </thead><tbody>
 <tr>
-<td>first_name</td>
-<td>string</td>
-<td>true</td>
-<td>First Name</td>
-</tr>
-<tr>
-<td>last_name</td>
-<td>string</td>
-<td>true</td>
-<td>Last Name</td>
-</tr>
-<tr>
-<td>middle_name</td>
+<td>name</td>
 <td>string</td>
 <td>true</td>
 <td>Middle Name</td>
@@ -359,89 +360,11 @@ You must pass the <code>API Key</code> in the request header with the value <cod
 <td>true</td>
 <td>Phone</td>
 </tr>
-<tr>
-<td>email</td>
-<td>string</td>
-<td>false</td>
-<td>Email</td>
-</tr>
-<tr>
-<td>business_name</td>
-<td>string</td>
-<td>false</td>
-<td>Business Name</td>
-</tr>
-<tr>
-<td>should_email</td>
-<td>bool</td>
-<td>false</td>
-<td>Should Email</td>
-</tr>
-<tr>
-<td>should_sms</td>
-<td>bool</td>
-<td>false</td>
-<td>Should SMS</td>
-</tr>
-<tr>
-<td>custom_fields</td>
-<td>List<CustomFields></td>
-<td>false</td>
-<td>CustomFields : List<CustomFields></td>
-</tr>
-</tbody></table>
-
-<h2 id="customfields">CustomFields</h2>
-
-<table><thead>
-<tr>
-<th>Property</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>name</td>
-<td>string</td>
-<td>true</td>
-<td>Name</td>
-</tr>
-<tr>
-<td>value</td>
-<td>string</td>
-<td>true</td>
-<td>Value</td>
-</tr>
-<tr>
-<td>type</td>
-<td>string</td>
-<td>true</td>
-<td>CustomFieldValueType : Default(string)</td>
-</tr>
-</tbody></table>
-
-<h2 id="customfieldvaluetype">CustomFieldValueType</h2>
-
-<table><thead>
-<tr>
-<th>Property</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>type</td>
-<td>string</td>
-<td>true</td>
-<td>(json, string, csv)</td>
-</tr>
 </tbody></table>
 
 <h2 id="dates-times">Dates, Times</h2>
 
-<p>All dates and times in the API are expressed in <a href='http://en.wikipedia.org/wiki/ISO_8601'> ISO 8601 </a>, with a UTC offset (denoted by the Z).</p>
+<p>All dates and times in the API are expressed Unix Time / Epoch time in milliseconds. </p>
 
 <h2 id="delivery-details">Delivery Details</h2>
 
@@ -511,7 +434,7 @@ You must pass the <code>API Key</code> in the request header with the value <cod
 <td>name</td>
 <td>string</td>
 <td>false</td>
-<td>custom measurements already defined such as &lsquo;small&rsquo;,&lsquo;medium&rsquo; etc.</td>
+<td>either package name or &lsquo;custom&rsquo;.</td>
 </tr>
 <tr>
 <td>weight</td>
@@ -527,7 +450,11 @@ You must pass the <code>API Key</code> in the request header with the value <cod
 </tr>
 </tbody></table>
 
-<p>Note: name or weight &amp; size is required.</p>
+<p>Note: &lsquo;name&rsquo; should match the packages available for your account. </p>
+
+<aside class="success" >
+<a href='https://sandbox.portal.deliverysolutions.co/#/corporate/packages'>View Packages</a>
+</aside>
 
 <h2 id="department">Department</h2>
 
@@ -594,13 +521,13 @@ You must pass the <code>API Key</code> in the request header with the value <cod
 </tr>
 </thead><tbody>
 <tr>
-<td>address_1</td>
+<td>street</td>
 <td>string</td>
 <td>true</td>
 <td>Address Line 1</td>
 </tr>
 <tr>
-<td>address_2</td>
+<td>street2</td>
 <td>string</td>
 <td>true</td>
 <td>Address Line 2</td>
@@ -618,10 +545,22 @@ You must pass the <code>API Key</code> in the request header with the value <cod
 <td>State</td>
 </tr>
 <tr>
-<td>zip</td>
+<td>zipcode</td>
 <td>string</td>
 <td>true</td>
 <td>Zip</td>
+</tr>
+<tr>
+<td>apartment</td>
+<td>string</td>
+<td>true</td>
+<td>yes/no</td>
+</tr>
+<tr>
+<td>apartmentNumber</td>
+<td>string</td>
+<td>false</td>
+<td>Apartment number required if <code>apartment = &#39;yes&#39; </code></td>
 </tr>
 </tbody></table>
 
@@ -931,21 +870,22 @@ You must pass the <code>API Key</code> in the request header with the value <cod
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">POST http://api.gateway.com/stores</code></p>
+<p><code class="prettyprint">POST https://&lt;API_URL&gt;/api/v1/store</code></p>
 
 <blockquote>
 <p>Request</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="w">
  </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HighlandPark-53"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HighlandPark-214"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"storeExternalId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HighlandPark214"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"General Store in Highland Park"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"timeZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"America/Chicago"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"contact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
      </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Peter Brown"</span><span class="p">,</span><span class="w">
      </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"214-234-2232"</span><span class="w">
    </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"always be smiling"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Always be smiling"</span><span class="p">,</span><span class="w">
    </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
      </span><span class="s2">"street"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123 Main St"</span><span class="p">,</span><span class="w">
      </span><span class="s2">"street2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
@@ -981,47 +921,48 @@ You must pass the <code>API Key</code> in the request header with the value <cod
 <p>Response</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5948c0a31da414722237c1f4"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"tenantId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"D-mart"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HighlandPark-53"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"General Store in Highland Park"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"timeZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"America/Chicago"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"contact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-     </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Peter Brown"</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"214-234-2232"</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"always be smiling"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-     </span><span class="s2">"street"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123 Main St"</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"street2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"secondary"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Highland Park"</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TX"</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"zipcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"75062"</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"departments"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-     </span><span class="p">{</span><span class="w">
-       </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Produce"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fresh Produce and Vegetables"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"might be wet"</span><span class="w">
-     </span><span class="p">},</span><span class="w">
-     </span><span class="p">{</span><span class="w">
-       </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Electronics"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Electronics and Phones"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Handle with care"</span><span class="w">
-     </span><span class="p">}</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"DSPs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-     </span><span class="p">{</span><span class="w">
-       </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FedEx"</span><span class="w">
-     </span><span class="p">},</span><span class="w">
-     </span><span class="p">{</span><span class="w">
-       </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Postmates"</span><span class="w">
-     </span><span class="p">}</span><span class="w">
-   </span><span class="p">]</span><span class="w">
- </span><span class="p">}</span><span class="w">
-
+    </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5972264460cfc7548926536e"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HighlandPark-53-tesstasdasd"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"storeExternalId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"General Store in Highlasnd Park"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"timeZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"America/Chicago"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"contact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Peter Brown"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"214-234-2232"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"always be smiling"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"street"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123 Main St"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"street2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"secondary"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Highland Park"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TX"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"zipcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"75062"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"departments"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Produce"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fresh Produce and Vegetables"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"might be wet"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Electronics"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Electronics and Phones"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Handle with care"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="s2">"DSPs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FedEx"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"corporateDspId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5972264460cfc7548926536b"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Postmates"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"corporateDspId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5972264460cfc7548926536c"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
 
 </span></code></pre>
 <table><thead>
@@ -1037,6 +978,12 @@ You must pass the <code>API Key</code> in the request header with the value <cod
 <td>string</td>
 <td>true</td>
 <td>Name of the store (must be unique among other stores)</td>
+</tr>
+<tr>
+<td>storeExternalId</td>
+<td>string</td>
+<td>true</td>
+<td>Unique Id of the store.</td>
 </tr>
 <tr>
 <td>description</td>
@@ -1078,7 +1025,7 @@ You must pass the <code>API Key</code> in the request header with the value <cod
 <td>DSPs</td>
 <td><a href="#generic-entity">Generic Entity</a></td>
 <td>false</td>
-<td>List of the DSPs that the store would utilize for delivery.</td>
+<td>List of the DSPs that the store should be configured for delivery.</td>
 </tr>
 </tbody></table>
 
@@ -1086,213 +1033,62 @@ You must pass the <code>API Key</code> in the request header with the value <cod
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET http://api.gateway.com/stores</code></p>
-
-<p>Get all the configured stores in the system.</p>
-
 <blockquote>
 <p>Response</p>
 </blockquote>
-<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"591c4c18b9d21c04c34612e0"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MidTown"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"contact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"John Doe"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2342354544"</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"street"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123 Main St"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"street2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"secondary"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dallas"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TX"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"zipcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"75963"</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="s2">"departments"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-      </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Electronics"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
-      </span><span class="p">}</span><span class="w">
-    </span><span class="p">],</span><span class="w">
-    </span><span class="s2">"DSPs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-      </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fedex"</span><span class="w">
-      </span><span class="p">},</span><span class="w">
-      </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"postmate"</span><span class="w">
-      </span><span class="p">}</span><span class="w">
-    </span><span class="p">],</span><span class="w">
-    </span><span class="s2">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"590905dc55776b47decb4870"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Uptown-Store77"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Uptown Store 77"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"contact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Michael Stevenson"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"971-175-4446"</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ensure package is not damaged before handing it over."</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"street"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4100 Midway St"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"street2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"secondary"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2120"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Carrollton"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TX"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"zipcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"75007"</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="s2">"departments"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-      </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"General"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
-      </span><span class="p">},</span><span class="w">
-      </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Alcohol"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
-      </span><span class="p">}</span><span class="w">
-    </span><span class="p">],</span><span class="w">
-    </span><span class="s2">"DSPs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-      </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"postmate"</span><span class="w">
-      </span><span class="p">},</span><span class="w">
-      </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fedex"</span><span class="w">
-      </span><span class="p">}</span><span class="w">
-    </span><span class="p">],</span><span class="w">
-    </span><span class="s2">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-  </span><span class="p">}</span><span class="w">
+<pre class="highlight json tab-json"><code><span class="w">
+</span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5972596b3735190001f44f16"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HighlandPark-99"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"storeExternalId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HighlandPark99"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"General Store in Highland Park"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"timeZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"America/Chicago"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"contact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Peter Brown"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"214-234-2232"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Always be smiling"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"street"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123 Main St"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"street2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"secondary"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Highland Park"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TX"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"zipcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"75062"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"departments"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Produce"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fresh Produce and Vegetables"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"might be wet"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Electronics"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Electronics and Phones"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Handle with care"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="s2">"DSPs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FedEx"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"corporateDspId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5972596b3735190001f44f14"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Postmates"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"corporateDspId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5972596b3735190001f44f15"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
 </span><span class="p">]</span><span class="w">
 
 
 </span></code></pre>
-<h2 id="get-store-by-id">Get Store by ID</h2>
+<p><code class="prettyprint">GET http://&lt;BASE_URL&gt;/store</code></p>
 
-<h3 id="http-request">HTTP Request</h3>
+<p>Get all the configured stores for your account.</p>
 
-<p><code class="prettyprint">GET http://api.gateway.com/stores/&lt;id&gt;</code></p>
-
-<h3 id="url-parameters">URL Parameters</h3>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>ID</td>
-<td>string</td>
-<td>Store ID</td>
-</tr>
-</tbody></table>
-
-<blockquote>
-<p>Response</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="w">
-</span><span class="p">{</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MidTown"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"contact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"John Doe"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2342354544"</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"street"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123 Main St"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"street2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"secondary"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dallas"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TX"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"zipcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"75963"</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="s2">"departments"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-      </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Electronics"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Electronic deparment"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
-      </span><span class="p">}</span><span class="w">
-    </span><span class="p">],</span><span class="w">
-    </span><span class="s2">"DSPs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-      </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fedex"</span><span class="w">
-      </span><span class="p">},</span><span class="w">
-      </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Postmates"</span><span class="w">
-      </span><span class="p">}</span><span class="w">
-    </span><span class="p">]</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-
-</span></code></pre>
-<h2 id="get-store-by-alias">Get Store by Alias</h2>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET http://api.gateway.com/stores/&lt;alias&gt;</code></p>
-
-<h3 id="url-parameters">URL Parameters</h3>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>alias</td>
-<td>string</td>
-<td>Store&rsquo;s alias</td>
-</tr>
-</tbody></table>
-
-<blockquote>
-<p>Response</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="w">
-</span><span class="p">{</span><span class="w">
-    </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"591c4c18b9d21c04c34612e0"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MidTown"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"contact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"John Doe"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2342354544"</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"street"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123 Main St"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"street2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"secondary"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dallas"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TX"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"zipcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"75963"</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="s2">"departments"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-      </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Electronics"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
-      </span><span class="p">}</span><span class="w">
-    </span><span class="p">],</span><span class="w">
-    </span><span class="s2">"DSPs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-      </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fedex"</span><span class="w">
-      </span><span class="p">},</span><span class="w">
-      </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"postmate"</span><span class="w">
-      </span><span class="p">}</span><span class="w">
-    </span><span class="p">],</span><span class="w">
-    </span><span class="s2">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-
-</span></code></pre>
 <h1 id="estimate-resource">Estimate Resource</h1>
 
 <h2 id="create-an-estimate">Create an Estimate</h2>
@@ -1300,74 +1096,246 @@ You must pass the <code>API Key</code> in the request header with the value <cod
 <blockquote>
 <p>Sample Request</p>
 </blockquote>
-<pre class="highlight json tab-json"><code><span class="w"> </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"store"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-     </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HighlandPark #53"</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"order_external_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"XAPTM-ADC001"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"department"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Jewellery"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"order_value"</span><span class="p">:</span><span class="w"> </span><span class="mf">323.22</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"pickup_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-01-29T04:30:00Z"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"drop_off_time"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"delivery_contact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-     </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"John Doe"</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"233-232-3232"</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"delivery_address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-     </span><span class="s2">"address_1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123 London Dr"</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"address_2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Arlington"</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TX"</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"zip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"75060"</span><span class="w">
-   </span><span class="p">},</span><span class="w">
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"userEmail"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dmart@gmail.com"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"storeExternalId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HighlandPark99"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"orderExternalId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12234323"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"department"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Apparel"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"orderValue"</span><span class="p">:</span><span class="w"> </span><span class="mi">121</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"userPickupTime"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"dropOffTime"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"deliveryContact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Smith Anderson"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"972-222-2323"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"deliveryAddress"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"street"</span><span class="p">:</span><span class="w"> </span><span class="s2">"211234 Bammel North Houston Rd"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"street2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"secondary"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Houston"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TX"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"zipcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"77014"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"apartment"</span><span class="p">:</span><span class="w"> </span><span class="s2">"no"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
    </span><span class="s2">"packages"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
      </span><span class="p">{</span><span class="w">
+       </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"custom"</span><span class="p">,</span><span class="w">
        </span><span class="s2">"size"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-         </span><span class="s2">"length"</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="w">
+         </span><span class="s2">"length"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">22</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
        </span><span class="p">},</span><span class="w">
-       </span><span class="s2">"weight"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="w">
+       </span><span class="s2">"weight"</span><span class="p">:</span><span class="w"> </span><span class="mi">22</span><span class="w">
      </span><span class="p">}</span><span class="w">
    </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"has_spirits"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"has_beer_or_wine"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"is_fragile"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"has_refrigerated_items"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"has_perishable_items"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
- </span><span class="p">}</span><span class="w">
+  </span><span class="s2">"isSpirit"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"isBeerOrWine"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"isFragile"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"hasRefrigeratedItems"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"hasPerishableItems"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"notifications"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://hooks.sevenseas.com?orderid=12234323"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"support@sevenseas.com"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"sms"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="s2">"214-333-4534"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"232-323-2323"</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w"> 
 </span></code></pre>
 <blockquote>
 <p>Sample Response</p>
 </blockquote>
-<pre class="highlight json tab-json"><code><span class="w"> </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"estimates"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-     </span><span class="p">{</span><span class="w">
-       </span><span class="s2">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fedex"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"service_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PR"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"estimated_pickup_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-05-28T08:46:00.000Z"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"estimated_delivery_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-05-28T09:30:00.000Z"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"expires"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">5273</span><span class="w">
-     </span><span class="p">},</span><span class="w">
-     </span><span class="p">{</span><span class="w">
-       </span><span class="s2">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"postmates"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"estimated_pickup_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-05-28T08:46:00.000Z"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"estimated_delivery_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-05-28T09:46:00.000Z"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"expires"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">6354</span><span class="w">
-     </span><span class="p">}</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"estimate_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"592a60ac34df3a5ed908bccd"</span><span class="w">
- </span><span class="p">}</span><span class="w">
+<pre class="highlight json tab-json"><code><span class="w"> </span><span class="p">[</span><span class="w">
+   </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"_id"</span><span class="p">:</span><span class="s2">"59722a611f0b250001a03e2e"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"provider"</span><span class="p">:</span><span class="s2">"FedEx"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"serviceType"</span><span class="p">:</span><span class="s2">"LM"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"estimatedPickupTime"</span><span class="p">:</span><span class="mi">1500656820000</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"estimatedPickupTimeByZone"</span><span class="p">:</span><span class="s2">"July 21st 2017, 10:07:00 am"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"estimatedDeliveryTime"</span><span class="p">:</span><span class="mi">1500685200000</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"estimatedDeliveryTimeByZone"</span><span class="p">:</span><span class="s2">"July 21st 2017, 6:00:00 pm"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"expires"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"currency"</span><span class="p">:</span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"amount"</span><span class="p">:</span><span class="mi">450</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"chargeDetails"</span><span class="p">:[</span><span class="w">
+         </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"currency"</span><span class="p">:</span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"DIRECT SIGNATURE REQUIRED"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"amount"</span><span class="p">:</span><span class="mi">450</span><span class="w">
+         </span><span class="p">}</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="s2">"tenantId"</span><span class="p">:</span><span class="s2">"D-mart"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"active"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"RequestBody"</span><span class="p">:{</span><span class="w">
+         </span><span class="s2">"userEmail"</span><span class="p">:</span><span class="s2">"dmart@gmail.com"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"storeExternalId"</span><span class="p">:</span><span class="s2">"Headspace"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"orderExternalId"</span><span class="p">:</span><span class="s2">"4444"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"department"</span><span class="p">:</span><span class="s2">"Alcohol"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"orderValue"</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"userPickupTime"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"dropOffTime"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"deliveryContact"</span><span class="p">:{</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"Smith Anderson"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"phone"</span><span class="p">:</span><span class="s2">"919-949-2639"</span><span class="w">
+         </span><span class="p">},</span><span class="w">
+         </span><span class="s2">"deliveryAddress"</span><span class="p">:{</span><span class="w">
+            </span><span class="s2">"street"</span><span class="p">:</span><span class="s2">"2801 Middle Gate Ln"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"street2"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"secondary"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"city"</span><span class="p">:</span><span class="s2">"Plano"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"state"</span><span class="p">:</span><span class="s2">"TX"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"zipcode"</span><span class="p">:</span><span class="s2">"75093"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"apartment"</span><span class="p">:</span><span class="s2">"no"</span><span class="w">
+         </span><span class="p">},</span><span class="w">
+         </span><span class="s2">"packages"</span><span class="p">:[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+               </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"small"</span><span class="p">,</span><span class="w">
+               </span><span class="s2">"size"</span><span class="p">:{</span><span class="w">
+                  </span><span class="s2">"width"</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"height"</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"length"</span><span class="p">:</span><span class="mi">5</span><span class="w">
+               </span><span class="p">},</span><span class="w">
+               </span><span class="s2">"weight"</span><span class="p">:</span><span class="mi">5</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+         </span><span class="p">],</span><span class="w">
+         </span><span class="s2">"isSpirit"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"isBeerOrWine"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"isFragile"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"hasRefrigeratedItems"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"hasPerishableItems"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"notifications"</span><span class="p">:{</span><span class="w">
+            </span><span class="s2">"url"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"email"</span><span class="p">:[</span><span class="w">
 
+            </span><span class="p">],</span><span class="w">
+            </span><span class="s2">"sms"</span><span class="p">:[</span><span class="w">
+
+            </span><span class="p">]</span><span class="w">
+         </span><span class="p">},</span><span class="w">
+         </span><span class="s2">"timeZone"</span><span class="p">:</span><span class="s2">"America/Los_Angeles"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"pickUpContact"</span><span class="p">:{</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"Arshaad Mirza"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"phone"</span><span class="p">:</span><span class="s2">"971-175-4446"</span><span class="w">
+         </span><span class="p">},</span><span class="w">
+         </span><span class="s2">"pickUpAddress"</span><span class="p">:{</span><span class="w">
+            </span><span class="s2">"street"</span><span class="p">:</span><span class="s2">"4100 Midway St"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"street2"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"secondary"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"city"</span><span class="p">:</span><span class="s2">"Carrollton"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"state"</span><span class="p">:</span><span class="s2">"TX"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"zipcode"</span><span class="p">:</span><span class="s2">"75024"</span><span class="w">
+         </span><span class="p">},</span><span class="w">
+         </span><span class="s2">"pickUpTime"</span><span class="p">:</span><span class="mi">1500655071332</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"pickUpTimeByZone"</span><span class="p">:</span><span class="s2">"July 21st 2017, 9:37:51 am"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="s2">"orderId"</span><span class="p">:</span><span class="s2">"596e82d73743a00001c257cb"</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"_id"</span><span class="p">:</span><span class="s2">"59722a611f0b250001a03e2f"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"provider"</span><span class="p">:</span><span class="s2">"FedEx"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"serviceType"</span><span class="p">:</span><span class="s2">"PR"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"estimatedPickupTime"</span><span class="p">:</span><span class="mi">1500660420000</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"estimatedPickupTimeByZone"</span><span class="p">:</span><span class="s2">"July 21st 2017, 11:07:00 am"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"estimatedDeliveryTime"</span><span class="p">:</span><span class="mi">1500662220000</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"estimatedDeliveryTimeByZone"</span><span class="p">:</span><span class="s2">"July 21st 2017, 11:37:00 am"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"expires"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"currency"</span><span class="p">:</span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"amount"</span><span class="p">:</span><span class="mi">1623</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"chargeDetails"</span><span class="p">:[</span><span class="w">
+         </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"currency"</span><span class="p">:</span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"Base Rate"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"amount"</span><span class="p">:</span><span class="mi">1600</span><span class="w">
+         </span><span class="p">},</span><span class="w">
+         </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"currency"</span><span class="p">:</span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"Base Rate Discount (25%)"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"amount"</span><span class="p">:</span><span class="mi">-400</span><span class="w">
+         </span><span class="p">},</span><span class="w">
+         </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"currency"</span><span class="p">:</span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"DIRECT SIGNATURE REQUIRED"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"amount"</span><span class="p">:</span><span class="mi">375</span><span class="w">
+         </span><span class="p">},</span><span class="w">
+         </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"currency"</span><span class="p">:</span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"Fuel Surcharge"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"amount"</span><span class="p">:</span><span class="mi">48</span><span class="w">
+         </span><span class="p">}</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="s2">"tenantId"</span><span class="p">:</span><span class="s2">"D-mart"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"active"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"RequestBody"</span><span class="p">:{</span><span class="w">
+         </span><span class="s2">"userEmail"</span><span class="p">:</span><span class="s2">"dmart@gmail.com"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"storeExternalId"</span><span class="p">:</span><span class="s2">"Headspace"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"orderExternalId"</span><span class="p">:</span><span class="s2">"4444"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"department"</span><span class="p">:</span><span class="s2">"Alcohol"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"orderValue"</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"userPickupTime"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"dropOffTime"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"deliveryContact"</span><span class="p">:{</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"Manil Uppal"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"phone"</span><span class="p">:</span><span class="s2">"919-949-2639"</span><span class="w">
+         </span><span class="p">},</span><span class="w">
+         </span><span class="s2">"deliveryAddress"</span><span class="p">:{</span><span class="w">
+            </span><span class="s2">"street"</span><span class="p">:</span><span class="s2">"2801 Middle Gate Ln"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"street2"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"secondary"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"city"</span><span class="p">:</span><span class="s2">"Plano"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"state"</span><span class="p">:</span><span class="s2">"TX"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"zipcode"</span><span class="p">:</span><span class="s2">"75093"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"apartment"</span><span class="p">:</span><span class="s2">"no"</span><span class="w">
+         </span><span class="p">},</span><span class="w">
+         </span><span class="s2">"packages"</span><span class="p">:[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+               </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"small"</span><span class="p">,</span><span class="w">
+               </span><span class="s2">"size"</span><span class="p">:{</span><span class="w">
+                  </span><span class="s2">"width"</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"height"</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"length"</span><span class="p">:</span><span class="mi">5</span><span class="w">
+               </span><span class="p">},</span><span class="w">
+               </span><span class="s2">"weight"</span><span class="p">:</span><span class="mi">5</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+         </span><span class="p">],</span><span class="w">
+         </span><span class="s2">"isSpirit"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"isBeerOrWine"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"isFragile"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"hasRefrigeratedItems"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"hasPerishableItems"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"notifications"</span><span class="p">:{</span><span class="w">
+            </span><span class="s2">"url"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"email"</span><span class="p">:[</span><span class="w">
+
+            </span><span class="p">],</span><span class="w">
+            </span><span class="s2">"sms"</span><span class="p">:[</span><span class="w">
+
+            </span><span class="p">]</span><span class="w">
+         </span><span class="p">},</span><span class="w">
+         </span><span class="s2">"timeZone"</span><span class="p">:</span><span class="s2">"America/Los_Angeles"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"pickUpContact"</span><span class="p">:{</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"Arshaad Mirza"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"phone"</span><span class="p">:</span><span class="s2">"971-175-4446"</span><span class="w">
+         </span><span class="p">},</span><span class="w">
+         </span><span class="s2">"pickUpAddress"</span><span class="p">:{</span><span class="w">
+            </span><span class="s2">"street"</span><span class="p">:</span><span class="s2">"4100 Midway St"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"street2"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"secondary"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"city"</span><span class="p">:</span><span class="s2">"Carrollton"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"state"</span><span class="p">:</span><span class="s2">"TX"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"zipcode"</span><span class="p">:</span><span class="s2">"75024"</span><span class="w">
+         </span><span class="p">},</span><span class="w">
+         </span><span class="s2">"pickUpTime"</span><span class="p">:</span><span class="mi">1500655071332</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"pickUpTimeByZone"</span><span class="p">:</span><span class="s2">"July 21st 2017, 9:37:51 am"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="s2">"orderId"</span><span class="p">:</span><span class="s2">"596e82d73743a00001c257cb"</span><span class="w">
+   </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
 
 </span></code></pre>
 <p><h3>HTTP Request</h3></p>
 
-<p><code class="prettyprint">POST http://api.gateway.com/estimate</code></p>
+<p><code class="prettyprint">POST https://&lt;API_URL&gt;/order/estimates</code></p>
 
 <p><h3> POST Parameters </h3></p>
 
@@ -1380,13 +1348,13 @@ You must pass the <code>API Key</code> in the request header with the value <cod
 </tr>
 </thead><tbody>
 <tr>
-<td>store</td>
-<td>Store</td>
+<td>storeExternalId</td>
+<td>string</td>
 <td>true</td>
-<td>Store</td>
+<td>StoreId for which the estimate is being requested.</td>
 </tr>
 <tr>
-<td>order_external_id</td>
+<td>orderExternalId</td>
 <td>string</td>
 <td>false</td>
 <td>Any Id that the corporate system wants to assign to this request.</td>
@@ -1398,32 +1366,32 @@ You must pass the <code>API Key</code> in the request header with the value <cod
 <td>Department</td>
 </tr>
 <tr>
-<td>order_value</td>
+<td>orderValue</td>
 <td>decimal</td>
 <td>false</td>
 <td>Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur</td>
 </tr>
 <tr>
-<td>pickup_time</td>
+<td>userPickupTime</td>
 <td>string</td>
 <td>false</td>
-<td>ISO 8601 standard e.g. 2014-01-29T04:30:00Z</td>
+<td>time at which the package will be ready to be picked up, Unix time in milliseconds e.g. 1500616800000</td>
 </tr>
 <tr>
-<td>dropoff_time</td>
+<td>dropoffTime</td>
 <td>string</td>
 <td>false</td>
-<td>ISO 8601 standard e.g. 2014-01-29T04:30:00Z</td>
+<td>last time to which the package must be delivered by, Unix time in milliseconds e.g. 1500616800000</td>
 </tr>
 <tr>
-<td>delivery_contact</td>
+<td>deliveryContact</td>
 <td><a href="#customer-info">Customer Info</a></td>
 <td>true</td>
 <td>Customer information to obtain an estimate.</td>
 </tr>
 <tr>
-<td>delivery_address</td>
-<td>Location</td>
+<td>deliveryAddress</td>
+<td><a href="#location">Location</a></td>
 <td>true</td>
 <td>Address to deliver the package to.</td>
 </tr>
@@ -1434,52 +1402,46 @@ You must pass the <code>API Key</code> in the request header with the value <cod
 <td>Array of Dimension of each package.</td>
 </tr>
 <tr>
-<td>has_spirits</td>
+<td>isSpirit</td>
 <td>bool</td>
 <td>true</td>
 <td>Contains Spirits</td>
 </tr>
 <tr>
-<td>has_beer_or_wine</td>
+<td>isBeerOrWine</td>
 <td>bool</td>
 <td>false</td>
 <td>Contains beer or wine</td>
 </tr>
 <tr>
-<td>is_fragile</td>
+<td>isFragile</td>
 <td>bool</td>
 <td>false</td>
 <td>Is Fragile.</td>
 </tr>
 <tr>
-<td>has_refrigerated_items</td>
+<td>hasRefrigeratedItems</td>
 <td>bool</td>
 <td>false</td>
 <td>Has refrigerated items</td>
 </tr>
 <tr>
-<td>has_perishable_items</td>
+<td>hasPerishableItems</td>
 <td>bool</td>
 <td>false</td>
 <td>Has perishable items</td>
 </tr>
 <tr>
-<td>status_update_notification</td>
+<td>notifications</td>
 <td>Array of Notification</td>
 <td>true</td>
-<td>Status Update Notification</td>
+<td>Status Update Notification,</td>
 </tr>
 <tr>
-<td>exception_notification</td>
+<td>userEmail</td>
 <td>string</td>
 <td>true</td>
-<td>Exception Notification : List<Notification></td>
-</tr>
-<tr>
-<td>custom_fields</td>
-<td>CustomFields[]</td>
-<td>false</td>
-<td>optional custom fields;</td>
+<td>User email</td>
 </tr>
 </tbody></table>
 
@@ -1491,75 +1453,87 @@ You must pass the <code>API Key</code> in the request header with the value <cod
 <p>Sample Request</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"store"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HighlandPark #53"</span><span class="w">
+  </span><span class="s2">"userEmail"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dmart@gmail.com"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"storeExternalId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mango100"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"orderExternalId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"223"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"department"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Apparel"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"orderValue"</span><span class="p">:</span><span class="w"> </span><span class="mi">23</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"userPickupTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1600616800000</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"dropOffTime"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"deliveryContact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ali jam"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"232-323-2323"</span><span class="w">
   </span><span class="p">},</span><span class="w">
-  </span><span class="s2">"order_external_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"XAPTM-ADC001"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"department"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Jewellery"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"order_value"</span><span class="p">:</span><span class="w"> </span><span class="mf">323.22</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"pickup_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-01-29T04:30:00Z"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"drop_off_time"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"delivery_contact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"John Doe"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"233-232-3232"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="s2">"delivery_address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"address_1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123 London Dr"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"address_2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Arlington"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"deliveryAddress"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"street"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test@gmail.com"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"street2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"secondary"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Irving"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TX"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"zip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"75060"</span><span class="w">
+    </span><span class="s2">"zipcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"75024"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"apartment"</span><span class="p">:</span><span class="w"> </span><span class="s2">"no"</span><span class="w">
   </span><span class="p">},</span><span class="w">
-  </span><span class="s2">"packages"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+   </span><span class="s2">"packages"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
     </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"custom"</span><span class="p">,</span><span class="w">
       </span><span class="s2">"size"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"length"</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="w">
+        </span><span class="s2">"length"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">22</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
       </span><span class="p">},</span><span class="w">
-      </span><span class="s2">"weight"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="w">
+      </span><span class="s2">"weight"</span><span class="p">:</span><span class="w"> </span><span class="mi">22</span><span class="w">
     </span><span class="p">}</span><span class="w">
   </span><span class="p">],</span><span class="w">
-  </span><span class="s2">"has_spirits"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"has_beer_or_wine"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"is_fragile"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"has_refrigerated_items"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"has_perishable_items"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"notification"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-      </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"jane.doe@gmail.com"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"sms"</span><span class="p">:</span><span class="w"> </span><span class="s2">"232-323-2323"</span><span class="w">
-      </span><span class="p">},</span><span class="w">
-      </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"url"</span><span class="w"> </span><span class="p">:</span><span class="s2">"listener.foobar.com?order_id=XPMT-AXDC"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"email"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"support@foobar.com"</span><span class="w">
-      </span><span class="p">}</span><span class="w">
+  </span><span class="s2">"isSpirit"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"isBeerOrWine"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"isFragile"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"hasRefrigeratedItems"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"hasPerishableItems"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"notifications"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="s2">"abcd@test.com"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"abcd@test.com"</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="s2">"sms"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="s2">"972-342-2627"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"232-232-3232"</span><span class="w">
     </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
+
 </span></code></pre>
 <blockquote>
 <p>Sample Response</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-   </span><span class="s2">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fedex"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"tracking_number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"220088057510"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RECEIVED_BY_LMA"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"estimated_pickup_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-01-29T04:30:00Z"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"estimated_delivery_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-01-29T04:30:00Z"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">4115</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"labels"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-     </span><span class="p">{</span><span class="w">
-       </span><span class="s2">"tracking_number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"220088057510"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://staging.fedexsameday.com/fdx_getlabel.aspx?id=5181131558901765435944766360"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FXF2200880575102200880575100528172"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"pdf"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;base_64_encoded_image&gt;"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"qr_code_image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;base_64_encoded_image&gt;"</span><span class="w">
-     </span><span class="p">}</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"order_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"592b6f7b34df3a5ed908bccf"</span><span class="w">
- </span><span class="p">}</span><span class="w">
+  </span><span class="s2">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FedEx"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"trackingNumber"</span><span class="p">:</span><span class="w"> </span><span class="s2">"220088590854"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RECEIVED_BY_LMA"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"estimatedPickupTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1600625760000</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"estimatedDeliveryTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1600627560000</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"estimatedPickupTimeByZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"September 20th 2020, 1:16:00 pm"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"estimatedDeliveryTimeByZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"September 20th 2020, 1:46:00 pm"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">5003</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"courier"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"labels"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"trackingNumber"</span><span class="p">:</span><span class="w"> </span><span class="s2">"220088590854"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://staging.fedexsameday.com/fdx_getlabel.aspx?id=2247631406612007918524668364"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FXF2200885908542200885908540920207"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"pdf"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"qrCodeImage"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"orderId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5972d96472ff1500012b0cc1"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
 </span></code></pre>
+<h3>HTTP Request</h3>
+
+<p><code class="prettyprint">POST http://api.gateway.com/api/v1/order/placeorder</code></p>
+
 <h3 id="post-parameters">Post Parameters</h3>
 
 <table><thead>
@@ -1577,7 +1551,7 @@ You must pass the <code>API Key</code> in the request header with the value <cod
 <td>Store</td>
 </tr>
 <tr>
-<td>order_external_id</td>
+<td>orderExternalId</td>
 <td>string</td>
 <td>false</td>
 <td>Any Id that the corporate system wants to assign to this request.</td>
@@ -1589,147 +1563,318 @@ You must pass the <code>API Key</code> in the request header with the value <cod
 <td>Department</td>
 </tr>
 <tr>
-<td>order_value</td>
+<td>orderValue</td>
 <td>decimal</td>
 <td>false</td>
 <td>Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur</td>
 </tr>
 <tr>
-<td>pickup_time</td>
+<td>userPickupTime</td>
 <td>string</td>
 <td>false</td>
-<td>ISO 8601 standard e.g. 2014-01-29T04:30:00Z</td>
+<td>time at which the package will be ready to be picked up, Unix time in milliseconds e.g. 1500616800000</td>
 </tr>
 <tr>
-<td>dropoff_time</td>
+<td>dropoffTime</td>
 <td>string</td>
 <td>false</td>
-<td>ISO 8601 standard e.g. 2014-01-29T04:30:00Z</td>
+<td>last time to which the package must be delivered by, Unix time in milliseconds e.g. 1500616800000</td>
 </tr>
 <tr>
-<td>delivery_contact</td>
+<td>deliveryContact</td>
 <td><a href="#customer-info">Customer Info</a></td>
 <td>true</td>
 <td>Customer information to obtain an estimate.</td>
 </tr>
 <tr>
-<td>delivery_address</td>
+<td>deliveryAddress</td>
 <td><a href="#location">Location</a></td>
 <td>true</td>
 <td>Address to deliver the package to.</td>
 </tr>
 <tr>
 <td>packages</td>
-<td><a href="#dimension">Dimension[ ]</a></td>
+<td><a href="#dimension"> Dimension[] </a></td>
 <td>true</td>
 <td>Array of Dimension of each package.</td>
 </tr>
 <tr>
-<td>has_spirits</td>
+<td>isSpirit</td>
 <td>bool</td>
 <td>true</td>
 <td>Contains Spirits</td>
 </tr>
 <tr>
-<td>has_beer_or_wine</td>
+<td>isBeerOrWine</td>
 <td>bool</td>
 <td>false</td>
 <td>Contains beer or wine</td>
 </tr>
 <tr>
-<td>is_fragile</td>
+<td>isFragile</td>
 <td>bool</td>
 <td>false</td>
 <td>Is Fragile.</td>
 </tr>
 <tr>
-<td>has_refrigerated_items</td>
+<td>hasRefrigeratedItems</td>
 <td>bool</td>
 <td>false</td>
 <td>Has refrigerated items</td>
 </tr>
 <tr>
-<td>has_perishable_items</td>
+<td>hasPerishableItems</td>
 <td>bool</td>
 <td>false</td>
 <td>Has perishable items</td>
 </tr>
 <tr>
-<td>notification</td>
+<td>notifications</td>
 <td>Array of <a href="#notification">Notification</a></td>
 <td>false</td>
 <td>email/sms/status update notification</td>
 </tr>
 <tr>
-<td>custom_fields</td>
-<td>CustomFields[]</td>
-<td>false</td>
-<td>optional custom fields;</td>
+<td>userEmail</td>
+<td>string</td>
+<td>true</td>
+<td>User email</td>
 </tr>
 </tbody></table>
+
+<h2 id="create-order-from-estimate">Create Order From Estimate</h2>
+
+<blockquote>
+<p>Request</p>
+</blockquote>
+
+<p><code class="prettyprint">POST http://api.gateway.com/api/v1/order/createorderfromestimate/&lt;estimateId&gt;</code></p>
+
+<blockquote>
+<p>Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+   </span><span class="s2">"provider"</span><span class="p">:</span><span class="s2">"FedEx"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"trackingNumber"</span><span class="p">:</span><span class="s2">"220088590578"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"status"</span><span class="p">:</span><span class="s2">"RECEIVED_BY_LMA"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"estimatedPickupTime"</span><span class="p">:</span><span class="mi">1500663420000</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"estimatedDeliveryTime"</span><span class="p">:</span><span class="mi">1500674400000</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"estimatedPickupTimeByZone"</span><span class="p">:</span><span class="s2">"July 21st 2017, 11:57:00 am"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"estimatedDeliveryTimeByZone"</span><span class="p">:</span><span class="s2">"July 21st 2017, 3:00:00 pm"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"currency"</span><span class="p">:</span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"amount"</span><span class="p">:</span><span class="mi">2322</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"courier"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
+   </span><span class="s2">"labels"</span><span class="p">:[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+         </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FXF220088590578220088590578072117"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"pdf"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"trackingNumber"</span><span class="p">:</span><span class="s2">"220088590578"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"url"</span><span class="p">:</span><span class="s2">"https://staging.fedexsameday.com/fdx_getlabel.aspx?id=7540231473342011054524273139"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"code"</span><span class="p">:</span><span class="s2">"FXF2200885905782200885905780721175"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+   </span><span class="p">],</span><span class="w">
+   </span><span class="s2">"orderId"</span><span class="p">:</span><span class="s2">"596360614cfa472eedcce8fe"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<h3>HTTP Request</h3>
+
+<p><code class="prettyprint">POST http://api.gateway.com/api/v1/order/createorderfromestimate/&lt;estimateId&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>estimateId</td>
+<td>string</td>
+<td>true</td>
+<td>ID of an Estimate</td>
+</tr>
+</tbody></table>
+
+<aside class="success">
+<code>estimateId</code> The &lsquo;_id&rsquo; obtained from a GetEstimate response e.g. &ldquo;_id&rdquo;:&ldquo;59722a611f0b250001a03e2e&rdquo;
+</aside>
 
 <h2 id="get-order">Get Order</h2>
 
 <h3 id="http-request">HTTP Request</h3>
 
 <blockquote>
-<p>Sample Response</p>
+<p>Response</p>
 </blockquote>
-<pre class="highlight json tab-json"><code><span class="w"> </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"order_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"592b6f7b34df3a5ed908bccf"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"store"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-     </span><span class="s2">"alias"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LASH at Lamar"</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"order_external_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"XAPTM-ADC001"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"department"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Jewellery"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"order_value"</span><span class="p">:</span><span class="w"> </span><span class="mf">323.22</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"pickup_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-01-29T04:30:00Z"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"drop_off_time"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"delivery_contact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-     </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"John Doe"</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"233-232-3232"</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"delivery_address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-     </span><span class="s2">"address_1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123 London Dr"</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"address_2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Arlington"</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TX"</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"zip"</span><span class="p">:</span><span class="w"> </span><span class="s2">"75060"</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"packages"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-     </span><span class="p">{</span><span class="w">
-       </span><span class="s2">"size"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-         </span><span class="s2">"length"</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="w">
-       </span><span class="p">},</span><span class="w">
-       </span><span class="s2">"weight"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="w">
-     </span><span class="p">}</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"has_spirits"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"has_beer_or_wine"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"is_fragile"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"has_refrigerated_items"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"has_perishable_items"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fedex"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"tracking_number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"220088057510"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RECEIVED_BY_LMA"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"estimated_pickup_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-01-29T04:30:00Z"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"estimated_delivery_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-01-29T04:30:00Z"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">4115</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"labels"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-     </span><span class="p">{</span><span class="w">
-       </span><span class="s2">"tracking_number"</span><span class="p">:</span><span class="w"> </span><span class="s2">"220088057510"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://staging.fedexsameday.com/fdx_getlabel.aspx?id=5181131558901765435944766360"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FXF2200880575102200880575100528172"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"pdf"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;base_64_encoded_image&gt;"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"qr_code_image"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;base_64_encoded_image&gt;"</span><span class="w">
-     </span><span class="p">}</span><span class="w">
-   </span><span class="p">]</span><span class="w">
- </span><span class="p">}</span><span class="w">
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"596360614cfa472eedcce8fe"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"userEmail"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dmart@gmail.com"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"storeExternalId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LASH at Lamar"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"orderExternalId"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"department"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Apparel"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"orderValue"</span><span class="p">:</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"userPickupTime"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"dropOffTime"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"deliveryContact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Sourabh"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"565-665-5555"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"deliveryAddress"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"street"</span><span class="p">:</span><span class="w"> </span><span class="s2">"690 5th St CA"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"street2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"secondary"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"San Francisco"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CA"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"zipcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"75070"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"apartment"</span><span class="p">:</span><span class="w"> </span><span class="s2">"yes"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"apartmentNumber"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4223"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"packages"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"medium"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"size"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"length"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"weight"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="s2">"isSpirit"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"isBeerOrWine"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"isFragile"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"hasRefrigeratedItems"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"hasPerishableItems"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"notifications"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+        </span><span class="s2">"sms"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"timeZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"America/Los_Angeles"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"pickUpContact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Robart"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"811-897-7756"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"pickUpAddress"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"street"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2363 Van Ness Ave CA"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"street2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"secondary"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"San Francisco"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CA"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"zipcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"75024"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"pickUpTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1500656270288</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"pickUpTimeByZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"July 21st 2017, 9:57:50 am"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"requestReceiveTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1500655370290</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"requestReceiveTimeByZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"July 21st 2017, 9:42:50 am"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"tenantId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"D-mart"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RECEIVED_BY_LMA"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"providerResponse"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FedEx"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"trackingNumber"</span><span class="p">:</span><span class="w"> </span><span class="s2">"220088590578"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"estimatedPickupTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1500663420000</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"estimatedDeliveryTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1500674400000</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"estimatedPickupTimeByZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"July 21st 2017, 11:57:00 am"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"estimatedDeliveryTimeByZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"July 21st 2017, 3:00:00 pm"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">2322</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"courier"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"labels"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"trackingNumber"</span><span class="p">:</span><span class="w"> </span><span class="s2">"220088590578"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://staging.fedexsameday.com/fdx_getlabel.aspx?id=7540231473342011054524273139"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FXF2200885905782200885905780721175"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"pdf"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"qrCodeImage"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">]</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"fullResponse"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"trackingNumber"</span><span class="p">:</span><span class="w"> </span><span class="s2">"220088590578"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"shipmentCreateDate"</span><span class="p">:</span><span class="w"> </span><span class="mi">1500613200000</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"labels"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"trackingNumber"</span><span class="p">:</span><span class="w"> </span><span class="s2">"220088590578"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"refId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://staging.fedexsameday.com/fdx_getlabel.aspx?id=7540231473342011054524273139"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FXF2200885905782200885905780721175"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"sortId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"A4"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"pdfData"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="s2">"service"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"serviceType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"EC"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"signatureService"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DSR"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"specialServices"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"restrictions"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"pricingZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0C"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"chargeAmount"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"currencyCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USD"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mf">23.22</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"chargeDetails"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BR - Base Rate"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"currencyAmount"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"currencyCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USD"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">18</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DSR - DIRECT SIGNATURE REQUIRED"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"currencyAmount"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"currencyCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USD"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mf">4.5</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FUE - Fuel Surcharge"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"currencyAmount"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"currencyCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USD"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.72</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="s2">"totalWeight"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"units"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LB"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"totalPackageCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"packages"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"trackingNumber"</span><span class="p">:</span><span class="w"> </span><span class="s2">"220088590578"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"refId"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"items"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"weight"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"units"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LB"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="s2">"dimensions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"length"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"units"</span><span class="p">:</span><span class="w"> </span><span class="s2">"IN"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="s2">"estPickupTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1500663420000</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"estDeliveryTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1500674400000</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"externalReferences"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"accessCode"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"labelURL"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"estimatedId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"59722f0e7ea0420001ddad7b"</span><span class="w">
+</span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p><code class="prettyprint">GET http://api.gateway.com/order/&lt;id&gt;</code></p>
+<p><code class="prettyprint">GET https://&lt;BASE_URL&gt;/order/getById/&lt;orderId&gt;</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -1740,25 +1885,43 @@ You must pass the <code>API Key</code> in the request header with the value <cod
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
-<td>Order id</td>
+<td>orderId</td>
+<td>Order id - this is returned when an order is placed.</td>
 </tr>
 </tbody></table>
+
+<p> <code> e.g. "orderId":"596360614cfa472eedcce8fe" </code></p>
 
 <h2 id="get-order-status">Get Order Status</h2>
 
 <blockquote>
 <p>Response</p>
 </blockquote>
-<pre class="highlight json tab-json"><code><span class="w">  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ORDER_PLACED"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"status_description"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"DSP has accepted the order"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"updated_at"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2014-01-29T04:30:00Z"</span><span class="w">
-  </span><span class="p">}</span><span class="w">
+<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"596360734cfa472eedcce903"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"orderId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"596360614cfa472eedcce8fe"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"tenantId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"D-mart"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"orderStatus"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"REQUEST_RECEIVED"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"updatedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"July 10th 2017, 6:09:39 am"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ESTIMATES_RECEIVED"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"updatedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"July 10th 2017, 6:09:40 am"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RECEIVED_BY_LMA"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"updatedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"July 21st 2017, 11:43:11 am"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
 </span></code></pre>
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">PUT http://api.gateway.com/order/&lt;id&gt;</code></p>
+<p><code class="prettyprint">PUT http://api.gateway.com/api/v1/order/getOrderStatus/&lt;orderId&gt;</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -1769,31 +1932,30 @@ You must pass the <code>API Key</code> in the request header with the value <cod
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
+<td>orderId</td>
 <td>Order id</td>
 </tr>
 </tbody></table>
 
+<p> <code> e.g. "orderId":"596360614cfa472eedcce8fe" </code></p>
+
 <h2 id="cancel-order">Cancel Order</h2>
 
 <blockquote>
-<p>Request body</p>
+<p>Response [406]</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CANCELED"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"comment"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"client changed their mind."</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FedEx"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">Message</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">FEDEX_CANCEL_NOT_SUPPORTED</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">Orderid</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">596360614cfa472eedcce8fe</span><span class="se">\"</span><span class="s2">}"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <blockquote>
-<p>Response</p>
+<p>Response [200]</p>
 </blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CANCELED"</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
+<pre class="highlight json tab-json"><code></code></pre>
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">PUT http://api.gateway.com/order/&lt;id&gt;</code></p>
+<p><code class="prettyprint">DELETE http://api.gateway.com/api/v1/order/&lt;orderId&gt;</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -1804,7 +1966,7 @@ You must pass the <code>API Key</code> in the request header with the value <cod
 </tr>
 </thead><tbody>
 <tr>
-<td>id</td>
+<td>orderId</td>
 <td>Order id</td>
 </tr>
 </tbody></table>
@@ -1834,28 +1996,42 @@ You must pass the <code>API Key</code> in the request header with the value <cod
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <blockquote>
-<p>Sample Response</p>
+<p>Sample Response [200]</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"compliance"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"result"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"COMPLIANT"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"status"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"wet"</span><span class="w">
-  </span><span class="p">}</span><span class="w">
+    </span><span class="s2">"compliance"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"alcohol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Beer/Wine"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"zoning"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"result"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <blockquote>
 <p>Sample Response</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"compliance"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"result"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"NONCOMPLIANT"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"status"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
-  </span><span class="p">}</span><span class="w">
+    </span><span class="s2">"compliance"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"alcohol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Information unavailable"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"zoning"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"result"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"errors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CROSS_STATE_RULE_FAILURE"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"same state delivery rule violated."</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CROSS_COUNTY_RULE_FAILURE"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"same county delivery rule violated."</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">]</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">POST http://api.gateway.com/getalcoholcompliance</code></p>
+<p><code class="prettyprint">POST http://api.gateway.com/api/v1/getAlcoholCompliance</code></p>
 
 <h3 id="post-parameters">POST Parameters</h3>
 
