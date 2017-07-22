@@ -14,6 +14,12 @@ search: true
 
 # Introduction
 
+## Links
+
+<h3>Sandbox API  : https://sandbox.deliverysolutions.co/sandbox </h3>
+<h3>Production API : https://production.deliverysolutions.co/production </h3>
+
+
 ## Authentication
 
 > Example call with API key passed in the request header
@@ -21,14 +27,16 @@ search: true
 ```shell
   curl -X GET https://api.gateway.com/stores \
     --header "Content-Type:application/json" \
-    --header "apikey:8153ae5698c34cc51212bef9de23a1df1"  
+    --header "x-api-key:8153ae5698c34cc51212bef9de23a1df1"  
 ```
 
 After your account has been setup, you will be provided with an API key. Please make sure to keep this key secured and never embed it in client-side code.
 You must pass the <code>API Key</code> in the request header with the value <code>apikey</code>.
 
-Requests made without an API key will return a <code> 401 Unauthorized response</code>.
-
+<aside class='notice'> Requests made with an invalid API key will return <code> 401 Unauthorized response</code>.
+</aside>
+<aside class='notice'> Requests made without an API key will return <code> 403 Forbidden</code>.
+</aside>
 <br />
 <br />
 <br />
@@ -90,7 +98,7 @@ type | string | true | (json, string, csv)
 
 
 ## Dates, Times
-All dates and times in the API are expressed in <a href='http://en.wikipedia.org/wiki/ISO_8601'> ISO 8601 </a>, with a UTC offset (denoted by the Z).
+All dates and times in the API are expressed Unix Time / Epoch time in milliseconds. 
 
 
 ## Delivery Details
@@ -217,22 +225,22 @@ America/New_York | Eastern Time (ET)
 ## Create Store
 ### HTTP Request
 
-`POST http://api.gateway.com/api/v1/store`
+`POST https://<API_URL>/api/v1/store`
 
 > Request
 
 ```json
 
  {
-   "name": "HighlandPark-53-tesstasdasd",
-   "storeExternalId": "test",
-   "description": "General Store in Highlasnd Park",
+   "name": "HighlandPark-214",
+   "storeExternalId": "HighlandPark214",
+   "description": "General Store in Highland Park",
    "timeZone": "America/Chicago",
    "contact": {
      "name": "Peter Brown",
      "phone": "214-234-2232"
    },
-   "deliveryInstructions": "always be smiling",
+   "deliveryInstructions": "Always be smiling",
    "address": {
      "street": "123 Main St",
      "street2": "",
@@ -269,7 +277,6 @@ America/New_York | Eastern Time (ET)
 ```json
 {
     "_id": "5972264460cfc7548926536e",
-    "tenantId": "lash",
     "active": true,
     "name": "HighlandPark-53-tesstasdasd",
     "storeExternalId": "test",
@@ -312,319 +319,84 @@ America/New_York | Eastern Time (ET)
     ]
 }
 
-
 ```
 
 Property | Type | Required | Description
 -------- | ---- | -------- | -----------
 name | string | true | Name of the store (must be unique among other stores)
+storeExternalId | string | true | Unique Id of the store. 
 description | string| false | Description of the store.
 timeZone | [Timezone](#timezone) | true | Timezone that the store is located in.
 contact | [Contact](#contact) | true | Contact information for the store.
 deliveryInstructions | string | false | Delivery Instructions for the store.
 address | [Location](#location) | true | Location of the store.
 departments | Array of [Department](#department) | true | Departments.
-DSPs | [Generic Entity](#generic-entity) | false | List of the DSPs that the store would utilize for delivery.
+DSPs | [Generic Entity](#generic-entity) | false | List of the DSPs that the store should be configured for delivery.
+
+<aside class="notice" >
+Attempt to create a store with the same 'name' or 'storeExternalId' will generate 400 - Bad Request
+</aside>
 
 ## List Stores
 ### HTTP Request
 
-`GET http://baseapi.co/api/v1/store`
-
-Get all the configured stores in the system.
 
 > Response
 
 ```json
+
 [
-   {
-      "_id":"59314bd26f228d23619634c4",
-      "tenantId":"lash",
-      "active":false,
-      "name":"dsf123",
-      "description":"",
-      "contact":{
-         "name":"df",
-         "phone":"454-545-4545"
-      },
-      "deliveryInstructions":"",
-      "address":{
-         "street":"dsf",
-         "street2":"",
-         "secondary":"",
-         "city":"dsf",
-         "state":"KY",
-         "zipcode":"44444"
-      },
-      "departments":[
-         {
-            "name":"dsf",
-            "description":"",
-            "deliveryInstructions":""
-         }
-      ],
-      "DSPs":[
-         {
-            "name":"fedex",
-            "corporateDspId":"592eafb9a974d14f0273068f"
-         }
-      ],
-      "deleted":{
-         "deleteTime":1496402934608,
-         "user":{
-            "_id":"591c5b75b9d21c04c34612e1",
-            "tenantId":"lash",
-            "address":{
-               "zipcode":"12200",
-               "street":"Sohna",
-               "street2":"",
-               "secondary":"",
-               "city":"Gurgaon",
-               "state":"KY"
+    {
+        "_id": "5972596b3735190001f44f16",
+        "active": true,
+        "name": "HighlandPark-99",
+        "storeExternalId": "HighlandPark99",
+        "description": "General Store in Highland Park",
+        "timeZone": "America/Chicago",
+        "contact": {
+            "name": "Peter Brown",
+            "phone": "214-234-2232"
+        },
+        "deliveryInstructions": "Always be smiling",
+        "address": {
+            "street": "123 Main St",
+            "street2": "",
+            "secondary": "",
+            "city": "Highland Park",
+            "state": "TX",
+            "zipcode": "75062"
+        },
+        "departments": [
+            {
+                "name": "Produce",
+                "description": "Fresh Produce and Vegetables",
+                "deliveryInstructions": "might be wet"
             },
-            "password":"$2a$10$RZmUPcRtx33wp2ZWaenET.4YojoU514U05AgjFGtO2DF./eQ6e3ay",
-            "role":"admin",
-            "acive":true,
-            "active":true,
-            "email":"sgoyal@gmail.com",
-            "corporateName":"Sourabh",
-            "contact":"887-756-4449",
-            "notification":{
-               "email":true,
-               "phone":false
-            },
-            "accountNumber":"KY-0000"
-         }
-      },
-      "timeZone":"America/Chicago"
-   },
-   {
-      "_id":"591c4c18b9d21c04c34612e0",
-      "tenantId":"lash",
-      "name":"ABC",
-      "description":"",
-      "contact":{
-         "phone":"2342354544",
-         "name":"Sourabh"
-      },
-      "deliveryInstructions":"",
-      "address":{
-         "zipcode":"45453",
-         "street":"sdfds",
-         "street2":"",
-         "secondary":"",
-         "city":"assaf",
-         "state":"KY"
-      },
-      "departments":[
-         {
-            "name":"Dept1",
-            "description":"",
-            "deliveryInstructions":""
-         }
-      ],
-      "DSPs":[
-         {
-            "name":"fedex",
-            "corporateDspId":"591051908195721f2bde578a"
-         },
-         {
-            "name":"postmate",
-            "corporateDspId":"59105959bc91c21691f43613"
-         }
-      ],
-      "active":false,
-      "deactivateBy":{
-         "user":{
-            "_id":"591c5b75b9d21c04c34612e1",
-            "tenantId":"lash",
-            "corporateName":"Sourabh",
-            "password":"$2a$10$RZmUPcRtx33wp2ZWaenET.4YojoU514U05AgjFGtO2DF./eQ6e3ay",
-            "accountNumber":"KY-0000",
-            "role":"admin",
-            "active":true,
-            "email":"sgoyal@gmail.com",
-            "contact":"887-756-4449",
-            "address":{
-               "street2":"",
-               "secondary":"",
-               "city":"Gurgaon",
-               "state":"KY",
-               "zipcode":"12200",
-               "street":"Sohna"
-            },
-            "notification":{
-               "email":true,
-               "phone":false
-            },
-            "acive":true
-         },
-         "updateOn":1496324714467
-      },
-      "activateBy":{
-         "user":{
-            "_id":"591c5b75b9d21c04c34612e1",
-            "password":"$2a$10$RZmUPcRtx33wp2ZWaenET.4YojoU514U05AgjFGtO2DF./eQ6e3ay",
-            "accountNumber":"KY-0000",
-            "role":"admin",
-            "acive":true,
-            "active":true,
-            "tenantId":"lash",
-            "email":"sgoyal@gmail.com",
-            "corporateName":"Sourabh",
-            "contact":"887-756-4449",
-            "address":{
-               "state":"KY",
-               "zipcode":"12200",
-               "street":"Sohna",
-               "street2":"",
-               "secondary":"",
-               "city":"Gurgaon"
-            },
-            "notification":{
-               "email":true,
-               "phone":false
+            {
+                "name": "Electronics",
+                "description": "Electronics and Phones",
+                "deliveryInstructions": "Handle with care"
             }
-         },
-         "updateOn":1496324717534
-      },
-      "deleted":{
-         "user":{
-            "email":"sgoyal@gmail.com",
-            "address":{
-               "secondary":"",
-               "city":"Gurgaon",
-               "state":"KY",
-               "zipcode":"12200",
-               "street":"Sohna",
-               "street2":""
+        ],
+        "DSPs": [
+            {
+                "name": "FedEx",
+                "corporateDspId": "5972596b3735190001f44f14"
             },
-            "notification":{
-               "email":true,
-               "phone":false
-            },
-            "password":"$2a$10$RZmUPcRtx33wp2ZWaenET.4YojoU514U05AgjFGtO2DF./eQ6e3ay",
-            "acive":true,
-            "tenantId":"lash",
-            "corporateName":"Sourabh",
-            "contact":"887-756-4449",
-            "accountNumber":"KY-0000",
-            "role":"admin",
-            "active":true,
-            "_id":"591c5b75b9d21c04c34612e1"
-         },
-         "deleteTime":1496325324448
-      },
-      "timeZone":"America/Chicago"
-   }
+            {
+                "name": "Postmates",
+                "corporateDspId": "5972596b3735190001f44f15"
+            }
+        ]
+    }
 ]
 
 
 ```
 
-## Get Store by ID [DOESN'T WORK]
+`GET http://<API_URL>/api/v1/store`
 
-### HTTP Request
-
-`GET http://api.gateway.com/stores/<id>`
-
-### URL Parameters
-
-Parameter | Type | Description
---------- | ------- | -----------
-ID | string |Store ID
-
-> Response
-
-```json
-
-{
-    "name": "MidTown",
-    "description": "",
-    "contact": {
-      "name": "John Doe",
-      "phone": "2342354544"
-    },
-    "deliveryInstructions": "",
-    "address": {
-      "street": "123 Main St",
-      "street2": "",
-      "secondary": "",
-      "city": "Dallas",
-      "state": "TX",
-      "zipcode": "75963"
-    },
-    "departments": [
-      {
-        "name": "Electronics",
-        "description": "Electronic deparment",
-        "deliveryInstructions": ""
-      }
-    ],
-    "DSPs": [
-      {
-        "name": "Fedex"
-      },
-      {
-        "name": "Postmates"
-      }
-    ]
-  }
-  
-```
-
-## Get Store by Alias [DOESN'T WORK]
-
-### HTTP Request
-
-`GET http://api.gateway.com/stores/<alias>`
-
-### URL Parameters
-
-Parameter | Type | Description
---------- | ----------- | -----
-alias | string | Store's alias
-
-> Response
-
-```json
-
-{
-    "_id": "591c4c18b9d21c04c34612e0",
-    "name": "MidTown",
-    "description": "",
-    "contact": {
-      "name": "John Doe",
-      "phone": "2342354544"
-    },
-    "deliveryInstructions": "",
-    "address": {
-      "street": "123 Main St",
-      "street2": "",
-      "secondary": "",
-      "city": "Dallas",
-      "state": "TX",
-      "zipcode": "75963"
-    },
-    "departments": [
-      {
-        "name": "Electronics",
-        "description": "",
-        "deliveryInstructions": ""
-      }
-    ],
-    "DSPs": [
-      {
-        "name": "fedex"
-      },
-      {
-        "name": "postmate"
-      }
-    ],
-    "active": true
-  }
-  
-```
+Get all the configured stores for your account.
 
 # Estimate Resource
 
@@ -634,42 +406,48 @@ alias | string | Store's alias
 
 ```json
 {
-  "_id": "595b4634bdd429000192e7b0",
   "userEmail": "dmart@gmail.com",
-  "storeExternalId": "LASH at Lamar",
-  "orderExternalId": "abcd-dfndnf",
+  "storeExternalId": "HighlandPark99",
+  "orderExternalId": "12234323",
   "department": "Apparel",
   "orderValue": 121,
   "userPickupTime": null,
   "dropOffTime": null,
   "deliveryContact": {
-    "name": "ali jam",
-    "phone": "972-499-0672"
+    "name": "Smith Anderson",
+    "phone": "972-222-2323"
   },
   "deliveryAddress": {
     "street": "211234 Bammel North Houston Rd",
-    "street2": "Apt/Suite",
+    "street2": "",
     "secondary": "",
     "city": "Houston",
     "state": "TX",
     "zipcode": "77014",
     "apartment": "no"
   },
-  "packages": [
-    "large"
-  ],
+   "packages": [
+     {
+       "name": "custom",
+       "size": {
+         "length": 2,
+         "width": 22,
+         "height": 2
+       },
+       "weight": 22
+     }
+   ],
   "isSpirit": false,
   "isBeerOrWine": false,
   "isFragile": false,
   "hasRefrigeratedItems": false,
   "hasPerishableItems": false,
   "notifications": {
-    "url": "ali jam",
-    "email": [
-      "ali jam"
-    ],
+    "url": "https://hooks.sevenseas.com?orderid=12234323",
+    "email": "support@sevenseas.com",
     "sms": [
-      "ali jam"
+      "214-333-4534",
+      "232-323-2323"
     ]
   }
 } 
@@ -708,7 +486,7 @@ alias | string | Store's alias
          "userPickupTime":null,
          "dropOffTime":null,
          "deliveryContact":{
-            "name":"Manil Uppal",
+            "name":"Smith Anderson",
             "phone":"919-949-2639"
          },
          "deliveryAddress":{
@@ -761,8 +539,7 @@ alias | string | Store's alias
          "pickUpTime":1500655071332,
          "pickUpTimeByZone":"July 21st 2017, 9:37:51 am"
       },
-      "orderId":"596e82d73743a00001c257cb",
-      "fullresponse":[{...}]
+      "orderId":"596e82d73743a00001c257cb"
    },
    {
       "_id":"59722a611f0b250001a03e2f",
@@ -861,30 +638,29 @@ alias | string | Store's alias
          "pickUpTime":1500655071332,
          "pickUpTimeByZone":"July 21st 2017, 9:37:51 am"
       },
-      "orderId":"596e82d73743a00001c257cb",
-      "fullresponse":[{...}]
+      "orderId":"596e82d73743a00001c257cb"
    }
 ]
- 
  
  ```
  
   <h3>HTTP Request</h3>
  
- `POST http://api.gateway.com/api/v1/order/estimates`
+ `POST https://<API_URL>/order/estimates`
  
   <h3> POST Parameters </h3>
  
  Property | Type | Required | Description
  -------- | ---- | -------- | -----------
  store | Store | true | Store
+ storeExternalId | string | true | StoreId for which the estimate is being requested.
  orderExternalId | string | false | Any Id that the corporate system wants to assign to this request.
  department | string | false | Department 
  orderValue | decimal | false | Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur
- userPickupTime | string | false | ISO 8601 standard e.g. 2014-01-29T04:30:00Z
- dropOffTime | string | false | ISO 8601 standard e.g. 2014-01-29T04:30:00Z
+ userPickupTime | string | false | Unix time in milliseocds e.g. 1500616800000
+ dropOffTime | string | false | Unix time in milliseonds e.g. 1500616800000
  deliveryContact | [Customer Info](#customer-info) | true | Customer information to obtain an estimate.
- deliveryAddress | Location | true | Address to deliver the package to.
+ deliveryAddress | [Location](#location) | true | Address to deliver the package to.
  packages | [Dimension[ ]](#dimension) | true | Array of Dimension of each package.
  isSpirit | bool | true | Contains Spirits
  isBeerOrWine | bool | false | Contains beer or wine
@@ -902,29 +678,36 @@ alias | string | Store's alias
 
 ```json
 {
-  "_id": "596e82d73743a00001c257cb",
   "userEmail": "dmart@gmail.com",
-  "storeExternalId": "Headspace",
-  "orderExternalId": "4444",
-  "department": "Alcohol",
-  "orderValue": 100,
-  "userPickupTime": null,
+  "storeExternalId": "Mango100",
+  "orderExternalId": "223",
+  "department": "Apparel",
+  "orderValue": 23,
+  "userPickupTime": 1600616800000,
   "dropOffTime": null,
   "deliveryContact": {
-    "name": "Manil Uppal",
-    "phone": "919-949-2639"
+    "name": "ali jam",
+    "phone": "232-323-2323"
   },
   "deliveryAddress": {
-    "street": "2801 Middle Gate Ln",
+    "street": "test@gmail.com",
     "street2": "",
     "secondary": "",
-    "city": "Plano",
+    "city": "Irving",
     "state": "TX",
-    "zipcode": "75093",
+    "zipcode": "75024",
     "apartment": "no"
   },
-  "packages": [
-    "small"
+   "packages": [
+    {
+      "name": "custom",
+      "size": {
+        "length": 2,
+        "width": 22,
+        "height": 2
+      },
+      "weight": 22
+    }
   ],
   "isSpirit": false,
   "isBeerOrWine": false,
@@ -933,36 +716,44 @@ alias | string | Store's alias
   "hasPerishableItems": false,
   "notifications": {
     "url": "",
-    "email": [],
-    "sms": []
+    "email": [
+      "abcd@test.com",
+      "abcd@test.com"
+    ],
+    "sms": [
+      "972-342-2627",
+      "232-232-3232"
+    ]
   }
 }
-```
 
+```
 > Sample Response
 
 ```json
 {
-    "provider": "FedEx",
-    "trackingNumber": "220088590637",
-    "status": "RECEIVED_BY_LMA",
-    "estimatedPickupTime": 1500659160000,
-    "estimatedDeliveryTime": 1500685200000,
-    "estimatedPickupTimeByZone": "July 21st 2017, 10:46:00 am",
-    "estimatedDeliveryTimeByZone": "July 21st 2017, 6:00:00 pm",
-    "currency": "cents",
-    "amount": 450,
-    "courier": null,
-    "labels": [
-        {
-            "trackingNumber": "220088590637",
-            "url": "https://staging.fedexsameday.com/fdx_getlabel.aspx?id=5272931037882052911527989344",
-            "code": "FXF2200885906372200885906370721173",
-            "pdf": "..."
-        }
-    ],
-    "orderId": "596e82d73743a00001c257cb"
+  "provider": "FedEx",
+  "trackingNumber": "220088590854",
+  "status": "RECEIVED_BY_LMA",
+  "estimatedPickupTime": 1600625760000,
+  "estimatedDeliveryTime": 1600627560000,
+  "estimatedPickupTimeByZone": "September 20th 2020, 1:16:00 pm",
+  "estimatedDeliveryTimeByZone": "September 20th 2020, 1:46:00 pm",
+  "currency": "cents",
+  "amount": 5003,
+  "courier": null,
+  "labels": [
+    {
+      "trackingNumber": "220088590854",
+      "url": "https://staging.fedexsameday.com/fdx_getlabel.aspx?id=2247631406612007918524668364",
+      "code": "FXF2200885908542200885908540920207",
+      "pdf": "",
+      "qrCodeImage": ""
+    }
+  ],
+  "orderId": "5972d96472ff1500012b0cc1"
 }
+
 ```
 
 <h3>HTTP Request</h3>
@@ -975,8 +766,8 @@ Property | Type | Required | Description
  order_external_id | string | false | Any Id that the corporate system wants to assign to this request.
  department | string | false | Department 
  order_value | decimal | false | Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur
- pickup_time | string | false | ISO 8601 standard e.g. 2014-01-29T04:30:00Z
- dropoff_time | string | false | ISO 8601 standard e.g. 2014-01-29T04:30:00Z
+ pickup_time | string | false | Unix time in milliseconds e.g. 1500616800000
+ dropoff_time | string | false | Unix time in milliseconds e.g. 1500616800000
  delivery_contact | [Customer Info](#customer-info) | true | Customer information to obtain an estimate.
  delivery_address | [Location](#location) | true | Address to deliver the package to.
  packages | [Dimension[ ]](#dimension) | true | Array of Dimension of each package.
@@ -987,6 +778,7 @@ Property | Type | Required | Description
  has_perishable_items | bool | false | Has perishable items
  notification | Array of [Notification](#notification)|false| email/sms/status update notification
  custom_fields | CustomFields[] | false | optional custom fields;
+ userEmail | string | true | User email
 
 ## Create Order From Estimate
 
@@ -1205,7 +997,8 @@ estimateId | string | true | ID of an Estimate
 
 Parameter | Description
 --------- | -----------
-orderId | Order id
+orderId | Order id - this is returned when an order is placed. 
+<p> <code> e.g. "orderId":"596360614cfa472eedcce8fe" </code></p>
 
 
 ## Get Order Status
@@ -1247,7 +1040,7 @@ Parameter | Description
 --------- | -----------
 orderId | Order id
 
-
+<p> <code> e.g. "orderId":"596360614cfa472eedcce8fe" </code></p>
 
 ## Cancel Order
 
