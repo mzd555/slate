@@ -990,7 +990,7 @@ echo $response->getBody();
 {
     "provider": "FedEx",
     "trackingNumber": "220088599494",
-    "status": "ESTIMATES_RECEIVED",
+    "status": "ORDER_PLACED",
     "estimatedPickupTime": 1600625760000,
     "estimatedDeliveryTime": 1600627560000,
     "estimatedPickupTimeByZone": "September 20th 2020, 1:16:00 pm",
@@ -1080,7 +1080,7 @@ echo $response->getBody();
 {
     "provider": "FedEx",
     "trackingNumber": "220088599509",
-    "status": "RECEIVED_BY_LMA",
+    "status": "ORDER_PLACED",
     "estimatedPickupTime": 1600625760000,
     "estimatedDeliveryTime": 1600627560000,
     "estimatedPickupTimeByZone": "September 20th 2020, 1:16:00 pm",
@@ -1222,7 +1222,7 @@ echo $response->getBody();
     "requestReceiveTimeByZone": "July 21st 2017, 9:42:50 am",
     "tenantId": "D-mart",
     "active": true,
-    "status": "RECEIVED_BY_LMA",
+    "status": "ORDER_PLACED",
     "providerResponse": {
         "data": {
             "provider": "FedEx",
@@ -1388,7 +1388,7 @@ echo $response->getBody();
                 "updatedAt": "July 10th 2017, 6:09:40 am"
             },
             {
-                "status": "RECEIVED_BY_LMA",
+                "status": "ORDER_PLACED",
                 "updatedAt": "July 21st 2017, 11:43:11 am"
             }
         ]
@@ -1463,10 +1463,7 @@ curl -X DELETE \
         "orderId": "596360614cfa472eedcce8fe",
         "tenantId": "D-mart",
         "orderStatus": [
-            {
-              "status": "ORDER_CANCELLED",
-              "updatedAt": "July 10th 2017, 6:09:39 am"
-            },
+           
             {
                 "status": "REQUEST_RECEIVED",
                 "updatedAt": "July 10th 2017, 6:09:39 am"
@@ -1476,8 +1473,12 @@ curl -X DELETE \
                 "updatedAt": "July 10th 2017, 6:09:40 am"
             },
             {
-                "status": "RECEIVED_BY_LMA",
+                "status": "ORDER_PLACED",
                 "updatedAt": "July 21st 2017, 11:43:11 am"
+            },
+            {
+                 "status": "ORDER_CANCELLED",
+                 "updatedAt": "July 10th 2017, 11:44:39 am"
             }
         ]
     }

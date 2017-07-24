@@ -1764,7 +1764,7 @@ curl -X GET <span class="se">\</span>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="s2">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FedEx"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"trackingNumber"</span><span class="p">:</span><span class="w"> </span><span class="s2">"220088599494"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ESTIMATES_RECEIVED"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ORDER_PLACED"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"estimatedPickupTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1600625760000</span><span class="p">,</span><span class="w">
     </span><span class="s2">"estimatedDeliveryTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1600627560000</span><span class="p">,</span><span class="w">
     </span><span class="s2">"estimatedPickupTimeByZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"September 20th 2020, 1:16:00 pm"</span><span class="p">,</span><span class="w">
@@ -1948,7 +1948,7 @@ curl -X GET <span class="se">\</span>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="s2">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FedEx"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"trackingNumber"</span><span class="p">:</span><span class="w"> </span><span class="s2">"220088599509"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RECEIVED_BY_LMA"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ORDER_PLACED"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"estimatedPickupTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1600625760000</span><span class="p">,</span><span class="w">
     </span><span class="s2">"estimatedDeliveryTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1600627560000</span><span class="p">,</span><span class="w">
     </span><span class="s2">"estimatedPickupTimeByZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"September 20th 2020, 1:16:00 pm"</span><span class="p">,</span><span class="w">
@@ -2095,7 +2095,7 @@ curl -X GET <span class="se">\</span>
     </span><span class="s2">"requestReceiveTimeByZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"July 21st 2017, 9:42:50 am"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"tenantId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"D-mart"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RECEIVED_BY_LMA"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ORDER_PLACED"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"providerResponse"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
         </span><span class="s2">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
             </span><span class="s2">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FedEx"</span><span class="p">,</span><span class="w">
@@ -2268,7 +2268,7 @@ curl -X GET <span class="se">\</span>
                 </span><span class="s2">"updatedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"July 10th 2017, 6:09:40 am"</span><span class="w">
             </span><span class="p">},</span><span class="w">
             </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RECEIVED_BY_LMA"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ORDER_PLACED"</span><span class="p">,</span><span class="w">
                 </span><span class="s2">"updatedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"July 21st 2017, 11:43:11 am"</span><span class="w">
             </span><span class="p">}</span><span class="w">
         </span><span class="p">]</span><span class="w">
@@ -2345,10 +2345,7 @@ curl -X DELETE <span class="se">\</span>
         </span><span class="s2">"orderId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"596360614cfa472eedcce8fe"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"tenantId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"D-mart"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"orderStatus"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-            </span><span class="p">{</span><span class="w">
-              </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ORDER_CANCELLED"</span><span class="p">,</span><span class="w">
-              </span><span class="s2">"updatedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"July 10th 2017, 6:09:39 am"</span><span class="w">
-            </span><span class="p">},</span><span class="w">
+
             </span><span class="p">{</span><span class="w">
                 </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"REQUEST_RECEIVED"</span><span class="p">,</span><span class="w">
                 </span><span class="s2">"updatedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"July 10th 2017, 6:09:39 am"</span><span class="w">
@@ -2358,8 +2355,12 @@ curl -X DELETE <span class="se">\</span>
                 </span><span class="s2">"updatedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"July 10th 2017, 6:09:40 am"</span><span class="w">
             </span><span class="p">},</span><span class="w">
             </span><span class="p">{</span><span class="w">
-                </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RECEIVED_BY_LMA"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ORDER_PLACED"</span><span class="p">,</span><span class="w">
                 </span><span class="s2">"updatedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"July 21st 2017, 11:43:11 am"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                 </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ORDER_CANCELLED"</span><span class="p">,</span><span class="w">
+                 </span><span class="s2">"updatedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"July 10th 2017, 11:44:39 am"</span><span class="w">
             </span><span class="p">}</span><span class="w">
         </span><span class="p">]</span><span class="w">
     </span><span class="p">}</span><span class="w">
