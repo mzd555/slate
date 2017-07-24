@@ -7,7 +7,9 @@ language_tabs:
  
 
 toc_footers:
-- <h2><a href='https://deliverysolutions.co'>Back to Site</a></h2>
+- <b><a href='https://deliverysolutions.co'>Back to Delivery Solution</a></b>
+- <b><a href='https://sandbox.portal.deliverysolutions.co'>Sandbox Portal</a></b>
+
 
 includes:
 
@@ -1627,62 +1629,14 @@ delivery_to | Location | true
 
 ```json
 {
- "event" : "order_placed",
- "event_time" : "2014-01-29T04:30:00Z",
- "order" : {
-    "order_id": "592b6f7b34df3a5ed908bccf",
-    "store": {
-      "alias": "LASH at Lamar"
-    },
-    "order_external_id": "XAPTM-ADC001",
-    "department": "Jewellery",
-    "order_value": 323.22,
-    "pickup_time": "2014-01-29T04:30:00Z",
-    "drop_off_time": null,
-    "delivery_contact": {
-      "name": "John Doe",
-      "phone": "233-232-3232"
-    },
-    "delivery_address": {
-      "address_1": "123 London Dr",
-      "address_2": "",
-      "city": "Arlington",
-      "state": "TX",
-      "zip": "75060"
-    },
-    "packages": [
-      {
-        "size": {
-          "length": 12,
-          "width": 12,
-          "height": 6
-        },
-        "weight": 15
-      }
-    ],
-    "has_spirits": true,
-    "has_beer_or_wine": true,
-    "is_fragile": true,
-    "has_refrigerated_items": true,
-    "has_perishable_items": true,
-    "provider": "fedex",
-    "tracking_number": "220088057510",
-    "status": "RECEIVED_BY_LMA",
-    "estimated_pickup_time": "2014-01-29T04:30:00Z",
-    "estimated_delivery_time": "2014-01-29T04:30:00Z",
-    "currency": "cents",
-    "amount": 4115,
-    "labels": [
-      {
-        "tracking_number": "220088057510",
-        "url": "https://staging.fedexsameday.com/fdx_getlabel.aspx?id=5181131558901765435944766360",
-        "code": "FXF2200880575102200880575100528172",
-        "pdf": "<base_64_encoded_image>",
-        "qr_code_image": "<base_64_encoded_image>"
-      }
-    ]
-  }
-}
+        "status" : "SHIPPING", 
+        "event" : "event.courier_update", 
+        "receivedAt" : "June 15th 2017, 12:08:26 pm", 
+        "trackingNumber" : "del_LJ9ycrKkbBuETV", 
+        "provider" : "Postmates", 
+        "orderId" : "5942be979401b5083f089578", 
+        "tenantId" : "D-mart"
+ }
 ```
 
 <h3>Email</h3> 
@@ -1710,7 +1664,7 @@ You can view the configuration by visiting the <a href="https://sandbox.portal.d
 </aside>
 
 <h3>Webhooks Url</h3>
-Either configure a notification url in the corporate profile or provide a url with in the notification item with each order.
+You can configure a notification url in the corporate profile and also provide url with in the notification item with each order.
 
 
 # Errors
