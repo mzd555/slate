@@ -3,6 +3,8 @@ title: API Reference
 
 language_tabs:
   - shell
+  - php
+ 
 
 toc_footers:
 - <h2><a href='https://deliverysolutions.co'>Back to Site</a></h2>
@@ -29,9 +31,9 @@ search: true
 > Example call with API key passed in the request header
 
 ```shell
-  curl -X GET https://<BASE_URL>/stores \
+  curl -X GET https://<BASE_URL>/store \
     --header "Content-Type:application/json" \
-    --header "x-api-key:8153ae5698c34cc51212bef9de23a1df1"  
+    --header "x-api-key:YOUR_API_KEY"  
 ```
 
 After your account has been setup, you will be provided with an API key. Please make sure to keep this key secured and never embed it in client-side code.
@@ -41,6 +43,11 @@ You must pass the <code>x-api-key</code> in the request header with the value <c
 </aside>
 <aside class='notice'> Requests made without an API key will return <code> 403 Forbidden</code>.
 </aside>
+
+<aside class='success'>
+Please replace 'YOUR_API_KEY' with the actual key.
+</aside>
+
 <br />
 <br />
 <br />
@@ -212,18 +219,20 @@ America/New_York | Eastern Time (ET)
 # Store Resource
 
 ## Create Store
-### HTTP Request
-
-`POST https://<API_URL>/api/v1/store`
 
 > Request
 
-```json
-
- {
-   "name": "HighlandPark-214",
-   "storeExternalId": "HighlandPark214",
-   "description": "General Store in Highland Park",
+```shell
+curl -X POST \
+  https://sandbox.api.deliverysolutions.co/api/v1/store \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: b02c9da2-666c-f366-4d75-41e9ac35dc68' \
+  -H 'x-api-key: YOUR_API_KEY' \
+  -d '{
+   "name": "Mango-101",
+   "storeExternalId": "Mango101",
+   "description": "General Store in Highland Park 101",
    "timeZone": "America/Chicago",
    "contact": {
      "name": "Peter Brown",
@@ -258,24 +267,91 @@ America/New_York | Eastern Time (ET)
        "name": "Postmates"
      }
    ]
- }
+ }'
+
+```
+
+```php
+
+<?php
+
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$body = new http\Message\Body;
+$body->append('{
+   "name": "Mango-101",
+   "storeExternalId": "Mango101",
+   "description": "General Store in Highland Park 101",
+   "timeZone": "America/Chicago",
+   "contact": {
+     "name": "Peter Brown",
+     "phone": "214-234-2232"
+   },
+   "deliveryInstructions": "Always be smiling",
+   "address": {
+     "street": "123 Main St",
+     "street2": "",
+     "secondary": "",
+     "city": "Highland Park",
+     "state": "TX",
+     "zipcode": "75062"
+   },
+   "departments": [
+     {
+       "name": "Produce",
+       "description": "Fresh Produce and Vegetables",
+       "deliveryInstructions": "might be wet"
+     },
+     {
+       "name": "Electronics",
+       "description": "Electronics and Phones",
+       "deliveryInstructions": "Handle with care"
+     }
+   ],
+   "DSPs": [
+     {
+       "name": "FedEx"
+     },
+     {
+       "name": "Postmates"
+     }
+   ]
+ }');
+
+$request->setRequestUrl('https://sandbox.api.deliverysolutions.co/api/v1/store');
+$request->setRequestMethod('POST');
+$request->setBody($body);
+
+$request->setHeaders(array(
+  'postman-token' => 'fb698077-804c-5d17-605d-e447c651925b',
+  'cache-control' => 'no-cache',
+  'content-type' => 'application/json',
+  'x-api-key' => 'YOUR_API_KEY'
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
 
 ```
 > Response
 
 ```json
 {
-    "_id": "5972264460cfc7548926536e",
+    "_id": "5974ccf77b0a620001c253e9",
+    "tenantId": "LASH Delivery",
     "active": true,
-    "name": "HighlandPark-53-tesstasdasd",
-    "storeExternalId": "test",
-    "description": "General Store in Highlasnd Park",
+    "name": "Mango-101",
+    "storeExternalId": "Mango101",
+    "description": "General Store in Highland Park 101",
     "timeZone": "America/Chicago",
     "contact": {
         "name": "Peter Brown",
         "phone": "214-234-2232"
     },
-    "deliveryInstructions": "always be smiling",
+    "deliveryInstructions": "Always be smiling",
     "address": {
         "street": "123 Main St",
         "street2": "",
@@ -299,16 +375,21 @@ America/New_York | Eastern Time (ET)
     "DSPs": [
         {
             "name": "FedEx",
-            "corporateDspId": "5972264460cfc7548926536b"
+            "corporateDspId": "5974ccf77b0a620001c253e7"
         },
         {
             "name": "Postmates",
-            "corporateDspId": "5972264460cfc7548926536c"
+            "corporateDspId": "5974ccf77b0a620001c253e8"
         }
     ]
 }
 
 ```
+
+### HTTP Request
+
+`POST https://<API_URL>/api/v1/store`
+
 
 Property | Type | Required | Description
 -------- | ---- | -------- | -----------
@@ -326,17 +407,50 @@ DSPs | [Generic Entity](#generic-entity) | false | List of the DSPs that the sto
 ## List Stores
 ### HTTP Request
 
+> Request
 
+```shell
+
+curl -X GET \
+  https://sandbox.api.deliverysolutions.co/api/v1/store \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'x-api-key: YOUR_API_KEY'
+
+```
+
+```php
+<?php
+
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$request->setRequestUrl('https://sandbox.api.deliverysolutions.co/api/v1/store');
+$request->setRequestMethod('GET');
+$request->setHeaders(array(
+  'postman-token' => '5a0f1b0c-7684-27cc-5fe4-d1785ec364b8',
+  'cache-control' => 'no-cache',
+  'content-type' => 'application/json',
+  'x-api-key' => 'YOUR_API_KEY'
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+
+```
 > Response
 
 ```json
 
 [
     {
-        "_id": "5972596b3735190001f44f16",
+        "_id": "597398c63e526c00012078f4",
+        "tenantId": "LASH Delivery",
         "active": true,
-        "name": "HighlandPark-99",
-        "storeExternalId": "HighlandPark99",
+        "name": "Mango-100",
+        "storeExternalId": "Mango100",
         "description": "General Store in Highland Park",
         "timeZone": "America/Chicago",
         "contact": {
@@ -367,20 +481,19 @@ DSPs | [Generic Entity](#generic-entity) | false | List of the DSPs that the sto
         "DSPs": [
             {
                 "name": "FedEx",
-                "corporateDspId": "5972596b3735190001f44f14"
+                "corporateDspId": "597398c63e526c00012078f2"
             },
             {
                 "name": "Postmates",
-                "corporateDspId": "5972596b3735190001f44f15"
+                "corporateDspId": "597398c63e526c00012078f3"
             }
         ]
     }
 ]
 
-
 ```
 
-`GET http://<BASE_URL>/store`
+`GET https://<BASE_URL>/store`
 
 Get all the configured stores for your account.
 
@@ -388,283 +501,18 @@ Get all the configured stores for your account.
 
 ## Create an Estimate
 
-> Sample Request
+> Request
 
-```json
-{
+```shell
+curl -X POST \
+  https://sandbox.api.deliverysolutions.co/api/v1/order/estimates \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: 97d96891-ba9f-499d-bcac-ff0a51d319b0' \
+  -H 'x-api-key: YOUR_API_KEY' \
+  -d '{
   "userEmail": "dmart@gmail.com",
-  "storeExternalId": "HighlandPark99",
-  "orderExternalId": "12234323",
-  "department": "Apparel",
-  "orderValue": 121,
-  "userPickupTime": null,
-  "dropOffTime": null,
-  "deliveryContact": {
-    "name": "Smith Anderson",
-    "phone": "972-222-2323"
-  },
-  "deliveryAddress": {
-    "street": "211234 Bammel North Houston Rd",
-    "street2": "",
-    "secondary": "",
-    "city": "Houston",
-    "state": "TX",
-    "zipcode": "77014",
-    "apartment": "no"
-  },
-   "packages": [
-     {
-       "name": "custom",
-       "size": {
-         "length": 2,
-         "width": 22,
-         "height": 2
-       },
-       "weight": 22
-     }
-   ],
-  "isSpirit": false,
-  "isBeerOrWine": false,
-  "isFragile": false,
-  "hasRefrigeratedItems": false,
-  "hasPerishableItems": false,
-  "notifications": {
-    "url": "https://hooks.sevenseas.com?orderid=12234323",
-    "email": "support@sevenseas.com",
-    "sms": [
-      "214-333-4534",
-      "232-323-2323"
-    ]
-  }
-} 
-```
- 
- > Sample Response
- 
- ```json
- [
-   {
-      "_id":"59722a611f0b250001a03e2e",
-      "provider":"FedEx",
-      "serviceType":"LM",
-      "estimatedPickupTime":1500656820000,
-      "estimatedPickupTimeByZone":"July 21st 2017, 10:07:00 am",
-      "estimatedDeliveryTime":1500685200000,
-      "estimatedDeliveryTimeByZone":"July 21st 2017, 6:00:00 pm",
-      "expires":null,
-      "currency":"cents",
-      "amount":450,
-      "chargeDetails":[
-         {
-            "currency":"cents",
-            "name":"DIRECT SIGNATURE REQUIRED",
-            "amount":450
-         }
-      ],
-      "tenantId":"D-mart",
-      "active":true,
-      "RequestBody":{
-         "userEmail":"dmart@gmail.com",
-         "storeExternalId":"Headspace",
-         "orderExternalId":"4444",
-         "department":"Alcohol",
-         "orderValue":100,
-         "userPickupTime":null,
-         "dropOffTime":null,
-         "deliveryContact":{
-            "name":"Smith Anderson",
-            "phone":"919-949-2639"
-         },
-         "deliveryAddress":{
-            "street":"2801 Middle Gate Ln",
-            "street2":"",
-            "secondary":"",
-            "city":"Plano",
-            "state":"TX",
-            "zipcode":"75093",
-            "apartment":"no"
-         },
-         "packages":[
-            {
-               "name":"small",
-               "size":{
-                  "width":5,
-                  "height":5,
-                  "length":5
-               },
-               "weight":5
-            }
-         ],
-         "isSpirit":false,
-         "isBeerOrWine":false,
-         "isFragile":false,
-         "hasRefrigeratedItems":false,
-         "hasPerishableItems":false,
-         "notifications":{
-            "url":"",
-            "email":[
-
-            ],
-            "sms":[
-
-            ]
-         },
-         "timeZone":"America/Los_Angeles",
-         "pickUpContact":{
-            "name":"Arshaad Mirza",
-            "phone":"971-175-4446"
-         },
-         "pickUpAddress":{
-            "street":"4100 Midway St",
-            "street2":"",
-            "secondary":"",
-            "city":"Carrollton",
-            "state":"TX",
-            "zipcode":"75024"
-         },
-         "pickUpTime":1500655071332,
-         "pickUpTimeByZone":"July 21st 2017, 9:37:51 am"
-      },
-      "orderId":"596e82d73743a00001c257cb"
-   },
-   {
-      "_id":"59722a611f0b250001a03e2f",
-      "provider":"FedEx",
-      "serviceType":"PR",
-      "estimatedPickupTime":1500660420000,
-      "estimatedPickupTimeByZone":"July 21st 2017, 11:07:00 am",
-      "estimatedDeliveryTime":1500662220000,
-      "estimatedDeliveryTimeByZone":"July 21st 2017, 11:37:00 am",
-      "expires":null,
-      "currency":"cents",
-      "amount":1623,
-      "chargeDetails":[
-         {
-            "currency":"cents",
-            "name":"Base Rate",
-            "amount":1600
-         },
-         {
-            "currency":"cents",
-            "name":"Base Rate Discount (25%)",
-            "amount":-400
-         },
-         {
-            "currency":"cents",
-            "name":"DIRECT SIGNATURE REQUIRED",
-            "amount":375
-         },
-         {
-            "currency":"cents",
-            "name":"Fuel Surcharge",
-            "amount":48
-         }
-      ],
-      "tenantId":"D-mart",
-      "active":true,
-      "RequestBody":{
-         "userEmail":"dmart@gmail.com",
-         "storeExternalId":"Headspace",
-         "orderExternalId":"4444",
-         "department":"Alcohol",
-         "orderValue":100,
-         "userPickupTime":null,
-         "dropOffTime":null,
-         "deliveryContact":{
-            "name":"Manil Uppal",
-            "phone":"919-949-2639"
-         },
-         "deliveryAddress":{
-            "street":"2801 Middle Gate Ln",
-            "street2":"",
-            "secondary":"",
-            "city":"Plano",
-            "state":"TX",
-            "zipcode":"75093",
-            "apartment":"no"
-         },
-         "packages":[
-            {
-               "name":"small",
-               "size":{
-                  "width":5,
-                  "height":5,
-                  "length":5
-               },
-               "weight":5
-            }
-         ],
-         "isSpirit":false,
-         "isBeerOrWine":false,
-         "isFragile":false,
-         "hasRefrigeratedItems":false,
-         "hasPerishableItems":false,
-         "notifications":{
-            "url":"",
-            "email":[
-
-            ],
-            "sms":[
-
-            ]
-         },
-         "timeZone":"America/Los_Angeles",
-         "pickUpContact":{
-            "name":"Arshaad Mirza",
-            "phone":"971-175-4446"
-         },
-         "pickUpAddress":{
-            "street":"4100 Midway St",
-            "street2":"",
-            "secondary":"",
-            "city":"Carrollton",
-            "state":"TX",
-            "zipcode":"75024"
-         },
-         "pickUpTime":1500655071332,
-         "pickUpTimeByZone":"July 21st 2017, 9:37:51 am"
-      },
-      "orderId":"596e82d73743a00001c257cb"
-   }
-]
- 
- ```
- 
-  <h3>HTTP Request</h3>
- 
- `POST https://<API_URL>/order/estimates`
- 
-  <h3> POST Parameters </h3>
- 
- Property | Type | Required | Description
- -------- | ---- | -------- | -----------
- storeExternalId | string | true | StoreId for which the estimate is being requested.
- orderExternalId | string | false | Any Id that the corporate system wants to assign to this request.
- department | string | false | Department 
- orderValue | decimal | false | Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur
- userPickupTime | string | false | time at which the package will be ready to be picked up, Unix time in milliseconds e.g. 1500616800000
- dropoffTime | string | false | last time to which the package must be delivered by, Unix time in milliseconds e.g. 1500616800000
- deliveryContact | [Customer Info](#customer-info) | true | Customer information to obtain an estimate.
- deliveryAddress | [Location](#location) | true | Address to deliver the package to.
- packages | [Dimension[ ]](#dimension) | true | Array of Dimension of each package.
- isSpirit | bool | true | Contains Spirits
- isBeerOrWine | bool | false | Contains beer or wine
- isFragile | bool | false | Is Fragile.
- hasRefrigeratedItems | bool | false | Has refrigerated items
- hasPerishableItems | bool | false | Has perishable items
- notifications | Array of Notification | true | Status Update Notification,
- userEmail | string | true | User email
-
-# Order Resource
-
-## Create Order
-
-> Sample Request
-
-```json
-{
-  "userEmail": "dmart@gmail.com",
-  "storeExternalId": "Mango100",
+  "storeExternalId": "Mango101",
   "orderExternalId": "223",
   "department": "Apparel",
   "orderValue": 23,
@@ -675,7 +523,7 @@ Get all the configured stores for your account.
     "phone": "232-323-2323"
   },
   "deliveryAddress": {
-    "street": "test@gmail.com",
+    "street": "123 Main Street",
     "street2": "",
     "secondary": "",
     "city": "Irving",
@@ -710,39 +558,460 @@ Get all the configured stores for your account.
       "232-232-3232"
     ]
   }
-}
+}'
 
 ```
-> Sample Response
+
+```php
+<?php
+
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$body = new http\Message\Body;
+$body->append('{
+  "userEmail": "dmart@gmail.com",
+  "storeExternalId": "Mango101",
+  "orderExternalId": "223",
+  "department": "Apparel",
+  "orderValue": 23,
+  "userPickupTime": 1600616800000,
+  "dropOffTime": null,
+  "deliveryContact": {
+    "name": "ali jam",
+    "phone": "232-323-2323"
+  },
+  "deliveryAddress": {
+    "street": "123 Main Street",
+    "street2": "",
+    "secondary": "",
+    "city": "Irving",
+    "state": "TX",
+    "zipcode": "75024",
+    "apartment": "no"
+  },
+   "packages": [
+    {
+      "name": "custom",
+      "size": {
+        "length": 2,
+        "width": 22,
+        "height": 2
+      },
+      "weight": 22
+    }
+  ],
+  "isSpirit": false,
+  "isBeerOrWine": false,
+  "isFragile": false,
+  "hasRefrigeratedItems": false,
+  "hasPerishableItems": false,
+  "notifications": {
+    "url": "",
+    "email": [
+      "abcd@test.com",
+      "abcd@test.com"
+    ],
+    "sms": [
+      "972-342-2627",
+      "232-232-3232"
+    ]
+  }
+}');
+
+$request->setRequestUrl('https://sandbox.api.deliverysolutions.co/api/v1/order/estimates');
+$request->setRequestMethod('POST');
+$request->setBody($body);
+
+$request->setHeaders(array(
+  'postman-token' => '7a796edc-4f33-6068-32fc-f136ecf7752e',
+  'cache-control' => 'no-cache',
+  'content-type' => 'application/json',
+  'x-api-key' => 'YOUR_API_KEY'
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+
+```
+ 
+ > Response
+ 
+ ```json
+{
+    "estimates": [
+        {
+            "provider": "FedEx",
+            "serviceType": "PR",
+            "estimatedPickupTime": 1600625760000,
+            "estimatedPickupTimeByZone": "September 20th 2020, 1:16:00 pm",
+            "estimatedDeliveryTime": 1600627560000,
+            "estimatedDeliveryTimeByZone": "September 20th 2020, 1:46:00 pm",
+            "expires": null,
+            "currency": "cents",
+            "amount": 5003,
+            "chargeDetails": [
+                {
+                    "currency": "cents",
+                    "name": "Base Rate",
+                    "amount": 3800
+                },
+                {
+                    "currency": "cents",
+                    "name": "Base Rate Discount (25%)",
+                    "amount": -950
+                },
+                {
+                    "currency": "cents",
+                    "name": "DIRECT SIGNATURE REQUIRED",
+                    "amount": 375
+                },
+                {
+                    "currency": "cents",
+                    "name": "Sunday Pickup",
+                    "amount": 1600
+                },
+                {
+                    "currency": "cents",
+                    "name": "Fuel Surcharge",
+                    "amount": 178
+                }
+            ],
+            "tenantId": "LASH Delivery",
+            "active": true,
+            "RequestBody": {
+                "userEmail": "dmart@gmail.com",
+                "storeExternalId": "Mango101",
+                "orderExternalId": "223",
+                "department": "Apparel",
+                "orderValue": 23,
+                "userPickupTime": 1600616800000,
+                "dropOffTime": null,
+                "deliveryContact": {
+                    "name": "ali jam",
+                    "phone": "232-323-2323"
+                },
+                "deliveryAddress": {
+                    "street": "123 Main Street",
+                    "street2": "",
+                    "secondary": "",
+                    "city": "Irving",
+                    "state": "TX",
+                    "zipcode": "75024",
+                    "apartment": "no"
+                },
+                "packages": [
+                    {
+                        "name": "custom",
+                        "size": {
+                            "length": 2,
+                            "width": 22,
+                            "height": 2
+                        },
+                        "weight": 22
+                    }
+                ],
+                "isSpirit": false,
+                "isBeerOrWine": false,
+                "isFragile": false,
+                "hasRefrigeratedItems": false,
+                "hasPerishableItems": false,
+                "notifications": {
+                    "url": "",
+                    "email": [
+                        "abcd@test.com",
+                        "abcd@test.com"
+                    ],
+                    "sms": [
+                        "972-342-2627",
+                        "232-232-3232"
+                    ]
+                },
+                "timeZone": "America/Chicago",
+                "pickUpContact": {
+                    "name": "Peter Brown",
+                    "phone": "214-234-2232"
+                },
+                "pickUpAddress": {
+                    "street": "123 Main St",
+                    "street2": "",
+                    "secondary": "",
+                    "city": "Highland Park",
+                    "state": "TX",
+                    "zipcode": "75062"
+                },
+                "pickUpTime": 1600616800000,
+                "pickUpTimeByZone": "September 20th 2020, 10:46:40 am"
+            },
+            "orderId": "5974ceb57b0a620001c253f1",
+            "fullresponse": [
+                {
+                    "chargeDetails": [
+                        {
+                            "name": "Base Rate",
+                            "currencyAmount": {
+                                "currencyCode": "USD",
+                                "amount": 38
+                            }
+                        },
+                        {
+                            "name": "Base Rate Discount (25%)",
+                            "currencyAmount": {
+                                "currencyCode": "USD",
+                                "amount": -9.5
+                            }
+                        },
+                        {
+                            "name": "DIRECT SIGNATURE REQUIRED",
+                            "currencyAmount": {
+                                "currencyCode": "USD",
+                                "amount": 3.75
+                            }
+                        },
+                        {
+                            "name": "Sunday Pickup",
+                            "currencyAmount": {
+                                "currencyCode": "USD",
+                                "amount": 16
+                            }
+                        },
+                        {
+                            "name": "Fuel Surcharge",
+                            "currencyAmount": {
+                                "currencyCode": "USD",
+                                "amount": 1.78
+                            }
+                        }
+                    ],
+                    "shippingService": {
+                        "serviceType": "PR",
+                        "signatureService": "DSR",
+                        "specialServices": null,
+                        "restrictions": null
+                    },
+                    "estPickupTime": 1600625760000,
+                    "estDeliveryTime": 1600627560000,
+                    "pricingZone": "0D",
+                    "totalWeight": {
+                        "units": "LB",
+                        "value": 22
+                    },
+                    "pieces": 1,
+                    "fee": 50.03
+                }
+            ],
+            "_id": "5974ceba7b0a620001c253f4"
+        }
+    ],
+    "errors": [
+        {
+            "name": "Postmates",
+            "message": "POSTMATE_CANNOT_PROVIDE_ESTIMATES_FOR_THE_GIVEN_TIME",
+            "stack": "Dsp_Error"
+        }
+    ],
+    "orderId": "5974ceb57b0a620001c253f1"
+}
+ 
+ ```
+ 
+  <h3>HTTP Request</h3>
+ 
+ `POST https://<API_URL>/order/estimates`
+ 
+  <h3> POST Parameters </h3>
+ 
+ Property | Type | Required | Description
+ -------- | ---- | -------- | -----------
+ storeExternalId | string | true | StoreId for which the estimate is being requested.
+ orderExternalId | string | false | Any Id that the corporate system wants to assign to this request.
+ department | string | false | Department 
+ orderValue | decimal | false | Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur
+ userPickupTime | string | false | time at which the package will be ready to be picked up, Unix time in milliseconds e.g. 1500616800000
+ dropoffTime | string | false | last time to which the package must be delivered by, Unix time in milliseconds e.g. 1500616800000
+ deliveryContact | [Customer Info](#customer-info) | true | Customer information to obtain an estimate.
+ deliveryAddress | [Location](#location) | true | Address to deliver the package to.
+ packages | [Dimension[ ]](#dimension) | true | Array of Dimension of each package.
+ isSpirit | bool | true | Contains Spirits
+ isBeerOrWine | bool | false | Contains beer or wine
+ isFragile | bool | false | Is Fragile.
+ hasRefrigeratedItems | bool | false | Has refrigerated items
+ hasPerishableItems | bool | false | Has perishable items
+ notifications | Array of Notification | true | Status Update Notification,
+ userEmail | string | true | User email
+
+# Order Resource
+
+## Create Order
+
+> Request
+
+```shell
+curl -X POST \
+  https://sandbox.api.deliverysolutions.co/api/v1/order/placeorder \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: 767ba74b-bc42-b69a-8124-c95cea6e6580' \
+  -H 'tenantid: Mango' \
+  -H 'x-api-key: YOUR_API_KEY' \
+  -d '{
+  "userEmail": "dmart@gmail.com",
+  "storeExternalId": "Mango101",
+  "orderExternalId": "223",
+  "department": "Apparel",
+  "orderValue": 23,
+  "userPickupTime": 1600616800000,
+  "dropOffTime": null,
+  "deliveryContact": {
+    "name": "ali jam",
+    "phone": "232-323-2323"
+  },
+  "deliveryAddress": {
+    "street": "123 Main Street",
+    "street2": "",
+    "secondary": "",
+    "city": "Irving",
+    "state": "TX",
+    "zipcode": "75024",
+    "apartment": "no"
+  },
+   "packages": [
+    {
+      "name": "custom",
+      "size": {
+        "length": 2,
+        "width": 22,
+        "height": 2
+      },
+      "weight": 22
+    }
+  ],
+  "isSpirit": false,
+  "isBeerOrWine": false,
+  "isFragile": false,
+  "hasRefrigeratedItems": false,
+  "hasPerishableItems": false,
+  "notifications": {
+    "url": "",
+    "email": [
+      "abcd@test.com",
+      "abcd@test.com"
+    ],
+    "sms": [
+      "972-342-2627",
+      "232-232-3232"
+    ]
+  }
+}'
+
+```
+
+```php
+<?php
+
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$body = new http\Message\Body;
+$body->append('{
+  "userEmail": "dmart@gmail.com",
+  "storeExternalId": "Mango101",
+  "orderExternalId": "223",
+  "department": "Apparel",
+  "orderValue": 23,
+  "userPickupTime": 1600616800000,
+  "dropOffTime": null,
+  "deliveryContact": {
+    "name": "ali jam",
+    "phone": "232-323-2323"
+  },
+  "deliveryAddress": {
+    "street": "123 Main Street",
+    "street2": "",
+    "secondary": "",
+    "city": "Irving",
+    "state": "TX",
+    "zipcode": "75024",
+    "apartment": "no"
+  },
+   "packages": [
+    {
+      "name": "custom",
+      "size": {
+        "length": 2,
+        "width": 22,
+        "height": 2
+      },
+      "weight": 22
+    }
+  ],
+  "isSpirit": false,
+  "isBeerOrWine": false,
+  "isFragile": false,
+  "hasRefrigeratedItems": false,
+  "hasPerishableItems": false,
+  "notifications": {
+    "url": "",
+    "email": [
+      "abcd@test.com",
+      "abcd@test.com"
+    ],
+    "sms": [
+      "972-342-2627",
+      "232-232-3232"
+    ]
+  }
+}');
+
+$request->setRequestUrl('https://sandbox.api.deliverysolutions.co/api/v1/order/placeorder');
+$request->setRequestMethod('POST');
+$request->setBody($body);
+
+$request->setHeaders(array(
+  'postman-token' => '516f9e22-9bb2-c825-13a3-aef03d2b06e2',
+  'cache-control' => 'no-cache',
+  'tenantid' => 'Mango',
+  'content-type' => 'application/json',
+  'x-api-key' => 'YOUR_API_KEY'
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+```
+> Response
 
 ```json
 {
-  "provider": "FedEx",
-  "trackingNumber": "220088590854",
-  "status": "RECEIVED_BY_LMA",
-  "estimatedPickupTime": 1600625760000,
-  "estimatedDeliveryTime": 1600627560000,
-  "estimatedPickupTimeByZone": "September 20th 2020, 1:16:00 pm",
-  "estimatedDeliveryTimeByZone": "September 20th 2020, 1:46:00 pm",
-  "currency": "cents",
-  "amount": 5003,
-  "courier": null,
-  "labels": [
-    {
-      "trackingNumber": "220088590854",
-      "url": "https://staging.fedexsameday.com/fdx_getlabel.aspx?id=2247631406612007918524668364",
-      "code": "FXF2200885908542200885908540920207",
-      "pdf": "",
-      "qrCodeImage": ""
-    }
-  ],
-  "orderId": "5972d96472ff1500012b0cc1"
+    "provider": "FedEx",
+    "trackingNumber": "220088599494",
+    "status": "ESTIMATES_RECEIVED",
+    "estimatedPickupTime": 1600625760000,
+    "estimatedDeliveryTime": 1600627560000,
+    "estimatedPickupTimeByZone": "September 20th 2020, 1:16:00 pm",
+    "estimatedDeliveryTimeByZone": "September 20th 2020, 1:46:00 pm",
+    "currency": "cents",
+    "amount": 5003,
+    "courier": null,
+    "labels": [
+        {
+            "trackingNumber": "220088599494",
+            "url": "https://staging.fedexsameday.com/fdx_getlabel.aspx?id=8833431793442046914574116155",
+            "code": "FXF2200885994942200885994940920209",
+            "pdf": "actual data removed for brevity",
+            "qrCodeImage": "actual data removed for brevity"
+        }
+    ],
+    "orderId": "5974d2faa4d9dc0001f2ccd7"
 }
 
 ```
 
 <h3>HTTP Request</h3>
-`POST http://api.gateway.com/api/v1/order/placeorder`
+`POST https://<BASE_URL>/order/placeorder`
 ### Post Parameters
 
 Property | Type | Required | Description
@@ -763,44 +1032,75 @@ Property | Type | Required | Description
  hasPerishableItems | bool | false | Has perishable items
  notifications | Array of [Notification](#notification)|false| email/sms/status update notification
  userEmail | string | true | User email
+ 
+ 
+ Error Code |  Detail | Resolution
+ --------- | ----------- | ---------
+ NO_ESTIMATES_FOR_APPROVED_DELIVERY_AMOUNT | None of the estimates received were below the set threshold amount | Visit Corporate/Business Rules and check the threshold amount.
+
 
 ## Create Order From Estimate
 
 > Request
 
-`POST http://api.gateway.com/api/v1/order/createorderfromestimate/<estimateId>`
+```shell
+curl -X POST \
+  https://sandbox.api.deliverysolutions.co/api/v1/order/createorderfromestimate/5974ceba7b0a620001c253f4 \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: 8c144f36-2f4c-0a9d-3bf5-375f2a0ee214' \
+  -H 'x-api-key: YOUR_API_KEY'
+```
+```php
+<?php
 
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$request->setRequestUrl('https://sandbox.api.deliverysolutions.co/api/v1/order/createorderfromestimate/5974ceba7b0a620001c253f4');
+$request->setRequestMethod('POST');
+$request->setHeaders(array(
+  'postman-token' => '9b3cacb0-d0d1-7c72-6c2f-b8f709a993e8',
+  'cache-control' => 'no-cache',
+  'content-type' => 'application/json',
+  'x-api-key' => 'YOUR_API_KEY'
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+
+```
 > Response
 
 ```json
 {
-   "provider":"FedEx",
-   "trackingNumber":"220088590578",
-   "status":"RECEIVED_BY_LMA",
-   "estimatedPickupTime":1500663420000,
-   "estimatedDeliveryTime":1500674400000,
-   "estimatedPickupTimeByZone":"July 21st 2017, 11:57:00 am",
-   "estimatedDeliveryTimeByZone":"July 21st 2017, 3:00:00 pm",
-   "currency":"cents",
-   "amount":2322,
-   "courier":null,
-   "labels":[
-      {
-         "code": "FXF220088590578220088590578072117",
-         "pdf": "...",
-         "trackingNumber":"220088590578",
-         "url":"https://staging.fedexsameday.com/fdx_getlabel.aspx?id=7540231473342011054524273139",
-         "code":"FXF2200885905782200885905780721175"
-      }
-   ],
-   "orderId":"596360614cfa472eedcce8fe"
+    "provider": "FedEx",
+    "trackingNumber": "220088599509",
+    "status": "RECEIVED_BY_LMA",
+    "estimatedPickupTime": 1600625760000,
+    "estimatedDeliveryTime": 1600627560000,
+    "estimatedPickupTimeByZone": "September 20th 2020, 1:16:00 pm",
+    "estimatedDeliveryTimeByZone": "September 20th 2020, 1:46:00 pm",
+    "currency": "cents",
+    "amount": 5003,
+    "courier": null,
+    "labels": [
+        {
+            "trackingNumber": "220088599509",
+            "url": "https://staging.fedexsameday.com/fdx_getlabel.aspx?id=8388831095892064030571984856",
+            "code": "FXF2200885995092200885995090920209",
+            "pdf": "actual data removed for brevity"
+            "qrCodeImage": "actual data removed for brevity"
+        }
+    ],
+    "orderId": "5974ceb57b0a620001c253f1"
 }
+
 ```
 
 <h3>HTTP Request</h3>
-
-`POST http://api.gateway.com/api/v1/order/createorderfromestimate/<estimateId>`
-
 
 ### URL Parameters
 
@@ -809,7 +1109,7 @@ Property | Type | Required | Description
 estimateId | string | true | ID of an Estimate
 
 <aside class="success">
-<code>estimateId</code> The '_id' obtained from a GetEstimate response e.g. "_id":"59722a611f0b250001a03e2e"
+<code>estimateId</code> The '_id' obtained from a GetEstimate response e.g. "_id":"5974ceba7b0a620001c253f4"
 </aside>
 
 
@@ -818,6 +1118,41 @@ estimateId | string | true | ID of an Estimate
 
 ### HTTP Request
 
+> Request
+
+ ```shell
+
+curl -X GET \
+  https://sandbox.api.deliverysolutions.co/api/v1/order/getById/5972ddec72ff1500012b0cd6 \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: 46877cc5-6d7a-c9fd-feac-ba72c3eacf17' \
+  -H 'x-api-key: YOUR_API_KEY'
+
+```
+  
+```php
+
+<?php
+
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$request->setRequestUrl('https://sandbox.api.deliverysolutions.co/api/v1/order/getById/5972ddec72ff1500012b0cd6');
+$request->setRequestMethod('GET');
+$request->setHeaders(array(
+  'postman-token' => '42475f83-e2a3-22e3-ec8d-3210c0312ea2',
+  'cache-control' => 'no-cache',
+  'content-type' => 'application/json',
+  'x-api-key' => 'YOUR_API_KEY'
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+
+```
 
 >  Response
 
@@ -998,7 +1333,41 @@ orderId | Order id - this is returned when an order is placed.
 
 
 ## Get Order Status
+> Request
 
+```shell
+
+curl -X GET \
+  https://sandbox.api.deliverysolutions.co/api/v1/order/getOrderStatus/5972ddec72ff1500012b0cd6 \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: cfbfa29c-27bd-39f8-28f9-9f5bed3b2eb6' \
+  -H 'x-api-key: YOUR_API_KEY'
+  
+```
+```php
+
+<?php
+
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$request->setRequestUrl('https://sandbox.api.deliverysolutions.co/api/v1/order/getOrderStatus/5972ddec72ff1500012b0cd6');
+$request->setRequestMethod('GET');
+$request->setHeaders(array(
+  'postman-token' => 'aa90ada6-b845-0cfc-456d-fb00a690ba92',
+  'cache-control' => 'no-cache',
+  'content-type' => 'application/json',
+  'x-api-key' => 'YOUR_API_KEY'
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+
+
+```
 > Response
 
 ```json
@@ -1028,7 +1397,7 @@ orderId | Order id - this is returned when an order is placed.
 
 ### HTTP Request
 
-`PUT http://api.gateway.com/api/v1/order/getOrderStatus/<orderId>`
+`PUT https://<BASE_URL>/order/getOrderStatus/<orderId>`
 
 ### URL Parameters
 
@@ -1039,6 +1408,40 @@ orderId | Order id
 <p> <code> e.g. "orderId":"596360614cfa472eedcce8fe" </code></p>
 
 ## Cancel Order
+> Request
+
+```php
+<?php
+
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$request->setRequestUrl('https://sandbox.api.deliverysolutions.co/api/v1/order/5974d2faa4d9dc0001f2ccd7');
+$request->setRequestMethod('DELETE');
+$request->setHeaders(array(
+  'postman-token' => 'fa9a459f-7406-623e-3a11-abd66339e6db',
+  'cache-control' => 'no-cache',
+  'content-type' => 'application/json',
+  'x-api-key' => 'YOUR_API_KEY'
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+
+```
+
+```shell
+
+curl -X DELETE \
+  https://sandbox.api.deliverysolutions.co/api/v1/order/5974d2faa4d9dc0001f2ccd7 \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: f85b3797-784c-8920-c5ca-1037c4570cd2' \
+  -H 'x-api-key: YOUR_API_KEY'
+
+```
 
 > Response [406]
 
@@ -1052,11 +1455,37 @@ orderId | Order id
 > Response [200]
 
 ```json
+[
+    {
+        "_id": "596360614cfa472eedcce8fe",
+        "orderId": "596360614cfa472eedcce8fe",
+        "tenantId": "D-mart",
+        "orderStatus": [
+            {
+              "status": "ORDER_CANCELLED",
+              "updatedAt": "July 10th 2017, 6:09:39 am"
+            },
+            {
+                "status": "REQUEST_RECEIVED",
+                "updatedAt": "July 10th 2017, 6:09:39 am"
+            },
+            {
+                "status": "ESTIMATES_RECEIVED",
+                "updatedAt": "July 10th 2017, 6:09:40 am"
+            },
+            {
+                "status": "RECEIVED_BY_LMA",
+                "updatedAt": "July 21st 2017, 11:43:11 am"
+            }
+        ]
+    }
+]
+
 ```
 
 ### HTTP Request
 
-`DELETE http://api.gateway.com/api/v1/order/<orderId>`
+`DELETE https://<BASE_URL>/v1/order/<orderId>`
 
 ### URL Parameters
 
@@ -1069,28 +1498,82 @@ orderId | Order id
 
 ## Get Alcohol Compliance
 
-> Sample Request
+> Request
 
-```json
-{
+```shell
+
+curl -X POST \
+  https://sandbox.api.deliverysolutions.co/api/v1/getAlcoholCompliance \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: 5948e1fd-c63d-caab-278e-495c61e79930' \
+  -H 'tenantid: Mango' \
+  -H 'x-api-key: YOUR_API_KEY' \
+  -d '{
   "delivery_from": {
-    "address_1" : "123 Main St.",
+    "address_1" : "9019 Jasmine Ln",
     "address_2" : "",
-    "city" : "Plano",
-    "state" : "tx",
-    "zip" : "75024"
+    "city" : "Irving",
+    "state" : "TX",
+    "zip" : "75063"
   },
   "delivery_to": {
-      "address_1" : "555 Macarthur Avenue.",
+      "address_1" : "1111 Christopher Court",
       "address_2" : "",
-      "city" : "Richardson",
-      "state": "tx",
-      "zip" : "75045"
+      "city" : "Irving",
+      "state": "TX",
+      "zip" : "75060"
     }
 }
+'
+
 ```
 
-> Sample Response [200]
+```php
+<?php
+
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$body = new http\Message\Body;
+$body->append('{
+  "delivery_from": {
+    "address_1" : "9019 Jasmine Ln",
+    "address_2" : "",
+    "city" : "Irving",
+    "state" : "TX",
+    "zip" : "75063"
+  },
+  "delivery_to": {
+      "address_1" : "1111 Christopher Court",
+      "address_2" : "",
+      "city" : "Irving",
+      "state": "TX",
+      "zip" : "75060"
+    }
+}
+');
+
+$request->setRequestUrl('https://sandbox.api.deliverysolutions.co/api/v1/getAlcoholCompliance');
+$request->setRequestMethod('POST');
+$request->setBody($body);
+
+$request->setHeaders(array(
+  'postman-token' => '6a7b4bd9-b9d0-05db-a6a9-cdbc23be6b0a',
+  'cache-control' => 'no-cache',
+  'tenantid' => 'Mango',
+  'content-type' => 'application/json',
+  'x-api-key' => 'YOUR_API_KEY'
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+
+```
+
+> Response [200]
 
 ```json
 {
@@ -1103,7 +1586,7 @@ orderId | Order id
 }
 ```
 
-> Sample Response
+> Response
 
 ```json
 {
@@ -1128,7 +1611,7 @@ orderId | Order id
 
 ### HTTP Request
 
-`POST http://api.gateway.com/api/v1/getAlcoholCompliance`
+`POST https://<BASE_URL>/getAlcoholCompliance`
 
 ### POST Parameters
 
@@ -1202,20 +1685,40 @@ delivery_to | Location | true
 }
 ```
 
-If you provided a notification item, when the order was created our platform can automatically POST to that URL, send an email, send a sms message with events that happen in the lifetime of the order.
+<h3>Email</h3> 
+In the Corporate Profile make sure Email is checked.
 
-Event | Description
+<h3>SMS</h3> 
+In the Corporate Profile make sure Phone is checked.
+
+
+Status | Description
 --------- | -----------
-order_placed | Order has been placed with the DSP.
-order_picked | Package has been picked up by the DSP and is in enroute.
-order_delivered | Package has been delivered.
-driver_arrived | When the driver has arrived to pickup the delivery
-order_canceled | When the order has been canceled.
-order_exception | When an out of ordinary event happens in the process.
+DISPATCHED_TO_DSP | Order has been placed with the DSP.
+ORDER_CONFIRMED | Pickup has been initiated for the order.
+PICKUP_COMPLETE | Order has been picked up successfully.
+SHIPPING | Order is out for delivery.
+DELIVERED | Order has been delivered successfully.
+RETURNED | Order has been returned.
+CANCELED | Order has been canceled.
 
 <aside class="notice">
-The data included with every event type will differ based on the context. The exact structure of these responses will get established soon.
+
+For every DSP the status for which notification is sent can be configured. 
+You can view the configuration by visiting the <a href="https://sandbox.portal.deliverysolutions.co/#/corporate/dsp" > DSP </a> page. 
+
 </aside>
+
+<h3>Webhooks Url</h3>
+Either configure a notification url in the corporate profile or provide a url with in the notification item with each order.
+
+
+# Errors
+
+Error Code |  Detail | Resolution
+--------- | ----------- | ---------
+NO_ESTIMATES_FOR_APPROVED_DELIVERY_AMOUNT | None of the estimates received were below the set threshold amount | Visit Corporate/Business Rules and check the threshold amount.
+
 
 <br />
 <br />

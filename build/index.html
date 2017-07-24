@@ -200,7 +200,7 @@
       <script src="javascripts/all.js"></script>
   </head>
 
-  <body class="index" data-languages="[&quot;shell&quot;]">
+  <body class="index" data-languages="[&quot;shell&quot;,&quot;php&quot;]">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -211,6 +211,7 @@
       <img src="images/logo.png" alt="Logo" />
         <div class="lang-selector">
               <a href="#" data-language-name="shell">shell</a>
+              <a href="#" data-language-name="php">php</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -241,7 +242,7 @@
 <blockquote>
 <p>Example call with API key passed in the request header</p>
 </blockquote>
-<pre class="highlight shell tab-shell"><code>  curl -X GET https://&lt;BASE_URL&gt;/stores <span class="se">\</span>
+<pre class="highlight shell tab-shell"><code>  curl -X GET https://&lt;BASE_URL&gt;/store <span class="se">\</span>
     --header <span class="s2">"Content-Type:application/json"</span> <span class="se">\</span>
     --header <span class="s2">"x-api-key:8153ae5698c34cc51212bef9de23a1df1"</span>  
 </code></pre>
@@ -868,70 +869,135 @@ You must pass the <code>x-api-key</code> in the request header with the value <c
 
 <h2 id="create-store">Create Store</h2>
 
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">POST https://&lt;API_URL&gt;/api/v1/store</code></p>
-
 <blockquote>
 <p>Request</p>
 </blockquote>
-<pre class="highlight json tab-json"><code><span class="w">
- </span><span class="p">{</span><span class="w">
-   </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HighlandPark-214"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"storeExternalId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HighlandPark214"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"General Store in Highland Park"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"timeZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"America/Chicago"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"contact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-     </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Peter Brown"</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"214-234-2232"</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Always be smiling"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-     </span><span class="s2">"street"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123 Main St"</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"street2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"secondary"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Highland Park"</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TX"</span><span class="p">,</span><span class="w">
-     </span><span class="s2">"zipcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"75062"</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"departments"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-     </span><span class="p">{</span><span class="w">
-       </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Produce"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fresh Produce and Vegetables"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"might be wet"</span><span class="w">
-     </span><span class="p">},</span><span class="w">
-     </span><span class="p">{</span><span class="w">
-       </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Electronics"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Electronics and Phones"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Handle with care"</span><span class="w">
-     </span><span class="p">}</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"DSPs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-     </span><span class="p">{</span><span class="w">
-       </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FedEx"</span><span class="w">
-     </span><span class="p">},</span><span class="w">
-     </span><span class="p">{</span><span class="w">
-       </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Postmates"</span><span class="w">
-     </span><span class="p">}</span><span class="w">
-   </span><span class="p">]</span><span class="w">
- </span><span class="p">}</span><span class="w">
+<pre class="highlight shell tab-shell"><code>curl -X POST <span class="se">\</span>
+  https://sandbox.api.deliverysolutions.co/api/v1/store <span class="se">\</span>
+  -H <span class="s1">'cache-control: no-cache'</span> <span class="se">\</span>
+  -H <span class="s1">'content-type: application/json'</span> <span class="se">\</span>
+  -H <span class="s1">'postman-token: b02c9da2-666c-f366-4d75-41e9ac35dc68'</span> <span class="se">\</span>
+  -H <span class="s1">'x-api-key: WwUHVySPEL6BMwcV5/oTOg=='</span> <span class="se">\</span>
+  -d <span class="s1">'{
+   "name": "Mango-101",
+   "storeExternalId": "Mango101",
+   "description": "General Store in Highland Park 101",
+   "timeZone": "America/Chicago",
+   "contact": {
+     "name": "Peter Brown",
+     "phone": "214-234-2232"
+   },
+   "deliveryInstructions": "Always be smiling",
+   "address": {
+     "street": "123 Main St",
+     "street2": "",
+     "secondary": "",
+     "city": "Highland Park",
+     "state": "TX",
+     "zipcode": "75062"
+   },
+   "departments": [
+     {
+       "name": "Produce",
+       "description": "Fresh Produce and Vegetables",
+       "deliveryInstructions": "might be wet"
+     },
+     {
+       "name": "Electronics",
+       "description": "Electronics and Phones",
+       "deliveryInstructions": "Handle with care"
+     }
+   ],
+   "DSPs": [
+     {
+       "name": "FedEx"
+     },
+     {
+       "name": "Postmates"
+     }
+   ]
+ }'</span>
 
-</span></code></pre>
+</code></pre><pre class="highlight php tab-php"><code>
+<span class="cp">&lt;?php</span>
+
+<span class="nv">$client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">http\Client</span><span class="p">;</span>
+<span class="nv">$request</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">http\Client\Request</span><span class="p">;</span>
+
+<span class="nv">$body</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">http\Message\Body</span><span class="p">;</span>
+<span class="nv">$body</span><span class="o">-&gt;</span><span class="na">append</span><span class="p">(</span><span class="s1">'{
+   "name": "Mango-101",
+   "storeExternalId": "Mango101",
+   "description": "General Store in Highland Park 101",
+   "timeZone": "America/Chicago",
+   "contact": {
+     "name": "Peter Brown",
+     "phone": "214-234-2232"
+   },
+   "deliveryInstructions": "Always be smiling",
+   "address": {
+     "street": "123 Main St",
+     "street2": "",
+     "secondary": "",
+     "city": "Highland Park",
+     "state": "TX",
+     "zipcode": "75062"
+   },
+   "departments": [
+     {
+       "name": "Produce",
+       "description": "Fresh Produce and Vegetables",
+       "deliveryInstructions": "might be wet"
+     },
+     {
+       "name": "Electronics",
+       "description": "Electronics and Phones",
+       "deliveryInstructions": "Handle with care"
+     }
+   ],
+   "DSPs": [
+     {
+       "name": "FedEx"
+     },
+     {
+       "name": "Postmates"
+     }
+   ]
+ }'</span><span class="p">);</span>
+
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setRequestUrl</span><span class="p">(</span><span class="s1">'https://sandbox.api.deliverysolutions.co/api/v1/store'</span><span class="p">);</span>
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setRequestMethod</span><span class="p">(</span><span class="s1">'POST'</span><span class="p">);</span>
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setBody</span><span class="p">(</span><span class="nv">$body</span><span class="p">);</span>
+
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setHeaders</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+  <span class="s1">'postman-token'</span> <span class="o">=&gt;</span> <span class="s1">'fb698077-804c-5d17-605d-e447c651925b'</span><span class="p">,</span>
+  <span class="s1">'cache-control'</span> <span class="o">=&gt;</span> <span class="s1">'no-cache'</span><span class="p">,</span>
+  <span class="s1">'content-type'</span> <span class="o">=&gt;</span> <span class="s1">'application/json'</span><span class="p">,</span>
+  <span class="s1">'x-api-key'</span> <span class="o">=&gt;</span> <span class="s1">'WwUHVySPEL6BMwcV5/oTOg=='</span>
+<span class="p">));</span>
+
+<span class="nv">$client</span><span class="o">-&gt;</span><span class="na">enqueue</span><span class="p">(</span><span class="nv">$request</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+<span class="nv">$response</span> <span class="o">=</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getResponse</span><span class="p">();</span>
+
+<span class="k">echo</span> <span class="nv">$response</span><span class="o">-&gt;</span><span class="na">getBody</span><span class="p">();</span>
+
+</code></pre>
 <blockquote>
 <p>Response</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-    </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5972264460cfc7548926536e"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5974ccf77b0a620001c253e9"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"tenantId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LASH Delivery"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HighlandPark-53-tesstasdasd"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"storeExternalId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"General Store in Highlasnd Park"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mango-101"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"storeExternalId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mango101"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"General Store in Highland Park 101"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"timeZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"America/Chicago"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"contact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
         </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Peter Brown"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"214-234-2232"</span><span class="w">
     </span><span class="p">},</span><span class="w">
-    </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"always be smiling"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Always be smiling"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"address"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
         </span><span class="s2">"street"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123 Main St"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"street2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
@@ -955,16 +1021,20 @@ You must pass the <code>x-api-key</code> in the request header with the value <c
     </span><span class="s2">"DSPs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
         </span><span class="p">{</span><span class="w">
             </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FedEx"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"corporateDspId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5972264460cfc7548926536b"</span><span class="w">
+            </span><span class="s2">"corporateDspId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5974ccf77b0a620001c253e7"</span><span class="w">
         </span><span class="p">},</span><span class="w">
         </span><span class="p">{</span><span class="w">
             </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Postmates"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"corporateDspId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5972264460cfc7548926536c"</span><span class="w">
+            </span><span class="s2">"corporateDspId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5974ccf77b0a620001c253e8"</span><span class="w">
         </span><span class="p">}</span><span class="w">
     </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 
 </span></code></pre>
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST https://&lt;API_URL&gt;/api/v1/store</code></p>
+
 <table><thead>
 <tr>
 <th>Property</th>
@@ -1034,15 +1104,46 @@ You must pass the <code>x-api-key</code> in the request header with the value <c
 <h3 id="http-request">HTTP Request</h3>
 
 <blockquote>
+<p>Request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>
+curl -X GET <span class="se">\</span>
+  https://sandbox.api.deliverysolutions.co/api/v1/store <span class="se">\</span>
+  -H <span class="s1">'cache-control: no-cache'</span> <span class="se">\</span>
+  -H <span class="s1">'content-type: application/json'</span> <span class="se">\</span>
+  -H <span class="s1">'x-api-key: WwUHVySPEL6BMwcV5/oTOg=='</span>
+
+</code></pre><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+
+<span class="nv">$client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">http\Client</span><span class="p">;</span>
+<span class="nv">$request</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">http\Client\Request</span><span class="p">;</span>
+
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setRequestUrl</span><span class="p">(</span><span class="s1">'https://sandbox.api.deliverysolutions.co/api/v1/store'</span><span class="p">);</span>
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setRequestMethod</span><span class="p">(</span><span class="s1">'GET'</span><span class="p">);</span>
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setHeaders</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+  <span class="s1">'postman-token'</span> <span class="o">=&gt;</span> <span class="s1">'5a0f1b0c-7684-27cc-5fe4-d1785ec364b8'</span><span class="p">,</span>
+  <span class="s1">'cache-control'</span> <span class="o">=&gt;</span> <span class="s1">'no-cache'</span><span class="p">,</span>
+  <span class="s1">'content-type'</span> <span class="o">=&gt;</span> <span class="s1">'application/json'</span><span class="p">,</span>
+  <span class="s1">'x-api-key'</span> <span class="o">=&gt;</span> <span class="s1">'WwUHVySPEL6BMwcV5/oTOg=='</span>
+<span class="p">));</span>
+
+<span class="nv">$client</span><span class="o">-&gt;</span><span class="na">enqueue</span><span class="p">(</span><span class="nv">$request</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+<span class="nv">$response</span> <span class="o">=</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getResponse</span><span class="p">();</span>
+
+<span class="k">echo</span> <span class="nv">$response</span><span class="o">-&gt;</span><span class="na">getBody</span><span class="p">();</span>
+
+</code></pre>
+<blockquote>
 <p>Response</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="w">
 </span><span class="p">[</span><span class="w">
     </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5972596b3735190001f44f16"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"597398c63e526c00012078f4"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"tenantId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LASH Delivery"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HighlandPark-99"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"storeExternalId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HighlandPark99"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mango-100"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"storeExternalId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mango100"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"General Store in Highland Park"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"timeZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"America/Chicago"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"contact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
@@ -1073,19 +1174,18 @@ You must pass the <code>x-api-key</code> in the request header with the value <c
         </span><span class="s2">"DSPs"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
             </span><span class="p">{</span><span class="w">
                 </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FedEx"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"corporateDspId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5972596b3735190001f44f14"</span><span class="w">
+                </span><span class="s2">"corporateDspId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"597398c63e526c00012078f2"</span><span class="w">
             </span><span class="p">},</span><span class="w">
             </span><span class="p">{</span><span class="w">
                 </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Postmates"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"corporateDspId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5972596b3735190001f44f15"</span><span class="w">
+                </span><span class="s2">"corporateDspId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"597398c63e526c00012078f3"</span><span class="w">
             </span><span class="p">}</span><span class="w">
         </span><span class="p">]</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">]</span><span class="w">
 
-
 </span></code></pre>
-<p><code class="prettyprint">GET http://&lt;BASE_URL&gt;/store</code></p>
+<p><code class="prettyprint">GET https://&lt;BASE_URL&gt;/store</code></p>
 
 <p>Get all the configured stores for your account.</p>
 
@@ -1094,243 +1194,314 @@ You must pass the <code>x-api-key</code> in the request header with the value <c
 <h2 id="create-an-estimate">Create an Estimate</h2>
 
 <blockquote>
-<p>Sample Request</p>
+<p>Request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X POST <span class="se">\</span>
+  https://sandbox.api.deliverysolutions.co/api/v1/order/estimates <span class="se">\</span>
+  -H <span class="s1">'cache-control: no-cache'</span> <span class="se">\</span>
+  -H <span class="s1">'content-type: application/json'</span> <span class="se">\</span>
+  -H <span class="s1">'postman-token: 97d96891-ba9f-499d-bcac-ff0a51d319b0'</span> <span class="se">\</span>
+  -H <span class="s1">'x-api-key: WwUHVySPEL6BMwcV5/oTOg=='</span> <span class="se">\</span>
+  -d <span class="s1">'{
+  "userEmail": "dmart@gmail.com",
+  "storeExternalId": "Mango101",
+  "orderExternalId": "223",
+  "department": "Apparel",
+  "orderValue": 23,
+  "userPickupTime": 1600616800000,
+  "dropOffTime": null,
+  "deliveryContact": {
+    "name": "ali jam",
+    "phone": "232-323-2323"
+  },
+  "deliveryAddress": {
+    "street": "123 Main Street",
+    "street2": "",
+    "secondary": "",
+    "city": "Irving",
+    "state": "TX",
+    "zipcode": "75024",
+    "apartment": "no"
+  },
+   "packages": [
+    {
+      "name": "custom",
+      "size": {
+        "length": 2,
+        "width": 22,
+        "height": 2
+      },
+      "weight": 22
+    }
+  ],
+  "isSpirit": false,
+  "isBeerOrWine": false,
+  "isFragile": false,
+  "hasRefrigeratedItems": false,
+  "hasPerishableItems": false,
+  "notifications": {
+    "url": "",
+    "email": [
+      "abcd@test.com",
+      "abcd@test.com"
+    ],
+    "sms": [
+      "972-342-2627",
+      "232-232-3232"
+    ]
+  }
+}'</span>
+
+</code></pre><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+
+<span class="nv">$client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">http\Client</span><span class="p">;</span>
+<span class="nv">$request</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">http\Client\Request</span><span class="p">;</span>
+
+<span class="nv">$body</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">http\Message\Body</span><span class="p">;</span>
+<span class="nv">$body</span><span class="o">-&gt;</span><span class="na">append</span><span class="p">(</span><span class="s1">'{
+  "userEmail": "dmart@gmail.com",
+  "storeExternalId": "Mango101",
+  "orderExternalId": "223",
+  "department": "Apparel",
+  "orderValue": 23,
+  "userPickupTime": 1600616800000,
+  "dropOffTime": null,
+  "deliveryContact": {
+    "name": "ali jam",
+    "phone": "232-323-2323"
+  },
+  "deliveryAddress": {
+    "street": "123 Main Street",
+    "street2": "",
+    "secondary": "",
+    "city": "Irving",
+    "state": "TX",
+    "zipcode": "75024",
+    "apartment": "no"
+  },
+   "packages": [
+    {
+      "name": "custom",
+      "size": {
+        "length": 2,
+        "width": 22,
+        "height": 2
+      },
+      "weight": 22
+    }
+  ],
+  "isSpirit": false,
+  "isBeerOrWine": false,
+  "isFragile": false,
+  "hasRefrigeratedItems": false,
+  "hasPerishableItems": false,
+  "notifications": {
+    "url": "",
+    "email": [
+      "abcd@test.com",
+      "abcd@test.com"
+    ],
+    "sms": [
+      "972-342-2627",
+      "232-232-3232"
+    ]
+  }
+}'</span><span class="p">);</span>
+
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setRequestUrl</span><span class="p">(</span><span class="s1">'https://sandbox.api.deliverysolutions.co/api/v1/order/estimates'</span><span class="p">);</span>
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setRequestMethod</span><span class="p">(</span><span class="s1">'POST'</span><span class="p">);</span>
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setBody</span><span class="p">(</span><span class="nv">$body</span><span class="p">);</span>
+
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setHeaders</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+  <span class="s1">'postman-token'</span> <span class="o">=&gt;</span> <span class="s1">'7a796edc-4f33-6068-32fc-f136ecf7752e'</span><span class="p">,</span>
+  <span class="s1">'cache-control'</span> <span class="o">=&gt;</span> <span class="s1">'no-cache'</span><span class="p">,</span>
+  <span class="s1">'content-type'</span> <span class="o">=&gt;</span> <span class="s1">'application/json'</span><span class="p">,</span>
+  <span class="s1">'x-api-key'</span> <span class="o">=&gt;</span> <span class="s1">'WwUHVySPEL6BMwcV5/oTOg=='</span>
+<span class="p">));</span>
+
+<span class="nv">$client</span><span class="o">-&gt;</span><span class="na">enqueue</span><span class="p">(</span><span class="nv">$request</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+<span class="nv">$response</span> <span class="o">=</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getResponse</span><span class="p">();</span>
+
+<span class="k">echo</span> <span class="nv">$response</span><span class="o">-&gt;</span><span class="na">getBody</span><span class="p">();</span>
+
+</code></pre>
+<blockquote>
+<p>Response</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"userEmail"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dmart@gmail.com"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"storeExternalId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"HighlandPark99"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"orderExternalId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"12234323"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"department"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Apparel"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"orderValue"</span><span class="p">:</span><span class="w"> </span><span class="mi">121</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"userPickupTime"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"dropOffTime"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"deliveryContact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Smith Anderson"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"972-222-2323"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="s2">"deliveryAddress"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"street"</span><span class="p">:</span><span class="w"> </span><span class="s2">"211234 Bammel North Houston Rd"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"street2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"secondary"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Houston"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TX"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"zipcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"77014"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"apartment"</span><span class="p">:</span><span class="w"> </span><span class="s2">"no"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"packages"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-     </span><span class="p">{</span><span class="w">
-       </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"custom"</span><span class="p">,</span><span class="w">
-       </span><span class="s2">"size"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-         </span><span class="s2">"length"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">22</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
-       </span><span class="p">},</span><span class="w">
-       </span><span class="s2">"weight"</span><span class="p">:</span><span class="w"> </span><span class="mi">22</span><span class="w">
-     </span><span class="p">}</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-  </span><span class="s2">"isSpirit"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"isBeerOrWine"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"isFragile"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"hasRefrigeratedItems"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"hasPerishableItems"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"notifications"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://hooks.sevenseas.com?orderid=12234323"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"support@sevenseas.com"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"sms"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-      </span><span class="s2">"214-333-4534"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"232-323-2323"</span><span class="w">
-    </span><span class="p">]</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w"> 
-</span></code></pre>
-<blockquote>
-<p>Sample Response</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="w"> </span><span class="p">[</span><span class="w">
-   </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"_id"</span><span class="p">:</span><span class="s2">"59722a611f0b250001a03e2e"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"provider"</span><span class="p">:</span><span class="s2">"FedEx"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"serviceType"</span><span class="p">:</span><span class="s2">"LM"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"estimatedPickupTime"</span><span class="p">:</span><span class="mi">1500656820000</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"estimatedPickupTimeByZone"</span><span class="p">:</span><span class="s2">"July 21st 2017, 10:07:00 am"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"estimatedDeliveryTime"</span><span class="p">:</span><span class="mi">1500685200000</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"estimatedDeliveryTimeByZone"</span><span class="p">:</span><span class="s2">"July 21st 2017, 6:00:00 pm"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"expires"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"currency"</span><span class="p">:</span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"amount"</span><span class="p">:</span><span class="mi">450</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"chargeDetails"</span><span class="p">:[</span><span class="w">
-         </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"currency"</span><span class="p">:</span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"DIRECT SIGNATURE REQUIRED"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"amount"</span><span class="p">:</span><span class="mi">450</span><span class="w">
-         </span><span class="p">}</span><span class="w">
-      </span><span class="p">],</span><span class="w">
-      </span><span class="s2">"tenantId"</span><span class="p">:</span><span class="s2">"D-mart"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"active"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"RequestBody"</span><span class="p">:{</span><span class="w">
-         </span><span class="s2">"userEmail"</span><span class="p">:</span><span class="s2">"dmart@gmail.com"</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"storeExternalId"</span><span class="p">:</span><span class="s2">"Headspace"</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"orderExternalId"</span><span class="p">:</span><span class="s2">"4444"</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"department"</span><span class="p">:</span><span class="s2">"Alcohol"</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"orderValue"</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"userPickupTime"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"dropOffTime"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"deliveryContact"</span><span class="p">:{</span><span class="w">
-            </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"Smith Anderson"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"phone"</span><span class="p">:</span><span class="s2">"919-949-2639"</span><span class="w">
-         </span><span class="p">},</span><span class="w">
-         </span><span class="s2">"deliveryAddress"</span><span class="p">:{</span><span class="w">
-            </span><span class="s2">"street"</span><span class="p">:</span><span class="s2">"2801 Middle Gate Ln"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"street2"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"secondary"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"city"</span><span class="p">:</span><span class="s2">"Plano"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"state"</span><span class="p">:</span><span class="s2">"TX"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"zipcode"</span><span class="p">:</span><span class="s2">"75093"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"apartment"</span><span class="p">:</span><span class="s2">"no"</span><span class="w">
-         </span><span class="p">},</span><span class="w">
-         </span><span class="s2">"packages"</span><span class="p">:[</span><span class="w">
-            </span><span class="p">{</span><span class="w">
-               </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"small"</span><span class="p">,</span><span class="w">
-               </span><span class="s2">"size"</span><span class="p">:{</span><span class="w">
-                  </span><span class="s2">"width"</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="w">
-                  </span><span class="s2">"height"</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="w">
-                  </span><span class="s2">"length"</span><span class="p">:</span><span class="mi">5</span><span class="w">
-               </span><span class="p">},</span><span class="w">
-               </span><span class="s2">"weight"</span><span class="p">:</span><span class="mi">5</span><span class="w">
-            </span><span class="p">}</span><span class="w">
-         </span><span class="p">],</span><span class="w">
-         </span><span class="s2">"isSpirit"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"isBeerOrWine"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"isFragile"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"hasRefrigeratedItems"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"hasPerishableItems"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"notifications"</span><span class="p">:{</span><span class="w">
-            </span><span class="s2">"url"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"email"</span><span class="p">:[</span><span class="w">
-
+    </span><span class="s2">"estimates"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FedEx"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"serviceType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PR"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"estimatedPickupTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1600625760000</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"estimatedPickupTimeByZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"September 20th 2020, 1:16:00 pm"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"estimatedDeliveryTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1600627560000</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"estimatedDeliveryTimeByZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"September 20th 2020, 1:46:00 pm"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"expires"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">5003</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"chargeDetails"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Base Rate"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">3800</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Base Rate Discount (25%)"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">-950</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DIRECT SIGNATURE REQUIRED"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">375</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Sunday Pickup"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1600</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fuel Surcharge"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">178</span><span class="w">
+                </span><span class="p">}</span><span class="w">
             </span><span class="p">],</span><span class="w">
-            </span><span class="s2">"sms"</span><span class="p">:[</span><span class="w">
-
-            </span><span class="p">]</span><span class="w">
-         </span><span class="p">},</span><span class="w">
-         </span><span class="s2">"timeZone"</span><span class="p">:</span><span class="s2">"America/Los_Angeles"</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"pickUpContact"</span><span class="p">:{</span><span class="w">
-            </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"Arshaad Mirza"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"phone"</span><span class="p">:</span><span class="s2">"971-175-4446"</span><span class="w">
-         </span><span class="p">},</span><span class="w">
-         </span><span class="s2">"pickUpAddress"</span><span class="p">:{</span><span class="w">
-            </span><span class="s2">"street"</span><span class="p">:</span><span class="s2">"4100 Midway St"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"street2"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"secondary"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"city"</span><span class="p">:</span><span class="s2">"Carrollton"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"state"</span><span class="p">:</span><span class="s2">"TX"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"zipcode"</span><span class="p">:</span><span class="s2">"75024"</span><span class="w">
-         </span><span class="p">},</span><span class="w">
-         </span><span class="s2">"pickUpTime"</span><span class="p">:</span><span class="mi">1500655071332</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"pickUpTimeByZone"</span><span class="p">:</span><span class="s2">"July 21st 2017, 9:37:51 am"</span><span class="w">
-      </span><span class="p">},</span><span class="w">
-      </span><span class="s2">"orderId"</span><span class="p">:</span><span class="s2">"596e82d73743a00001c257cb"</span><span class="w">
-   </span><span class="p">},</span><span class="w">
-   </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"_id"</span><span class="p">:</span><span class="s2">"59722a611f0b250001a03e2f"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"provider"</span><span class="p">:</span><span class="s2">"FedEx"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"serviceType"</span><span class="p">:</span><span class="s2">"PR"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"estimatedPickupTime"</span><span class="p">:</span><span class="mi">1500660420000</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"estimatedPickupTimeByZone"</span><span class="p">:</span><span class="s2">"July 21st 2017, 11:07:00 am"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"estimatedDeliveryTime"</span><span class="p">:</span><span class="mi">1500662220000</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"estimatedDeliveryTimeByZone"</span><span class="p">:</span><span class="s2">"July 21st 2017, 11:37:00 am"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"expires"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"currency"</span><span class="p">:</span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"amount"</span><span class="p">:</span><span class="mi">1623</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"chargeDetails"</span><span class="p">:[</span><span class="w">
-         </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"currency"</span><span class="p">:</span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"Base Rate"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"amount"</span><span class="p">:</span><span class="mi">1600</span><span class="w">
-         </span><span class="p">},</span><span class="w">
-         </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"currency"</span><span class="p">:</span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"Base Rate Discount (25%)"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"amount"</span><span class="p">:</span><span class="mi">-400</span><span class="w">
-         </span><span class="p">},</span><span class="w">
-         </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"currency"</span><span class="p">:</span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"DIRECT SIGNATURE REQUIRED"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"amount"</span><span class="p">:</span><span class="mi">375</span><span class="w">
-         </span><span class="p">},</span><span class="w">
-         </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"currency"</span><span class="p">:</span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"Fuel Surcharge"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"amount"</span><span class="p">:</span><span class="mi">48</span><span class="w">
-         </span><span class="p">}</span><span class="w">
-      </span><span class="p">],</span><span class="w">
-      </span><span class="s2">"tenantId"</span><span class="p">:</span><span class="s2">"D-mart"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"active"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"RequestBody"</span><span class="p">:{</span><span class="w">
-         </span><span class="s2">"userEmail"</span><span class="p">:</span><span class="s2">"dmart@gmail.com"</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"storeExternalId"</span><span class="p">:</span><span class="s2">"Headspace"</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"orderExternalId"</span><span class="p">:</span><span class="s2">"4444"</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"department"</span><span class="p">:</span><span class="s2">"Alcohol"</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"orderValue"</span><span class="p">:</span><span class="mi">100</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"userPickupTime"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"dropOffTime"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"deliveryContact"</span><span class="p">:{</span><span class="w">
-            </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"Manil Uppal"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"phone"</span><span class="p">:</span><span class="s2">"919-949-2639"</span><span class="w">
-         </span><span class="p">},</span><span class="w">
-         </span><span class="s2">"deliveryAddress"</span><span class="p">:{</span><span class="w">
-            </span><span class="s2">"street"</span><span class="p">:</span><span class="s2">"2801 Middle Gate Ln"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"street2"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"secondary"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"city"</span><span class="p">:</span><span class="s2">"Plano"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"state"</span><span class="p">:</span><span class="s2">"TX"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"zipcode"</span><span class="p">:</span><span class="s2">"75093"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"apartment"</span><span class="p">:</span><span class="s2">"no"</span><span class="w">
-         </span><span class="p">},</span><span class="w">
-         </span><span class="s2">"packages"</span><span class="p">:[</span><span class="w">
-            </span><span class="p">{</span><span class="w">
-               </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"small"</span><span class="p">,</span><span class="w">
-               </span><span class="s2">"size"</span><span class="p">:{</span><span class="w">
-                  </span><span class="s2">"width"</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="w">
-                  </span><span class="s2">"height"</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="w">
-                  </span><span class="s2">"length"</span><span class="p">:</span><span class="mi">5</span><span class="w">
-               </span><span class="p">},</span><span class="w">
-               </span><span class="s2">"weight"</span><span class="p">:</span><span class="mi">5</span><span class="w">
-            </span><span class="p">}</span><span class="w">
-         </span><span class="p">],</span><span class="w">
-         </span><span class="s2">"isSpirit"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"isBeerOrWine"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"isFragile"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"hasRefrigeratedItems"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"hasPerishableItems"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"notifications"</span><span class="p">:{</span><span class="w">
-            </span><span class="s2">"url"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"email"</span><span class="p">:[</span><span class="w">
-
+            </span><span class="s2">"tenantId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LASH Delivery"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"RequestBody"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"userEmail"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dmart@gmail.com"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"storeExternalId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mango101"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"orderExternalId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"223"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"department"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Apparel"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"orderValue"</span><span class="p">:</span><span class="w"> </span><span class="mi">23</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"userPickupTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1600616800000</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"dropOffTime"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"deliveryContact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ali jam"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"232-323-2323"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="s2">"deliveryAddress"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"street"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123 Main Street"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"street2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"secondary"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Irving"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TX"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"zipcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"75024"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"apartment"</span><span class="p">:</span><span class="w"> </span><span class="s2">"no"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="s2">"packages"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                    </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"custom"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"size"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                            </span><span class="s2">"length"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+                            </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">22</span><span class="p">,</span><span class="w">
+                            </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
+                        </span><span class="p">},</span><span class="w">
+                        </span><span class="s2">"weight"</span><span class="p">:</span><span class="w"> </span><span class="mi">22</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">],</span><span class="w">
+                </span><span class="s2">"isSpirit"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"isBeerOrWine"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"isFragile"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"hasRefrigeratedItems"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"hasPerishableItems"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"notifications"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"abcd@test.com"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"abcd@test.com"</span><span class="w">
+                    </span><span class="p">],</span><span class="w">
+                    </span><span class="s2">"sms"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"972-342-2627"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"232-232-3232"</span><span class="w">
+                    </span><span class="p">]</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="s2">"timeZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"America/Chicago"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"pickUpContact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Peter Brown"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"214-234-2232"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="s2">"pickUpAddress"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"street"</span><span class="p">:</span><span class="w"> </span><span class="s2">"123 Main St"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"street2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"secondary"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Highland Park"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TX"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"zipcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"75062"</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="s2">"pickUpTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1600616800000</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"pickUpTimeByZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"September 20th 2020, 10:46:40 am"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="s2">"orderId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5974ceb57b0a620001c253f1"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"fullresponse"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"chargeDetails"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Base Rate"</span><span class="p">,</span><span class="w">
+                            </span><span class="s2">"currencyAmount"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                                </span><span class="s2">"currencyCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USD"</span><span class="p">,</span><span class="w">
+                                </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">38</span><span class="w">
+                            </span><span class="p">}</span><span class="w">
+                        </span><span class="p">},</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Base Rate Discount (25%)"</span><span class="p">,</span><span class="w">
+                            </span><span class="s2">"currencyAmount"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                                </span><span class="s2">"currencyCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USD"</span><span class="p">,</span><span class="w">
+                                </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mf">-9.5</span><span class="w">
+                            </span><span class="p">}</span><span class="w">
+                        </span><span class="p">},</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DIRECT SIGNATURE REQUIRED"</span><span class="p">,</span><span class="w">
+                            </span><span class="s2">"currencyAmount"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                                </span><span class="s2">"currencyCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USD"</span><span class="p">,</span><span class="w">
+                                </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mf">3.75</span><span class="w">
+                            </span><span class="p">}</span><span class="w">
+                        </span><span class="p">},</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Sunday Pickup"</span><span class="p">,</span><span class="w">
+                            </span><span class="s2">"currencyAmount"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                                </span><span class="s2">"currencyCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USD"</span><span class="p">,</span><span class="w">
+                                </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">16</span><span class="w">
+                            </span><span class="p">}</span><span class="w">
+                        </span><span class="p">},</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fuel Surcharge"</span><span class="p">,</span><span class="w">
+                            </span><span class="s2">"currencyAmount"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                                </span><span class="s2">"currencyCode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USD"</span><span class="p">,</span><span class="w">
+                                </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mf">1.78</span><span class="w">
+                            </span><span class="p">}</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                    </span><span class="p">],</span><span class="w">
+                    </span><span class="s2">"shippingService"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"serviceType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PR"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"signatureService"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DSR"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"specialServices"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"restrictions"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="s2">"estPickupTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1600625760000</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"estDeliveryTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1600627560000</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"pricingZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0D"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"totalWeight"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"units"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LB"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">22</span><span class="w">
+                    </span><span class="p">},</span><span class="w">
+                    </span><span class="s2">"pieces"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"fee"</span><span class="p">:</span><span class="w"> </span><span class="mf">50.03</span><span class="w">
+                </span><span class="p">}</span><span class="w">
             </span><span class="p">],</span><span class="w">
-            </span><span class="s2">"sms"</span><span class="p">:[</span><span class="w">
-
-            </span><span class="p">]</span><span class="w">
-         </span><span class="p">},</span><span class="w">
-         </span><span class="s2">"timeZone"</span><span class="p">:</span><span class="s2">"America/Los_Angeles"</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"pickUpContact"</span><span class="p">:{</span><span class="w">
-            </span><span class="s2">"name"</span><span class="p">:</span><span class="s2">"Arshaad Mirza"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"phone"</span><span class="p">:</span><span class="s2">"971-175-4446"</span><span class="w">
-         </span><span class="p">},</span><span class="w">
-         </span><span class="s2">"pickUpAddress"</span><span class="p">:{</span><span class="w">
-            </span><span class="s2">"street"</span><span class="p">:</span><span class="s2">"4100 Midway St"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"street2"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"secondary"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"city"</span><span class="p">:</span><span class="s2">"Carrollton"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"state"</span><span class="p">:</span><span class="s2">"TX"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"zipcode"</span><span class="p">:</span><span class="s2">"75024"</span><span class="w">
-         </span><span class="p">},</span><span class="w">
-         </span><span class="s2">"pickUpTime"</span><span class="p">:</span><span class="mi">1500655071332</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"pickUpTimeByZone"</span><span class="p">:</span><span class="s2">"July 21st 2017, 9:37:51 am"</span><span class="w">
-      </span><span class="p">},</span><span class="w">
-      </span><span class="s2">"orderId"</span><span class="p">:</span><span class="s2">"596e82d73743a00001c257cb"</span><span class="w">
-   </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
+            </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5974ceba7b0a620001c253f4"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="s2">"errors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Postmates"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"POSTMATE_CANNOT_PROVIDE_ESTIMATES_FOR_THE_GIVEN_TIME"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"stack"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dsp_Error"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="s2">"orderId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5974ceb57b0a620001c253f1"</span><span class="w">
+</span><span class="p">}</span><span class="w">
 
 </span></code></pre>
 <p><h3>HTTP Request</h3></p>
@@ -1450,89 +1621,168 @@ You must pass the <code>x-api-key</code> in the request header with the value <c
 <h2 id="create-order">Create Order</h2>
 
 <blockquote>
-<p>Sample Request</p>
+<p>Request</p>
 </blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"userEmail"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dmart@gmail.com"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"storeExternalId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Mango100"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"orderExternalId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"223"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"department"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Apparel"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"orderValue"</span><span class="p">:</span><span class="w"> </span><span class="mi">23</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"userPickupTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1600616800000</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"dropOffTime"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"deliveryContact"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ali jam"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"232-323-2323"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="s2">"deliveryAddress"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"street"</span><span class="p">:</span><span class="w"> </span><span class="s2">"test@gmail.com"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"street2"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"secondary"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"city"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Irving"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"TX"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"zipcode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"75024"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"apartment"</span><span class="p">:</span><span class="w"> </span><span class="s2">"no"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-   </span><span class="s2">"packages"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"custom"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"size"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"length"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"width"</span><span class="p">:</span><span class="w"> </span><span class="mi">22</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"height"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
-      </span><span class="p">},</span><span class="w">
-      </span><span class="s2">"weight"</span><span class="p">:</span><span class="w"> </span><span class="mi">22</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-  </span><span class="p">],</span><span class="w">
-  </span><span class="s2">"isSpirit"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"isBeerOrWine"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"isFragile"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"hasRefrigeratedItems"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"hasPerishableItems"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"notifications"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"email"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-      </span><span class="s2">"abcd@test.com"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"abcd@test.com"</span><span class="w">
-    </span><span class="p">],</span><span class="w">
-    </span><span class="s2">"sms"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-      </span><span class="s2">"972-342-2627"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"232-232-3232"</span><span class="w">
-    </span><span class="p">]</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
+<pre class="highlight shell tab-shell"><code>curl -X POST <span class="se">\</span>
+  https://sandbox.api.deliverysolutions.co/api/v1/order/placeorder <span class="se">\</span>
+  -H <span class="s1">'cache-control: no-cache'</span> <span class="se">\</span>
+  -H <span class="s1">'content-type: application/json'</span> <span class="se">\</span>
+  -H <span class="s1">'postman-token: 767ba74b-bc42-b69a-8124-c95cea6e6580'</span> <span class="se">\</span>
+  -H <span class="s1">'tenantid: Mango'</span> <span class="se">\</span>
+  -H <span class="s1">'x-api-key: WwUHVySPEL6BMwcV5/oTOg=='</span> <span class="se">\</span>
+  -d <span class="s1">'{
+  "userEmail": "dmart@gmail.com",
+  "storeExternalId": "Mango101",
+  "orderExternalId": "223",
+  "department": "Apparel",
+  "orderValue": 23,
+  "userPickupTime": 1600616800000,
+  "dropOffTime": null,
+  "deliveryContact": {
+    "name": "ali jam",
+    "phone": "232-323-2323"
+  },
+  "deliveryAddress": {
+    "street": "123 Main Street",
+    "street2": "",
+    "secondary": "",
+    "city": "Irving",
+    "state": "TX",
+    "zipcode": "75024",
+    "apartment": "no"
+  },
+   "packages": [
+    {
+      "name": "custom",
+      "size": {
+        "length": 2,
+        "width": 22,
+        "height": 2
+      },
+      "weight": 22
+    }
+  ],
+  "isSpirit": false,
+  "isBeerOrWine": false,
+  "isFragile": false,
+  "hasRefrigeratedItems": false,
+  "hasPerishableItems": false,
+  "notifications": {
+    "url": "",
+    "email": [
+      "abcd@test.com",
+      "abcd@test.com"
+    ],
+    "sms": [
+      "972-342-2627",
+      "232-232-3232"
+    ]
+  }
+}'</span>
 
-</span></code></pre>
+</code></pre><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+
+<span class="nv">$client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">http\Client</span><span class="p">;</span>
+<span class="nv">$request</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">http\Client\Request</span><span class="p">;</span>
+
+<span class="nv">$body</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">http\Message\Body</span><span class="p">;</span>
+<span class="nv">$body</span><span class="o">-&gt;</span><span class="na">append</span><span class="p">(</span><span class="s1">'{
+  "userEmail": "dmart@gmail.com",
+  "storeExternalId": "Mango101",
+  "orderExternalId": "223",
+  "department": "Apparel",
+  "orderValue": 23,
+  "userPickupTime": 1600616800000,
+  "dropOffTime": null,
+  "deliveryContact": {
+    "name": "ali jam",
+    "phone": "232-323-2323"
+  },
+  "deliveryAddress": {
+    "street": "123 Main Street",
+    "street2": "",
+    "secondary": "",
+    "city": "Irving",
+    "state": "TX",
+    "zipcode": "75024",
+    "apartment": "no"
+  },
+   "packages": [
+    {
+      "name": "custom",
+      "size": {
+        "length": 2,
+        "width": 22,
+        "height": 2
+      },
+      "weight": 22
+    }
+  ],
+  "isSpirit": false,
+  "isBeerOrWine": false,
+  "isFragile": false,
+  "hasRefrigeratedItems": false,
+  "hasPerishableItems": false,
+  "notifications": {
+    "url": "",
+    "email": [
+      "abcd@test.com",
+      "abcd@test.com"
+    ],
+    "sms": [
+      "972-342-2627",
+      "232-232-3232"
+    ]
+  }
+}'</span><span class="p">);</span>
+
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setRequestUrl</span><span class="p">(</span><span class="s1">'https://sandbox.api.deliverysolutions.co/api/v1/order/placeorder'</span><span class="p">);</span>
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setRequestMethod</span><span class="p">(</span><span class="s1">'POST'</span><span class="p">);</span>
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setBody</span><span class="p">(</span><span class="nv">$body</span><span class="p">);</span>
+
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setHeaders</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+  <span class="s1">'postman-token'</span> <span class="o">=&gt;</span> <span class="s1">'516f9e22-9bb2-c825-13a3-aef03d2b06e2'</span><span class="p">,</span>
+  <span class="s1">'cache-control'</span> <span class="o">=&gt;</span> <span class="s1">'no-cache'</span><span class="p">,</span>
+  <span class="s1">'tenantid'</span> <span class="o">=&gt;</span> <span class="s1">'Mango'</span><span class="p">,</span>
+  <span class="s1">'content-type'</span> <span class="o">=&gt;</span> <span class="s1">'application/json'</span><span class="p">,</span>
+  <span class="s1">'x-api-key'</span> <span class="o">=&gt;</span> <span class="s1">'WwUHVySPEL6BMwcV5/oTOg=='</span>
+<span class="p">));</span>
+
+<span class="nv">$client</span><span class="o">-&gt;</span><span class="na">enqueue</span><span class="p">(</span><span class="nv">$request</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+<span class="nv">$response</span> <span class="o">=</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getResponse</span><span class="p">();</span>
+
+<span class="k">echo</span> <span class="nv">$response</span><span class="o">-&gt;</span><span class="na">getBody</span><span class="p">();</span>
+</code></pre>
 <blockquote>
-<p>Sample Response</p>
+<p>Response</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FedEx"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"trackingNumber"</span><span class="p">:</span><span class="w"> </span><span class="s2">"220088590854"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RECEIVED_BY_LMA"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"estimatedPickupTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1600625760000</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"estimatedDeliveryTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1600627560000</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"estimatedPickupTimeByZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"September 20th 2020, 1:16:00 pm"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"estimatedDeliveryTimeByZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"September 20th 2020, 1:46:00 pm"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">5003</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"courier"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"labels"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"trackingNumber"</span><span class="p">:</span><span class="w"> </span><span class="s2">"220088590854"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://staging.fedexsameday.com/fdx_getlabel.aspx?id=2247631406612007918524668364"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FXF2200885908542200885908540920207"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"pdf"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"qrCodeImage"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-  </span><span class="p">],</span><span class="w">
-  </span><span class="s2">"orderId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5972d96472ff1500012b0cc1"</span><span class="w">
+    </span><span class="s2">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FedEx"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"trackingNumber"</span><span class="p">:</span><span class="w"> </span><span class="s2">"220088599494"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ESTIMATES_RECEIVED"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"estimatedPickupTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1600625760000</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"estimatedDeliveryTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1600627560000</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"estimatedPickupTimeByZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"September 20th 2020, 1:16:00 pm"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"estimatedDeliveryTimeByZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"September 20th 2020, 1:46:00 pm"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">5003</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"courier"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"labels"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"trackingNumber"</span><span class="p">:</span><span class="w"> </span><span class="s2">"220088599494"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://staging.fedexsameday.com/fdx_getlabel.aspx?id=8833431793442046914574116155"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FXF2200885994942200885994940920209"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"pdf"</span><span class="p">:</span><span class="w"> </span><span class="s2">"actual data removed for brevity"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"qrCodeImage"</span><span class="p">:</span><span class="w"> </span><span class="s2">"actual data removed for brevity"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="s2">"orderId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5974d2faa4d9dc0001f2ccd7"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 
 </span></code></pre>
 <h3>HTTP Request</h3>
 
-<p><code class="prettyprint">POST http://api.gateway.com/api/v1/order/placeorder</code></p>
+<p><code class="prettyprint">POST https://&lt;BASE_URL&gt;/order/placeorder</code></p>
 
 <h3 id="post-parameters">Post Parameters</h3>
 
@@ -1642,43 +1892,79 @@ You must pass the <code>x-api-key</code> in the request header with the value <c
 </tr>
 </tbody></table>
 
+<table><thead>
+<tr>
+<th>Error Code</th>
+<th>Detail</th>
+<th>Resolution</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>NO_ESTIMATES_FOR_APPROVED_DELIVERY_AMOUNT</td>
+<td>None of the estimates received were below the set threshold amount</td>
+<td>Visit Corporate/Business Rules and check the threshold amount.</td>
+</tr>
+</tbody></table>
+
 <h2 id="create-order-from-estimate">Create Order From Estimate</h2>
 
 <blockquote>
 <p>Request</p>
 </blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X POST <span class="se">\</span>
+  https://sandbox.api.deliverysolutions.co/api/v1/order/createorderfromestimate/5974ceba7b0a620001c253f4 <span class="se">\</span>
+  -H <span class="s1">'cache-control: no-cache'</span> <span class="se">\</span>
+  -H <span class="s1">'content-type: application/json'</span> <span class="se">\</span>
+  -H <span class="s1">'postman-token: 8c144f36-2f4c-0a9d-3bf5-375f2a0ee214'</span> <span class="se">\</span>
+  -H <span class="s1">'x-api-key: WwUHVySPEL6BMwcV5/oTOg=='</span>
+</code></pre><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
 
-<p><code class="prettyprint">POST http://api.gateway.com/api/v1/order/createorderfromestimate/&lt;estimateId&gt;</code></p>
+<span class="nv">$client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">http\Client</span><span class="p">;</span>
+<span class="nv">$request</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">http\Client\Request</span><span class="p">;</span>
 
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setRequestUrl</span><span class="p">(</span><span class="s1">'https://sandbox.api.deliverysolutions.co/api/v1/order/createorderfromestimate/5974ceba7b0a620001c253f4'</span><span class="p">);</span>
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setRequestMethod</span><span class="p">(</span><span class="s1">'POST'</span><span class="p">);</span>
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setHeaders</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+  <span class="s1">'postman-token'</span> <span class="o">=&gt;</span> <span class="s1">'9b3cacb0-d0d1-7c72-6c2f-b8f709a993e8'</span><span class="p">,</span>
+  <span class="s1">'cache-control'</span> <span class="o">=&gt;</span> <span class="s1">'no-cache'</span><span class="p">,</span>
+  <span class="s1">'content-type'</span> <span class="o">=&gt;</span> <span class="s1">'application/json'</span><span class="p">,</span>
+  <span class="s1">'x-api-key'</span> <span class="o">=&gt;</span> <span class="s1">'WwUHVySPEL6BMwcV5/oTOg=='</span>
+<span class="p">));</span>
+
+<span class="nv">$client</span><span class="o">-&gt;</span><span class="na">enqueue</span><span class="p">(</span><span class="nv">$request</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+<span class="nv">$response</span> <span class="o">=</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getResponse</span><span class="p">();</span>
+
+<span class="k">echo</span> <span class="nv">$response</span><span class="o">-&gt;</span><span class="na">getBody</span><span class="p">();</span>
+
+</code></pre>
 <blockquote>
 <p>Response</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-   </span><span class="s2">"provider"</span><span class="p">:</span><span class="s2">"FedEx"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"trackingNumber"</span><span class="p">:</span><span class="s2">"220088590578"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"status"</span><span class="p">:</span><span class="s2">"RECEIVED_BY_LMA"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"estimatedPickupTime"</span><span class="p">:</span><span class="mi">1500663420000</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"estimatedDeliveryTime"</span><span class="p">:</span><span class="mi">1500674400000</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"estimatedPickupTimeByZone"</span><span class="p">:</span><span class="s2">"July 21st 2017, 11:57:00 am"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"estimatedDeliveryTimeByZone"</span><span class="p">:</span><span class="s2">"July 21st 2017, 3:00:00 pm"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"currency"</span><span class="p">:</span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"amount"</span><span class="p">:</span><span class="mi">2322</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"courier"</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span><span class="w">
-   </span><span class="s2">"labels"</span><span class="p">:[</span><span class="w">
-      </span><span class="p">{</span><span class="w">
-         </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FXF220088590578220088590578072117"</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"pdf"</span><span class="p">:</span><span class="w"> </span><span class="s2">"..."</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"trackingNumber"</span><span class="p">:</span><span class="s2">"220088590578"</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"url"</span><span class="p">:</span><span class="s2">"https://staging.fedexsameday.com/fdx_getlabel.aspx?id=7540231473342011054524273139"</span><span class="p">,</span><span class="w">
-         </span><span class="s2">"code"</span><span class="p">:</span><span class="s2">"FXF2200885905782200885905780721175"</span><span class="w">
-      </span><span class="p">}</span><span class="w">
-   </span><span class="p">],</span><span class="w">
-   </span><span class="s2">"orderId"</span><span class="p">:</span><span class="s2">"596360614cfa472eedcce8fe"</span><span class="w">
+    </span><span class="s2">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FedEx"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"trackingNumber"</span><span class="p">:</span><span class="w"> </span><span class="s2">"220088599509"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RECEIVED_BY_LMA"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"estimatedPickupTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1600625760000</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"estimatedDeliveryTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1600627560000</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"estimatedPickupTimeByZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"September 20th 2020, 1:16:00 pm"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"estimatedDeliveryTimeByZone"</span><span class="p">:</span><span class="w"> </span><span class="s2">"September 20th 2020, 1:46:00 pm"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"currency"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cents"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"amount"</span><span class="p">:</span><span class="w"> </span><span class="mi">5003</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"courier"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"labels"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"trackingNumber"</span><span class="p">:</span><span class="w"> </span><span class="s2">"220088599509"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://staging.fedexsameday.com/fdx_getlabel.aspx?id=8388831095892064030571984856"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FXF2200885995092200885995090920209"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"pdf"</span><span class="p">:</span><span class="w"> </span><span class="s2">"actual data removed for brevity"</span><span class="w">
+            </span><span class="s2">"qrCodeImage"</span><span class="p">:</span><span class="w"> </span><span class="s2">"actual data removed for brevity"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="s2">"orderId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5974ceb57b0a620001c253f1"</span><span class="w">
 </span><span class="p">}</span><span class="w">
+
 </span></code></pre>
 <h3>HTTP Request</h3>
-
-<p><code class="prettyprint">POST http://api.gateway.com/api/v1/order/createorderfromestimate/&lt;estimateId&gt;</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -1699,13 +1985,45 @@ You must pass the <code>x-api-key</code> in the request header with the value <c
 </tbody></table>
 
 <aside class="success">
-<code>estimateId</code> The &lsquo;_id&rsquo; obtained from a GetEstimate response e.g. &ldquo;_id&rdquo;:&ldquo;59722a611f0b250001a03e2e&rdquo;
+<code>estimateId</code> The &lsquo;_id&rsquo; obtained from a GetEstimate response e.g. &ldquo;_id&rdquo;:&ldquo;5974ceba7b0a620001c253f4&rdquo;
 </aside>
 
 <h2 id="get-order">Get Order</h2>
 
 <h3 id="http-request">HTTP Request</h3>
 
+<blockquote>
+<p>Request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>
+curl -X GET <span class="se">\</span>
+  https://sandbox.api.deliverysolutions.co/api/v1/order/getById/5972ddec72ff1500012b0cd6 <span class="se">\</span>
+  -H <span class="s1">'cache-control: no-cache'</span> <span class="se">\</span>
+  -H <span class="s1">'content-type: application/json'</span> <span class="se">\</span>
+  -H <span class="s1">'postman-token: 46877cc5-6d7a-c9fd-feac-ba72c3eacf17'</span> <span class="se">\</span>
+  -H <span class="s1">'x-api-key: WwUHVySPEL6BMwcV5/oTOg=='</span>
+
+</code></pre><pre class="highlight php tab-php"><code>
+<span class="cp">&lt;?php</span>
+
+<span class="nv">$client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">http\Client</span><span class="p">;</span>
+<span class="nv">$request</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">http\Client\Request</span><span class="p">;</span>
+
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setRequestUrl</span><span class="p">(</span><span class="s1">'https://sandbox.api.deliverysolutions.co/api/v1/order/getById/5972ddec72ff1500012b0cd6'</span><span class="p">);</span>
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setRequestMethod</span><span class="p">(</span><span class="s1">'GET'</span><span class="p">);</span>
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setHeaders</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+  <span class="s1">'postman-token'</span> <span class="o">=&gt;</span> <span class="s1">'42475f83-e2a3-22e3-ec8d-3210c0312ea2'</span><span class="p">,</span>
+  <span class="s1">'cache-control'</span> <span class="o">=&gt;</span> <span class="s1">'no-cache'</span><span class="p">,</span>
+  <span class="s1">'content-type'</span> <span class="o">=&gt;</span> <span class="s1">'application/json'</span><span class="p">,</span>
+  <span class="s1">'x-api-key'</span> <span class="o">=&gt;</span> <span class="s1">'WwUHVySPEL6BMwcV5/oTOg=='</span>
+<span class="p">));</span>
+
+<span class="nv">$client</span><span class="o">-&gt;</span><span class="na">enqueue</span><span class="p">(</span><span class="nv">$request</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+<span class="nv">$response</span> <span class="o">=</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getResponse</span><span class="p">();</span>
+
+<span class="k">echo</span> <span class="nv">$response</span><span class="o">-&gt;</span><span class="na">getBody</span><span class="p">();</span>
+
+</code></pre>
 <blockquote>
 <p>Response</p>
 </blockquote>
@@ -1895,6 +2213,39 @@ You must pass the <code>x-api-key</code> in the request header with the value <c
 <h2 id="get-order-status">Get Order Status</h2>
 
 <blockquote>
+<p>Request</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>
+curl -X GET <span class="se">\</span>
+  https://sandbox.api.deliverysolutions.co/api/v1/order/getOrderStatus/5972ddec72ff1500012b0cd6 <span class="se">\</span>
+  -H <span class="s1">'cache-control: no-cache'</span> <span class="se">\</span>
+  -H <span class="s1">'content-type: application/json'</span> <span class="se">\</span>
+  -H <span class="s1">'postman-token: cfbfa29c-27bd-39f8-28f9-9f5bed3b2eb6'</span> <span class="se">\</span>
+  -H <span class="s1">'x-api-key: WwUHVySPEL6BMwcV5/oTOg=='</span>
+
+</code></pre><pre class="highlight php tab-php"><code>
+<span class="cp">&lt;?php</span>
+
+<span class="nv">$client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">http\Client</span><span class="p">;</span>
+<span class="nv">$request</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">http\Client\Request</span><span class="p">;</span>
+
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setRequestUrl</span><span class="p">(</span><span class="s1">'https://sandbox.api.deliverysolutions.co/api/v1/order/getOrderStatus/5972ddec72ff1500012b0cd6'</span><span class="p">);</span>
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setRequestMethod</span><span class="p">(</span><span class="s1">'GET'</span><span class="p">);</span>
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setHeaders</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+  <span class="s1">'postman-token'</span> <span class="o">=&gt;</span> <span class="s1">'aa90ada6-b845-0cfc-456d-fb00a690ba92'</span><span class="p">,</span>
+  <span class="s1">'cache-control'</span> <span class="o">=&gt;</span> <span class="s1">'no-cache'</span><span class="p">,</span>
+  <span class="s1">'content-type'</span> <span class="o">=&gt;</span> <span class="s1">'application/json'</span><span class="p">,</span>
+  <span class="s1">'x-api-key'</span> <span class="o">=&gt;</span> <span class="s1">'WwUHVySPEL6BMwcV5/oTOg=='</span>
+<span class="p">));</span>
+
+<span class="nv">$client</span><span class="o">-&gt;</span><span class="na">enqueue</span><span class="p">(</span><span class="nv">$request</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+<span class="nv">$response</span> <span class="o">=</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getResponse</span><span class="p">();</span>
+
+<span class="k">echo</span> <span class="nv">$response</span><span class="o">-&gt;</span><span class="na">getBody</span><span class="p">();</span>
+
+
+</code></pre>
+<blockquote>
 <p>Response</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
@@ -1921,7 +2272,7 @@ You must pass the <code>x-api-key</code> in the request header with the value <c
 </span></code></pre>
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">PUT http://api.gateway.com/api/v1/order/getOrderStatus/&lt;orderId&gt;</code></p>
+<p><code class="prettyprint">PUT https://&lt;BASE_URL&gt;/order/getOrderStatus/&lt;orderId&gt;</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -1942,6 +2293,37 @@ You must pass the <code>x-api-key</code> in the request header with the value <c
 <h2 id="cancel-order">Cancel Order</h2>
 
 <blockquote>
+<p>Request</p>
+</blockquote>
+<pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+
+<span class="nv">$client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">http\Client</span><span class="p">;</span>
+<span class="nv">$request</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">http\Client\Request</span><span class="p">;</span>
+
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setRequestUrl</span><span class="p">(</span><span class="s1">'https://sandbox.api.deliverysolutions.co/api/v1/order/5974d2faa4d9dc0001f2ccd7'</span><span class="p">);</span>
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setRequestMethod</span><span class="p">(</span><span class="s1">'DELETE'</span><span class="p">);</span>
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setHeaders</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+  <span class="s1">'postman-token'</span> <span class="o">=&gt;</span> <span class="s1">'fa9a459f-7406-623e-3a11-abd66339e6db'</span><span class="p">,</span>
+  <span class="s1">'cache-control'</span> <span class="o">=&gt;</span> <span class="s1">'no-cache'</span><span class="p">,</span>
+  <span class="s1">'content-type'</span> <span class="o">=&gt;</span> <span class="s1">'application/json'</span><span class="p">,</span>
+  <span class="s1">'x-api-key'</span> <span class="o">=&gt;</span> <span class="s1">'WwUHVySPEL6BMwcV5/oTOg=='</span>
+<span class="p">));</span>
+
+<span class="nv">$client</span><span class="o">-&gt;</span><span class="na">enqueue</span><span class="p">(</span><span class="nv">$request</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+<span class="nv">$response</span> <span class="o">=</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getResponse</span><span class="p">();</span>
+
+<span class="k">echo</span> <span class="nv">$response</span><span class="o">-&gt;</span><span class="na">getBody</span><span class="p">();</span>
+
+</code></pre><pre class="highlight shell tab-shell"><code>
+curl -X DELETE <span class="se">\</span>
+  https://sandbox.api.deliverysolutions.co/api/v1/order/5974d2faa4d9dc0001f2ccd7 <span class="se">\</span>
+  -H <span class="s1">'cache-control: no-cache'</span> <span class="se">\</span>
+  -H <span class="s1">'content-type: application/json'</span> <span class="se">\</span>
+  -H <span class="s1">'postman-token: f85b3797-784c-8920-c5ca-1037c4570cd2'</span> <span class="se">\</span>
+  -H <span class="s1">'x-api-key: WwUHVySPEL6BMwcV5/oTOg=='</span>
+
+</code></pre>
+<blockquote>
 <p>Response [406]</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
@@ -1952,10 +2334,36 @@ You must pass the <code>x-api-key</code> in the request header with the value <c
 <blockquote>
 <p>Response [200]</p>
 </blockquote>
-<pre class="highlight json tab-json"><code></code></pre>
+<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"596360614cfa472eedcce8fe"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"orderId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"596360614cfa472eedcce8fe"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"tenantId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"D-mart"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"orderStatus"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+              </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ORDER_CANCELLED"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"updatedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"July 10th 2017, 6:09:39 am"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"REQUEST_RECEIVED"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"updatedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"July 10th 2017, 6:09:39 am"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ESTIMATES_RECEIVED"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"updatedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"July 10th 2017, 6:09:40 am"</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"RECEIVED_BY_LMA"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"updatedAt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"July 21st 2017, 11:43:11 am"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">]</span><span class="w">
+
+</span></code></pre>
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">DELETE http://api.gateway.com/api/v1/order/&lt;orderId&gt;</code></p>
+<p><code class="prettyprint">DELETE https://&lt;BASE_URL&gt;/v1/order/&lt;orderId&gt;</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -1976,27 +2384,78 @@ You must pass the <code>x-api-key</code> in the request header with the value <c
 <h2 id="get-alcohol-compliance">Get Alcohol Compliance</h2>
 
 <blockquote>
-<p>Sample Request</p>
+<p>Request</p>
 </blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"delivery_from"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"address_1"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"123 Main St."</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"address_2"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"city"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Plano"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"state"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"tx"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"zip"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"75024"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="s2">"delivery_to"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"address_1"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"555 Macarthur Avenue."</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"address_2"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"city"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Richardson"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"state"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tx"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"zip"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"75045"</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
+<pre class="highlight shell tab-shell"><code>
+curl -X POST <span class="se">\</span>
+  https://sandbox.api.deliverysolutions.co/api/v1/getAlcoholCompliance <span class="se">\</span>
+  -H <span class="s1">'cache-control: no-cache'</span> <span class="se">\</span>
+  -H <span class="s1">'content-type: application/json'</span> <span class="se">\</span>
+  -H <span class="s1">'postman-token: 5948e1fd-c63d-caab-278e-495c61e79930'</span> <span class="se">\</span>
+  -H <span class="s1">'tenantid: Mango'</span> <span class="se">\</span>
+  -H <span class="s1">'x-api-key: WwUHVySPEL6BMwcV5/oTOg=='</span> <span class="se">\</span>
+  -d <span class="s1">'{
+  "delivery_from": {
+    "address_1" : "9019 Jasmine Ln",
+    "address_2" : "",
+    "city" : "Irving",
+    "state" : "TX",
+    "zip" : "75063"
+  },
+  "delivery_to": {
+      "address_1" : "1111 Christopher Court",
+      "address_2" : "",
+      "city" : "Irving",
+      "state": "TX",
+      "zip" : "75060"
+    }
+}
+'</span>
+
+</code></pre><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+
+<span class="nv">$client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">http\Client</span><span class="p">;</span>
+<span class="nv">$request</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">http\Client\Request</span><span class="p">;</span>
+
+<span class="nv">$body</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">http\Message\Body</span><span class="p">;</span>
+<span class="nv">$body</span><span class="o">-&gt;</span><span class="na">append</span><span class="p">(</span><span class="s1">'{
+  "delivery_from": {
+    "address_1" : "9019 Jasmine Ln",
+    "address_2" : "",
+    "city" : "Irving",
+    "state" : "TX",
+    "zip" : "75063"
+  },
+  "delivery_to": {
+      "address_1" : "1111 Christopher Court",
+      "address_2" : "",
+      "city" : "Irving",
+      "state": "TX",
+      "zip" : "75060"
+    }
+}
+'</span><span class="p">);</span>
+
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setRequestUrl</span><span class="p">(</span><span class="s1">'https://sandbox.api.deliverysolutions.co/api/v1/getAlcoholCompliance'</span><span class="p">);</span>
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setRequestMethod</span><span class="p">(</span><span class="s1">'POST'</span><span class="p">);</span>
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setBody</span><span class="p">(</span><span class="nv">$body</span><span class="p">);</span>
+
+<span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setHeaders</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+  <span class="s1">'postman-token'</span> <span class="o">=&gt;</span> <span class="s1">'6a7b4bd9-b9d0-05db-a6a9-cdbc23be6b0a'</span><span class="p">,</span>
+  <span class="s1">'cache-control'</span> <span class="o">=&gt;</span> <span class="s1">'no-cache'</span><span class="p">,</span>
+  <span class="s1">'tenantid'</span> <span class="o">=&gt;</span> <span class="s1">'Mango'</span><span class="p">,</span>
+  <span class="s1">'content-type'</span> <span class="o">=&gt;</span> <span class="s1">'application/json'</span><span class="p">,</span>
+  <span class="s1">'x-api-key'</span> <span class="o">=&gt;</span> <span class="s1">'WwUHVySPEL6BMwcV5/oTOg=='</span>
+<span class="p">));</span>
+
+<span class="nv">$client</span><span class="o">-&gt;</span><span class="na">enqueue</span><span class="p">(</span><span class="nv">$request</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
+<span class="nv">$response</span> <span class="o">=</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getResponse</span><span class="p">();</span>
+
+<span class="k">echo</span> <span class="nv">$response</span><span class="o">-&gt;</span><span class="na">getBody</span><span class="p">();</span>
+
+</code></pre>
 <blockquote>
-<p>Sample Response [200]</p>
+<p>Response [200]</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="s2">"compliance"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
@@ -2008,7 +2467,7 @@ You must pass the <code>x-api-key</code> in the request header with the value <c
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <blockquote>
-<p>Sample Response</p>
+<p>Response</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="s2">"compliance"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
@@ -2031,7 +2490,7 @@ You must pass the <code>x-api-key</code> in the request header with the value <c
 </span></code></pre>
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">POST http://api.gateway.com/api/v1/getAlcoholCompliance</code></p>
+<p><code class="prettyprint">POST https://&lt;BASE_URL&gt;/getAlcoholCompliance</code></p>
 
 <h3 id="post-parameters">POST Parameters</h3>
 
@@ -2155,6 +2614,22 @@ You must pass the <code>x-api-key</code> in the request header with the value <c
 The data included with every event type will differ based on the context. The exact structure of these responses will get established soon.
 </aside>
 
+<h1 id="errors">Errors</h1>
+
+<table><thead>
+<tr>
+<th>Error Code</th>
+<th>Detail</th>
+<th>Resolution</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>NO_ESTIMATES_FOR_APPROVED_DELIVERY_AMOUNT</td>
+<td>None of the estimates received were below the set threshold amount</td>
+<td>Visit Corporate/Business Rules and check the threshold amount.</td>
+</tr>
+</tbody></table>
+
 <p><br />
 <br />
 <br />
@@ -2191,6 +2666,7 @@ The data included with every event type will differ based on the context. The ex
       <div class="dark-box">
           <div class="lang-selector">
                 <a href="#" data-language-name="shell">shell</a>
+                <a href="#" data-language-name="php">php</a>
           </div>
       </div>
     </div>
