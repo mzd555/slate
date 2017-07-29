@@ -200,7 +200,7 @@
       <script src="javascripts/all.js"></script>
   </head>
 
-  <body class="index" data-languages="[&quot;shell&quot;,&quot;php&quot;]">
+  <body class="index" data-languages="[&quot;shell&quot;,&quot;php&quot;,&quot;go&quot;]">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -212,6 +212,7 @@
         <div class="lang-selector">
               <a href="#" data-language-name="shell">shell</a>
               <a href="#" data-language-name="php">php</a>
+              <a href="#" data-language-name="go">go</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -792,34 +793,6 @@ Please replace &lsquo;YOUR_API_KEY&rsquo; with the actual key.
 </tr>
 </tbody></table>
 
-<h2 id="store">Store</h2>
-
-<table><thead>
-<tr>
-<th>Property</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>id</td>
-<td>string</td>
-<td>true</td>
-<td>Store ID assigned by the system when creating the store and retrieved by the GetStoreList api call.</td>
-</tr>
-<tr>
-<td>name</td>
-<td>string</td>
-<td>true</td>
-<td>Store name provided when creating the store.</td>
-</tr>
-</tbody></table>
-
-<ul>
-<li>either id or name is required.</li>
-</ul>
-
 <h2 id="time">Time</h2>
 
 <table><thead>
@@ -975,7 +948,6 @@ Please replace &lsquo;YOUR_API_KEY&rsquo; with the actual key.
 <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setBody</span><span class="p">(</span><span class="nv">$body</span><span class="p">);</span>
 
 <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setHeaders</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
-  <span class="s1">'postman-token'</span> <span class="o">=&gt;</span> <span class="s1">'fb698077-804c-5d17-605d-e447c651925b'</span><span class="p">,</span>
   <span class="s1">'cache-control'</span> <span class="o">=&gt;</span> <span class="s1">'no-cache'</span><span class="p">,</span>
   <span class="s1">'content-type'</span> <span class="o">=&gt;</span> <span class="s1">'application/json'</span><span class="p">,</span>
   <span class="s1">'x-api-key'</span> <span class="o">=&gt;</span> <span class="s1">'YOUR_API_KEY'</span>
@@ -986,7 +958,37 @@ Please replace &lsquo;YOUR_API_KEY&rsquo; with the actual key.
 
 <span class="k">echo</span> <span class="nv">$response</span><span class="o">-&gt;</span><span class="na">getBody</span><span class="p">();</span>
 
-</code></pre>
+</code></pre><pre class="highlight go tab-go"><code><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
+
+</span><span class="k">import</span><span class="x"> </span><span class="p">(</span><span class="x">
+    </span><span class="s">"fmt"</span><span class="x">
+    </span><span class="s">"strings"</span><span class="x">
+    </span><span class="s">"net/http"</span><span class="x">
+    </span><span class="s">"io/ioutil"</span><span class="x">
+</span><span class="p">)</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+
+    </span><span class="n">url</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="s">"https://sandbox.api.deliverysolutions.co/api/v1/store"</span><span class="x">
+
+    </span><span class="n">payload</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">strings</span><span class="o">.</span><span class="n">NewReader</span><span class="p">(</span><span class="s">"{</span><span class="se">\n</span><span class="s">   </span><span class="se">\"</span><span class="s">name</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">Mango-101</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">   </span><span class="se">\"</span><span class="s">storeExternalId</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">Mango101</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">   </span><span class="se">\"</span><span class="s">description</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">General Store in Highland Park 101</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">   </span><span class="se">\"</span><span class="s">timeZone</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">America/Chicago</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">   </span><span class="se">\"</span><span class="s">contact</span><span class="se">\"</span><span class="s">: {</span><span class="se">\n</span><span class="s">     </span><span class="se">\"</span><span class="s">name</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">Peter Brown</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">     </span><span class="se">\"</span><span class="s">phone</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">214-234-2232</span><span class="se">\"\n</span><span class="s">   },</span><span class="se">\n</span><span class="s">   </span><span class="se">\"</span><span class="s">deliveryInstructions</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">Always be smiling</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">   </span><span class="se">\"</span><span class="s">address</span><span class="se">\"</span><span class="s">: {</span><span class="se">\n</span><span class="s">     </span><span class="se">\"</span><span class="s">street</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">123 Main St</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">     </span><span class="se">\"</span><span class="s">street2</span><span class="se">\"</span><span class="s">: </span><span class="se">\"\"</span><span class="s">,</span><span class="se">\n</span><span class="s">     </span><span class="se">\"</span><span class="s">secondary</span><span class="se">\"</span><span class="s">: </span><span class="se">\"\"</span><span class="s">,</span><span class="se">\n</span><span class="s">     </span><span class="se">\"</span><span class="s">city</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">Highland Park</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">     </span><span class="se">\"</span><span class="s">state</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">TX</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">     </span><span class="se">\"</span><span class="s">zipcode</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">75062</span><span class="se">\"\n</span><span class="s">   },</span><span class="se">\n</span><span class="s">   </span><span class="se">\"</span><span class="s">departments</span><span class="se">\"</span><span class="s">: [</span><span class="se">\n</span><span class="s">     {</span><span class="se">\n</span><span class="s">       </span><span class="se">\"</span><span class="s">name</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">Produce</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">       </span><span class="se">\"</span><span class="s">description</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">Fresh Produce and Vegetables</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">       </span><span class="se">\"</span><span class="s">deliveryInstructions</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">might be wet</span><span class="se">\"\n</span><span class="s">     },</span><span class="se">\n</span><span class="s">     {</span><span class="se">\n</span><span class="s">       </span><span class="se">\"</span><span class="s">name</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">Electronics</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">       </span><span class="se">\"</span><span class="s">description</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">Electronics and Phones</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">       </span><span class="se">\"</span><span class="s">deliveryInstructions</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">Handle with care</span><span class="se">\"\n</span><span class="s">     }</span><span class="se">\n</span><span class="s">   ],</span><span class="se">\n</span><span class="s">   </span><span class="se">\"</span><span class="s">DSPs</span><span class="se">\"</span><span class="s">: [</span><span class="se">\n</span><span class="s">     {</span><span class="se">\n</span><span class="s">       </span><span class="se">\"</span><span class="s">name</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">FedEx</span><span class="se">\"\n</span><span class="s">     },</span><span class="se">\n</span><span class="s">     {</span><span class="se">\n</span><span class="s">       </span><span class="se">\"</span><span class="s">name</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">Postmates</span><span class="se">\"\n</span><span class="s">     }</span><span class="se">\n</span><span class="s">   ]</span><span class="se">\n</span><span class="s"> }"</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">req</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">NewRequest</span><span class="p">(</span><span class="s">"POST"</span><span class="p">,</span><span class="x"> </span><span class="n">url</span><span class="p">,</span><span class="x"> </span><span class="n">payload</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"x-api-key"</span><span class="p">,</span><span class="x"> </span><span class="s">"YOUR_API_KEY"</span><span class="p">)</span><span class="x">
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"content-type"</span><span class="p">,</span><span class="x"> </span><span class="s">"application/json"</span><span class="p">)</span><span class="x">
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"cache-control"</span><span class="p">,</span><span class="x"> </span><span class="s">"no-cache"</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">res</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">DefaultClient</span><span class="o">.</span><span class="n">Do</span><span class="p">(</span><span class="n">req</span><span class="p">)</span><span class="x">
+
+    </span><span class="k">defer</span><span class="x"> </span><span class="n">res</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span><span class="x">
+    </span><span class="n">body</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">ioutil</span><span class="o">.</span><span class="n">ReadAll</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">Body</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="x">
+    </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="kt">string</span><span class="p">(</span><span class="n">body</span><span class="p">))</span><span class="x">
+
+</span><span class="p">}</span><span class="x">
+</span></code></pre>
 <blockquote>
 <p>Response</p>
 </blockquote>
@@ -1058,7 +1060,7 @@ Please replace &lsquo;YOUR_API_KEY&rsquo; with the actual key.
 <td>storeExternalId</td>
 <td>string</td>
 <td>true</td>
-<td>Unique Id of the store.</td>
+<td>Unique Id of the store. This could be your internal StoreId. e.g. WholeFoodNorthEast15</td>
 </tr>
 <tr>
 <td>description</td>
@@ -1126,7 +1128,7 @@ curl -X GET <span class="se">\</span>
 <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setRequestUrl</span><span class="p">(</span><span class="s1">'https://sandbox.api.deliverysolutions.co/api/v1/store'</span><span class="p">);</span>
 <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setRequestMethod</span><span class="p">(</span><span class="s1">'GET'</span><span class="p">);</span>
 <span class="nv">$request</span><span class="o">-&gt;</span><span class="na">setHeaders</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
-  <span class="s1">'postman-token'</span> <span class="o">=&gt;</span> <span class="s1">'5a0f1b0c-7684-27cc-5fe4-d1785ec364b8'</span><span class="p">,</span>
+
   <span class="s1">'cache-control'</span> <span class="o">=&gt;</span> <span class="s1">'no-cache'</span><span class="p">,</span>
   <span class="s1">'content-type'</span> <span class="o">=&gt;</span> <span class="s1">'application/json'</span><span class="p">,</span>
   <span class="s1">'x-api-key'</span> <span class="o">=&gt;</span> <span class="s1">'YOUR_API_KEY'</span>
@@ -1137,7 +1139,34 @@ curl -X GET <span class="se">\</span>
 
 <span class="k">echo</span> <span class="nv">$response</span><span class="o">-&gt;</span><span class="na">getBody</span><span class="p">();</span>
 
-</code></pre>
+</code></pre><pre class="highlight go tab-go"><code><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
+
+</span><span class="k">import</span><span class="x"> </span><span class="p">(</span><span class="x">
+    </span><span class="s">"fmt"</span><span class="x">
+    </span><span class="s">"net/http"</span><span class="x">
+    </span><span class="s">"io/ioutil"</span><span class="x">
+</span><span class="p">)</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+
+    </span><span class="n">url</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="s">"https://sandbox.api.deliverysolutions.co/api/v1/store"</span><span class="x">
+
+    </span><span class="n">req</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">NewRequest</span><span class="p">(</span><span class="s">"GET"</span><span class="p">,</span><span class="x"> </span><span class="n">url</span><span class="p">,</span><span class="x"> </span><span class="no">nil</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"x-api-key"</span><span class="p">,</span><span class="x"> </span><span class="s">"YOUR_API_KEY"</span><span class="p">)</span><span class="x">
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"content-type"</span><span class="p">,</span><span class="x"> </span><span class="s">"application/json"</span><span class="p">)</span><span class="x">
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"cache-control"</span><span class="p">,</span><span class="x"> </span><span class="s">"no-cache"</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">res</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">DefaultClient</span><span class="o">.</span><span class="n">Do</span><span class="p">(</span><span class="n">req</span><span class="p">)</span><span class="x">
+
+    </span><span class="k">defer</span><span class="x"> </span><span class="n">res</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span><span class="x">
+    </span><span class="n">body</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">ioutil</span><span class="o">.</span><span class="n">ReadAll</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">Body</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="x">
+    </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="kt">string</span><span class="p">(</span><span class="n">body</span><span class="p">))</span><span class="x">
+
+</span><span class="p">}</span><span class="x">
+</span></code></pre>
 <blockquote>
 <p>Response</p>
 </blockquote>
@@ -1329,7 +1358,40 @@ curl -X GET <span class="se">\</span>
 
 <span class="k">echo</span> <span class="nv">$response</span><span class="o">-&gt;</span><span class="na">getBody</span><span class="p">();</span>
 
-</code></pre>
+</code></pre><pre class="highlight go tab-go"><code><span class="x">
+</span><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
+
+</span><span class="k">import</span><span class="x"> </span><span class="p">(</span><span class="x">
+    </span><span class="s">"fmt"</span><span class="x">
+    </span><span class="s">"strings"</span><span class="x">
+    </span><span class="s">"net/http"</span><span class="x">
+    </span><span class="s">"io/ioutil"</span><span class="x">
+</span><span class="p">)</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+
+    </span><span class="n">url</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="s">"https://sandbox.api.deliverysolutions.co/api/v1/order/estimates"</span><span class="x">
+
+    </span><span class="n">payload</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">strings</span><span class="o">.</span><span class="n">NewReader</span><span class="p">(</span><span class="s">"{</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">userEmail</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">dmart@gmail.com</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">storeExternalId</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">Mango101</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">orderExternalId</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">223</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">department</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">Apparel</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">orderValue</span><span class="se">\"</span><span class="s">: 23,</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">userPickupTime</span><span class="se">\"</span><span class="s">: 1600616800000,</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">dropOffTime</span><span class="se">\"</span><span class="s">: null,</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">deliveryContact</span><span class="se">\"</span><span class="s">: {</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">name</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">ali jam</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">phone</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">232-323-2323</span><span class="se">\"\n</span><span class="s">  },</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">deliveryAddress</span><span class="se">\"</span><span class="s">: {</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">street</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">123 Main Street</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">street2</span><span class="se">\"</span><span class="s">: </span><span class="se">\"\"</span><span class="s">,</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">secondary</span><span class="se">\"</span><span class="s">: </span><span class="se">\"\"</span><span class="s">,</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">city</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">Irving</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">state</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">TX</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">zipcode</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">75024</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">apartment</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">no</span><span class="se">\"\n</span><span class="s">  },</span><span class="se">\n</span><span class="s">   </span><span class="se">\"</span><span class="s">packages</span><span class="se">\"</span><span class="s">: [</span><span class="se">\n</span><span class="s">    {</span><span class="se">\n</span><span class="s">      </span><span class="se">\"</span><span class="s">name</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">custom</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">      </span><span class="se">\"</span><span class="s">size</span><span class="se">\"</span><span class="s">: {</span><span class="se">\n</span><span class="s">        </span><span class="se">\"</span><span class="s">length</span><span class="se">\"</span><span class="s">: 2,</span><span class="se">\n</span><span class="s">        </span><span class="se">\"</span><span class="s">width</span><span class="se">\"</span><span class="s">: 22,</span><span class="se">\n</span><span class="s">        </span><span class="se">\"</span><span class="s">height</span><span class="se">\"</span><span class="s">: 2</span><span class="se">\n</span><span class="s">      },</span><span class="se">\n</span><span class="s">      </span><span class="se">\"</span><span class="s">weight</span><span class="se">\"</span><span class="s">: 22</span><span class="se">\n</span><span class="s">    }</span><span class="se">\n</span><span class="s">  ],</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">isSpirit</span><span class="se">\"</span><span class="s">: false,</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">isBeerOrWine</span><span class="se">\"</span><span class="s">: false,</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">isFragile</span><span class="se">\"</span><span class="s">: false,</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">hasRefrigeratedItems</span><span class="se">\"</span><span class="s">: false,</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">hasPerishableItems</span><span class="se">\"</span><span class="s">: false,</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">notifications</span><span class="se">\"</span><span class="s">: {</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">url</span><span class="se">\"</span><span class="s">: </span><span class="se">\"\"</span><span class="s">,</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">email</span><span class="se">\"</span><span class="s">: [</span><span class="se">\n</span><span class="s">      </span><span class="se">\"</span><span class="s">abcd@test.com</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">      </span><span class="se">\"</span><span class="s">abcd@test.com</span><span class="se">\"\n</span><span class="s">    ],</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">sms</span><span class="se">\"</span><span class="s">: [</span><span class="se">\n</span><span class="s">      </span><span class="se">\"</span><span class="s">972-342-2627</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">      </span><span class="se">\"</span><span class="s">232-232-3232</span><span class="se">\"\n</span><span class="s">    ]</span><span class="se">\n</span><span class="s">  }</span><span class="se">\n</span><span class="s">}"</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">req</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">NewRequest</span><span class="p">(</span><span class="s">"POST"</span><span class="p">,</span><span class="x"> </span><span class="n">url</span><span class="p">,</span><span class="x"> </span><span class="n">payload</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"x-api-key"</span><span class="p">,</span><span class="x"> </span><span class="s">"YOUR_API_KEY"</span><span class="p">)</span><span class="x">
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"content-type"</span><span class="p">,</span><span class="x"> </span><span class="s">"application/json"</span><span class="p">)</span><span class="x">
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"cache-control"</span><span class="p">,</span><span class="x"> </span><span class="s">"no-cache"</span><span class="p">)</span><span class="x">
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"postman-token"</span><span class="p">,</span><span class="x"> </span><span class="s">"e45b56db-b415-5e46-bb39-32a28abf11cb"</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">res</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">DefaultClient</span><span class="o">.</span><span class="n">Do</span><span class="p">(</span><span class="n">req</span><span class="p">)</span><span class="x">
+
+    </span><span class="k">defer</span><span class="x"> </span><span class="n">res</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span><span class="x">
+    </span><span class="n">body</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">ioutil</span><span class="o">.</span><span class="n">ReadAll</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">Body</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="x">
+    </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="kt">string</span><span class="p">(</span><span class="n">body</span><span class="p">))</span><span class="x">
+
+</span><span class="p">}</span><span class="x">
+
+</span></code></pre>
 <blockquote>
 <p>Response</p>
 </blockquote>
@@ -1513,6 +1575,12 @@ curl -X GET <span class="se">\</span>
 
 <p><code class="prettyprint">POST https://&lt;API_URL&gt;/order/estimates</code></p>
 
+<p>The API resource can be used to obtain estimates from configured DSPs. Every estimate received 
+ has a unique <code>_id</code> assign to it. There can be more than one estimate possible for a given 
+ call.</p>
+
+<p>See <code class="prettyprint">Create Order From Estimate</code> to place an order for an estimate received.</p>
+
 <p><h3> POST Parameters </h3></p>
 
 <table><thead>
@@ -1527,7 +1595,7 @@ curl -X GET <span class="se">\</span>
 <td>storeExternalId</td>
 <td>string</td>
 <td>true</td>
-<td>StoreId for which the estimate is being requested.</td>
+<td>StoreId for which the estimate is being requested, see &lsquo;Create Store&rsquo;.</td>
 </tr>
 <tr>
 <td>orderExternalId</td>
@@ -1538,13 +1606,13 @@ curl -X GET <span class="se">\</span>
 <tr>
 <td>department</td>
 <td>string</td>
-<td>false</td>
+<td>true</td>
 <td>Department</td>
 </tr>
 <tr>
 <td>orderValue</td>
 <td>decimal</td>
-<td>false</td>
+<td>true</td>
 <td>Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur</td>
 </tr>
 <tr>
@@ -1757,7 +1825,39 @@ curl -X GET <span class="se">\</span>
 <span class="nv">$response</span> <span class="o">=</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getResponse</span><span class="p">();</span>
 
 <span class="k">echo</span> <span class="nv">$response</span><span class="o">-&gt;</span><span class="na">getBody</span><span class="p">();</span>
-</code></pre>
+</code></pre><pre class="highlight go tab-go"><code><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
+
+</span><span class="k">import</span><span class="x"> </span><span class="p">(</span><span class="x">
+    </span><span class="s">"fmt"</span><span class="x">
+    </span><span class="s">"strings"</span><span class="x">
+    </span><span class="s">"net/http"</span><span class="x">
+    </span><span class="s">"io/ioutil"</span><span class="x">
+</span><span class="p">)</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+
+    </span><span class="n">url</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="s">"https://sandbox.api.deliverysolutions.co/api/v1/order/placeorder"</span><span class="x">
+
+    </span><span class="n">payload</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">strings</span><span class="o">.</span><span class="n">NewReader</span><span class="p">(</span><span class="s">"{</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">userEmail</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">dmart@gmail.com</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">storeExternalId</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">Mango101</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">orderExternalId</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">223</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">department</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">Apparel</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">orderValue</span><span class="se">\"</span><span class="s">: 23,</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">userPickupTime</span><span class="se">\"</span><span class="s">: 1600616800000,</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">dropOffTime</span><span class="se">\"</span><span class="s">: null,</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">deliveryContact</span><span class="se">\"</span><span class="s">: {</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">name</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">ali jam</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">phone</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">232-323-2323</span><span class="se">\"\n</span><span class="s">  },</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">deliveryAddress</span><span class="se">\"</span><span class="s">: {</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">street</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">123 Main Street</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">street2</span><span class="se">\"</span><span class="s">: </span><span class="se">\"\"</span><span class="s">,</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">secondary</span><span class="se">\"</span><span class="s">: </span><span class="se">\"\"</span><span class="s">,</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">city</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">Irving</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">state</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">TX</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">zipcode</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">75024</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">apartment</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">no</span><span class="se">\"\n</span><span class="s">  },</span><span class="se">\n</span><span class="s">   </span><span class="se">\"</span><span class="s">packages</span><span class="se">\"</span><span class="s">: [</span><span class="se">\n</span><span class="s">    {</span><span class="se">\n</span><span class="s">      </span><span class="se">\"</span><span class="s">name</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">custom</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">      </span><span class="se">\"</span><span class="s">size</span><span class="se">\"</span><span class="s">: {</span><span class="se">\n</span><span class="s">        </span><span class="se">\"</span><span class="s">length</span><span class="se">\"</span><span class="s">: 2,</span><span class="se">\n</span><span class="s">        </span><span class="se">\"</span><span class="s">width</span><span class="se">\"</span><span class="s">: 22,</span><span class="se">\n</span><span class="s">        </span><span class="se">\"</span><span class="s">height</span><span class="se">\"</span><span class="s">: 2</span><span class="se">\n</span><span class="s">      },</span><span class="se">\n</span><span class="s">      </span><span class="se">\"</span><span class="s">weight</span><span class="se">\"</span><span class="s">: 22</span><span class="se">\n</span><span class="s">    }</span><span class="se">\n</span><span class="s">  ],</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">isSpirit</span><span class="se">\"</span><span class="s">: false,</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">isBeerOrWine</span><span class="se">\"</span><span class="s">: false,</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">isFragile</span><span class="se">\"</span><span class="s">: false,</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">hasRefrigeratedItems</span><span class="se">\"</span><span class="s">: false,</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">hasPerishableItems</span><span class="se">\"</span><span class="s">: false,</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">notifications</span><span class="se">\"</span><span class="s">: {</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">url</span><span class="se">\"</span><span class="s">: </span><span class="se">\"\"</span><span class="s">,</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">email</span><span class="se">\"</span><span class="s">: [</span><span class="se">\n</span><span class="s">      </span><span class="se">\"</span><span class="s">abcd@test.com</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">      </span><span class="se">\"</span><span class="s">abcd@test.com</span><span class="se">\"\n</span><span class="s">    ],</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">sms</span><span class="se">\"</span><span class="s">: [</span><span class="se">\n</span><span class="s">      </span><span class="se">\"</span><span class="s">972-342-2627</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">      </span><span class="se">\"</span><span class="s">232-232-3232</span><span class="se">\"\n</span><span class="s">    ]</span><span class="se">\n</span><span class="s">  }</span><span class="se">\n</span><span class="s">}"</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">req</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">NewRequest</span><span class="p">(</span><span class="s">"POST"</span><span class="p">,</span><span class="x"> </span><span class="n">url</span><span class="p">,</span><span class="x"> </span><span class="n">payload</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"x-api-key"</span><span class="p">,</span><span class="x"> </span><span class="s">"YOUR_API_KEY"</span><span class="p">)</span><span class="x">
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"content-type"</span><span class="p">,</span><span class="x"> </span><span class="s">"application/json"</span><span class="p">)</span><span class="x">
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"tenantid"</span><span class="p">,</span><span class="x"> </span><span class="s">"Mango"</span><span class="p">)</span><span class="x">
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"cache-control"</span><span class="p">,</span><span class="x"> </span><span class="s">"no-cache"</span><span class="p">)</span><span class="x">
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"postman-token"</span><span class="p">,</span><span class="x"> </span><span class="s">"372d5d03-eb6e-29d9-410d-4d0a56ede5b8"</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">res</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">DefaultClient</span><span class="o">.</span><span class="n">Do</span><span class="p">(</span><span class="n">req</span><span class="p">)</span><span class="x">
+
+    </span><span class="k">defer</span><span class="x"> </span><span class="n">res</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span><span class="x">
+    </span><span class="n">body</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">ioutil</span><span class="o">.</span><span class="n">ReadAll</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">Body</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="x">
+    </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="kt">string</span><span class="p">(</span><span class="n">body</span><span class="p">))</span><span class="x">
+
+</span><span class="p">}</span><span class="x">
+</span></code></pre>
 <blockquote>
 <p>Response</p>
 </blockquote>
@@ -1800,10 +1900,10 @@ curl -X GET <span class="se">\</span>
 </tr>
 </thead><tbody>
 <tr>
-<td>store</td>
-<td>Store</td>
+<td>storeExternalId</td>
+<td>string</td>
 <td>true</td>
-<td>Store</td>
+<td>StoreId for which the order is being placed, see &lsquo;Create Store&rsquo;.</td>
 </tr>
 <tr>
 <td>orderExternalId</td>
@@ -1814,13 +1914,13 @@ curl -X GET <span class="se">\</span>
 <tr>
 <td>department</td>
 <td>string</td>
-<td>false</td>
+<td>true</td>
 <td>Department</td>
 </tr>
 <tr>
 <td>orderValue</td>
 <td>decimal</td>
-<td>false</td>
+<td>true</td>
 <td>Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur</td>
 </tr>
 <tr>
@@ -1941,7 +2041,36 @@ curl -X GET <span class="se">\</span>
 
 <span class="k">echo</span> <span class="nv">$response</span><span class="o">-&gt;</span><span class="na">getBody</span><span class="p">();</span>
 
-</code></pre>
+</code></pre><pre class="highlight go tab-go"><code><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
+
+</span><span class="k">import</span><span class="x"> </span><span class="p">(</span><span class="x">
+    </span><span class="s">"fmt"</span><span class="x">
+    </span><span class="s">"net/http"</span><span class="x">
+    </span><span class="s">"io/ioutil"</span><span class="x">
+</span><span class="p">)</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+
+    </span><span class="n">url</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="s">"https://sandbox.api.deliverysolutions.co/api/v1/order/createorderfromestimate/5974ceba7b0a620001c253f4"</span><span class="x">
+
+    </span><span class="n">req</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">NewRequest</span><span class="p">(</span><span class="s">"POST"</span><span class="p">,</span><span class="x"> </span><span class="n">url</span><span class="p">,</span><span class="x"> </span><span class="no">nil</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"x-api-key"</span><span class="p">,</span><span class="x"> </span><span class="s">"YOUR_API_KEY"</span><span class="p">)</span><span class="x">
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"content-type"</span><span class="p">,</span><span class="x"> </span><span class="s">"application/json"</span><span class="p">)</span><span class="x">
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"cache-control"</span><span class="p">,</span><span class="x"> </span><span class="s">"no-cache"</span><span class="p">)</span><span class="x">
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"postman-token"</span><span class="p">,</span><span class="x"> </span><span class="s">"e116ad30-ce50-c685-c425-218855af7be5"</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">res</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">DefaultClient</span><span class="o">.</span><span class="n">Do</span><span class="p">(</span><span class="n">req</span><span class="p">)</span><span class="x">
+
+    </span><span class="k">defer</span><span class="x"> </span><span class="n">res</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span><span class="x">
+    </span><span class="n">body</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">ioutil</span><span class="o">.</span><span class="n">ReadAll</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">Body</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="x">
+    </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="kt">string</span><span class="p">(</span><span class="n">body</span><span class="p">))</span><span class="x">
+
+</span><span class="p">}</span><span class="x">
+
+</span></code></pre>
 <blockquote>
 <p>Response</p>
 </blockquote>
@@ -1985,13 +2114,15 @@ curl -X GET <span class="se">\</span>
 <td>estimateId</td>
 <td>string</td>
 <td>true</td>
-<td>ID of an Estimate</td>
+<td><code class="prettyprint">_id</code> of an Estimate. <code class="prettyprint">estimateId</code> is not the <code class="prettyprint">orderId</code> but <code class="prettyprint">_id</code> associated with an individual estimate.</b></td>
 </tr>
 </tbody></table>
 
-<aside class="success">
-<code>estimateId</code> The &lsquo;_id&rsquo; obtained from a GetEstimate response e.g. &ldquo;_id&rdquo;:&ldquo;5974ceba7b0a620001c253f4&rdquo;
+<aside class="info">
+<code>estimateId</code> The `_id` obtained from a GetEstimate response e.g. &ldquo;_id&rdquo;:&ldquo;5974ceba7b0a620001c253f4&rdquo;
 </aside>
+
+<p><b>Note : estimateId is not the <code class="prettyprint">orderId</code> but <code class="prettyprint">_id</code> associated with an individual estimate.</b></p>
 
 <h2 id="get-order">Get Order</h2>
 
@@ -2028,7 +2159,35 @@ curl -X GET <span class="se">\</span>
 
 <span class="k">echo</span> <span class="nv">$response</span><span class="o">-&gt;</span><span class="na">getBody</span><span class="p">();</span>
 
-</code></pre>
+</code></pre><pre class="highlight go tab-go"><code><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
+
+</span><span class="k">import</span><span class="x"> </span><span class="p">(</span><span class="x">
+    </span><span class="s">"fmt"</span><span class="x">
+    </span><span class="s">"net/http"</span><span class="x">
+    </span><span class="s">"io/ioutil"</span><span class="x">
+</span><span class="p">)</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+
+    </span><span class="n">url</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="s">"https://sandbox.api.deliverysolutions.co/api/v1/order/getById/5972ddec72ff1500012b0cd6"</span><span class="x">
+
+    </span><span class="n">req</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">NewRequest</span><span class="p">(</span><span class="s">"GET"</span><span class="p">,</span><span class="x"> </span><span class="n">url</span><span class="p">,</span><span class="x"> </span><span class="no">nil</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"x-api-key"</span><span class="p">,</span><span class="x"> </span><span class="s">"YOUR_API_KEY"</span><span class="p">)</span><span class="x">
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"content-type"</span><span class="p">,</span><span class="x"> </span><span class="s">"application/json"</span><span class="p">)</span><span class="x">
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"cache-control"</span><span class="p">,</span><span class="x"> </span><span class="s">"no-cache"</span><span class="p">)</span><span class="x">
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"postman-token"</span><span class="p">,</span><span class="x"> </span><span class="s">"384c94b4-e581-3477-1ea4-9e5dde791984"</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">res</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">DefaultClient</span><span class="o">.</span><span class="n">Do</span><span class="p">(</span><span class="n">req</span><span class="p">)</span><span class="x">
+
+    </span><span class="k">defer</span><span class="x"> </span><span class="n">res</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span><span class="x">
+    </span><span class="n">body</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">ioutil</span><span class="o">.</span><span class="n">ReadAll</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">Body</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="x">
+    </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="kt">string</span><span class="p">(</span><span class="n">body</span><span class="p">))</span><span class="x">
+
+</span><span class="p">}</span><span class="x">
+</span></code></pre>
 <blockquote>
 <p>Response</p>
 </blockquote>
@@ -2248,8 +2407,36 @@ curl -X GET <span class="se">\</span>
 
 <span class="k">echo</span> <span class="nv">$response</span><span class="o">-&gt;</span><span class="na">getBody</span><span class="p">();</span>
 
+</code></pre><pre class="highlight go tab-go"><code><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
 
-</code></pre>
+</span><span class="k">import</span><span class="x"> </span><span class="p">(</span><span class="x">
+    </span><span class="s">"fmt"</span><span class="x">
+    </span><span class="s">"net/http"</span><span class="x">
+    </span><span class="s">"io/ioutil"</span><span class="x">
+</span><span class="p">)</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+
+    </span><span class="n">url</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="s">"https://sandbox.api.deliverysolutions.co/api/v1/order/getOrderStatus/5972ddec72ff1500012b0cd6"</span><span class="x">
+
+    </span><span class="n">req</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">NewRequest</span><span class="p">(</span><span class="s">"GET"</span><span class="p">,</span><span class="x"> </span><span class="n">url</span><span class="p">,</span><span class="x"> </span><span class="no">nil</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"x-api-key"</span><span class="p">,</span><span class="x"> </span><span class="s">"YOUR_API_KEY"</span><span class="p">)</span><span class="x">
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"content-type"</span><span class="p">,</span><span class="x"> </span><span class="s">"application/json"</span><span class="p">)</span><span class="x">
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"cache-control"</span><span class="p">,</span><span class="x"> </span><span class="s">"no-cache"</span><span class="p">)</span><span class="x">
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"postman-token"</span><span class="p">,</span><span class="x"> </span><span class="s">"cc9fbc49-c550-5e43-a856-593f466b04f9"</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">res</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">DefaultClient</span><span class="o">.</span><span class="n">Do</span><span class="p">(</span><span class="n">req</span><span class="p">)</span><span class="x">
+
+    </span><span class="k">defer</span><span class="x"> </span><span class="n">res</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span><span class="x">
+    </span><span class="n">body</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">ioutil</span><span class="o">.</span><span class="n">ReadAll</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">Body</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="x">
+    </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="kt">string</span><span class="p">(</span><span class="n">body</span><span class="p">))</span><span class="x">
+
+</span><span class="p">}</span><span class="x">
+
+</span></code></pre>
 <blockquote>
 <p>Response</p>
 </blockquote>
@@ -2300,7 +2487,37 @@ curl -X GET <span class="se">\</span>
 <blockquote>
 <p>Request</p>
 </blockquote>
-<pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+<pre class="highlight go tab-go"><code><span class="x">
+</span><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
+
+</span><span class="k">import</span><span class="x"> </span><span class="p">(</span><span class="x">
+    </span><span class="s">"fmt"</span><span class="x">
+    </span><span class="s">"net/http"</span><span class="x">
+    </span><span class="s">"io/ioutil"</span><span class="x">
+</span><span class="p">)</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+
+    </span><span class="n">url</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="s">"https://sandbox.api.deliverysolutions.co/api/v1/order/getById/5972ddec72ff1500012b0cd6"</span><span class="x">
+
+    </span><span class="n">req</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">NewRequest</span><span class="p">(</span><span class="s">"GET"</span><span class="p">,</span><span class="x"> </span><span class="n">url</span><span class="p">,</span><span class="x"> </span><span class="no">nil</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"x-api-key"</span><span class="p">,</span><span class="x"> </span><span class="s">"YOUR_API_KEY"</span><span class="p">)</span><span class="x">
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"content-type"</span><span class="p">,</span><span class="x"> </span><span class="s">"application/json"</span><span class="p">)</span><span class="x">
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"cache-control"</span><span class="p">,</span><span class="x"> </span><span class="s">"no-cache"</span><span class="p">)</span><span class="x">
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"postman-token"</span><span class="p">,</span><span class="x"> </span><span class="s">"be1f2ef1-d62a-178d-198b-773e9e38fcac"</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">res</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">DefaultClient</span><span class="o">.</span><span class="n">Do</span><span class="p">(</span><span class="n">req</span><span class="p">)</span><span class="x">
+
+    </span><span class="k">defer</span><span class="x"> </span><span class="n">res</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span><span class="x">
+    </span><span class="n">body</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">ioutil</span><span class="o">.</span><span class="n">ReadAll</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">Body</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="x">
+    </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="kt">string</span><span class="p">(</span><span class="n">body</span><span class="p">))</span><span class="x">
+
+</span><span class="p">}</span><span class="x">
+
+</span></code></pre><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
 
 <span class="nv">$client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">http\Client</span><span class="p">;</span>
 <span class="nv">$request</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">http\Client\Request</span><span class="p">;</span>
@@ -2418,7 +2635,42 @@ curl -X POST <span class="se">\</span>
 }
 '</span>
 
-</code></pre><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
+</code></pre><pre class="highlight go tab-go"><code><span class="x">
+</span><span class="k">package</span><span class="x"> </span><span class="n">main</span><span class="x">
+
+</span><span class="k">import</span><span class="x"> </span><span class="p">(</span><span class="x">
+    </span><span class="s">"fmt"</span><span class="x">
+    </span><span class="s">"strings"</span><span class="x">
+    </span><span class="s">"net/http"</span><span class="x">
+    </span><span class="s">"io/ioutil"</span><span class="x">
+</span><span class="p">)</span><span class="x">
+
+</span><span class="k">func</span><span class="x"> </span><span class="n">main</span><span class="p">()</span><span class="x"> </span><span class="p">{</span><span class="x">
+
+    </span><span class="n">url</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="s">"https://sandbox.api.deliverysolutions.co/api/v1/getAlcoholCompliance"</span><span class="x">
+
+    </span><span class="n">payload</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">strings</span><span class="o">.</span><span class="n">NewReader</span><span class="p">(</span><span class="s">"{</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">delivery_from</span><span class="se">\"</span><span class="s">: {</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">address_1</span><span class="se">\"</span><span class="s"> : </span><span class="se">\"</span><span class="s">9019 Jasmine Ln</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">address_2</span><span class="se">\"</span><span class="s"> : </span><span class="se">\"\"</span><span class="s">,</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">city</span><span class="se">\"</span><span class="s"> : </span><span class="se">\"</span><span class="s">Irving</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">state</span><span class="se">\"</span><span class="s"> : </span><span class="se">\"</span><span class="s">TX</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">    </span><span class="se">\"</span><span class="s">zip</span><span class="se">\"</span><span class="s"> : </span><span class="se">\"</span><span class="s">75063</span><span class="se">\"\n</span><span class="s">  },</span><span class="se">\n</span><span class="s">  </span><span class="se">\"</span><span class="s">delivery_to</span><span class="se">\"</span><span class="s">: {</span><span class="se">\n</span><span class="s">      </span><span class="se">\"</span><span class="s">address_1</span><span class="se">\"</span><span class="s"> : </span><span class="se">\"</span><span class="s">1111 Christopher Court</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">      </span><span class="se">\"</span><span class="s">address_2</span><span class="se">\"</span><span class="s"> : </span><span class="se">\"\"</span><span class="s">,</span><span class="se">\n</span><span class="s">      </span><span class="se">\"</span><span class="s">city</span><span class="se">\"</span><span class="s"> : </span><span class="se">\"</span><span class="s">Irving</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">      </span><span class="se">\"</span><span class="s">state</span><span class="se">\"</span><span class="s">: </span><span class="se">\"</span><span class="s">az</span><span class="se">\"</span><span class="s">,</span><span class="se">\n</span><span class="s">      </span><span class="se">\"</span><span class="s">zip</span><span class="se">\"</span><span class="s"> : </span><span class="se">\"</span><span class="s">75060</span><span class="se">\"\n</span><span class="s">    }</span><span class="se">\n</span><span class="s">}</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">req</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">NewRequest</span><span class="p">(</span><span class="s">"POST"</span><span class="p">,</span><span class="x"> </span><span class="n">url</span><span class="p">,</span><span class="x"> </span><span class="n">payload</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"x-api-key"</span><span class="p">,</span><span class="x"> </span><span class="s">"YOUR_API_KEY"</span><span class="p">)</span><span class="x">
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"content-type"</span><span class="p">,</span><span class="x"> </span><span class="s">"application/json"</span><span class="p">)</span><span class="x">
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"tenantid"</span><span class="p">,</span><span class="x"> </span><span class="s">"Mango"</span><span class="p">)</span><span class="x">
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"cache-control"</span><span class="p">,</span><span class="x"> </span><span class="s">"no-cache"</span><span class="p">)</span><span class="x">
+    </span><span class="n">req</span><span class="o">.</span><span class="n">Header</span><span class="o">.</span><span class="n">Add</span><span class="p">(</span><span class="s">"postman-token"</span><span class="p">,</span><span class="x"> </span><span class="s">"b2266124-dddc-04aa-5c30-d10a984fb8ff"</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">res</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">http</span><span class="o">.</span><span class="n">DefaultClient</span><span class="o">.</span><span class="n">Do</span><span class="p">(</span><span class="n">req</span><span class="p">)</span><span class="x">
+
+    </span><span class="k">defer</span><span class="x"> </span><span class="n">res</span><span class="o">.</span><span class="n">Body</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span><span class="x">
+    </span><span class="n">body</span><span class="p">,</span><span class="x"> </span><span class="n">_</span><span class="x"> </span><span class="o">:=</span><span class="x"> </span><span class="n">ioutil</span><span class="o">.</span><span class="n">ReadAll</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">Body</span><span class="p">)</span><span class="x">
+
+    </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="x">
+    </span><span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="kt">string</span><span class="p">(</span><span class="n">body</span><span class="p">))</span><span class="x">
+
+</span><span class="p">}</span><span class="x">
+
+
+</span></code></pre><pre class="highlight php tab-php"><code><span class="cp">&lt;?php</span>
 
 <span class="nv">$client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">http\Client</span><span class="p">;</span>
 <span class="nv">$request</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">http\Client\Request</span><span class="p">;</span>
@@ -2642,6 +2894,7 @@ You can view the configuration by visiting the <a href="https://sandbox.portal.d
           <div class="lang-selector">
                 <a href="#" data-language-name="shell">shell</a>
                 <a href="#" data-language-name="php">php</a>
+                <a href="#" data-language-name="go">go</a>
           </div>
       </div>
     </div>

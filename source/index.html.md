@@ -4,6 +4,7 @@ title: API Reference
 language_tabs:
   - shell
   - php
+  - go
  
 
 toc_footers:
@@ -194,14 +195,6 @@ height | decimal | false | Height
 width | decimal | false | Width
 depth | decimal | false | Depth
 
-## Store
-Property | Type | Required | Description
--------- | ---- | -------- | -----------
-id | string | true | Store ID assigned by the system when creating the store and retrieved by the GetStoreList api call.
-name | string | true | Store name provided when creating the store.
-
-* either id or name is required.
-
 ## Time
 Property | Type | Required | Description
 -------- | ---- | -------- | -----------
@@ -326,7 +319,6 @@ $request->setRequestMethod('POST');
 $request->setBody($body);
 
 $request->setHeaders(array(
-  'postman-token' => 'fb698077-804c-5d17-605d-e447c651925b',
   'cache-control' => 'no-cache',
   'content-type' => 'application/json',
   'x-api-key' => 'YOUR_API_KEY'
@@ -338,6 +330,40 @@ $response = $client->getResponse();
 echo $response->getBody();
 
 ```
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://sandbox.api.deliverysolutions.co/api/v1/store"
+
+	payload := strings.NewReader("{\n   \"name\": \"Mango-101\",\n   \"storeExternalId\": \"Mango101\",\n   \"description\": \"General Store in Highland Park 101\",\n   \"timeZone\": \"America/Chicago\",\n   \"contact\": {\n     \"name\": \"Peter Brown\",\n     \"phone\": \"214-234-2232\"\n   },\n   \"deliveryInstructions\": \"Always be smiling\",\n   \"address\": {\n     \"street\": \"123 Main St\",\n     \"street2\": \"\",\n     \"secondary\": \"\",\n     \"city\": \"Highland Park\",\n     \"state\": \"TX\",\n     \"zipcode\": \"75062\"\n   },\n   \"departments\": [\n     {\n       \"name\": \"Produce\",\n       \"description\": \"Fresh Produce and Vegetables\",\n       \"deliveryInstructions\": \"might be wet\"\n     },\n     {\n       \"name\": \"Electronics\",\n       \"description\": \"Electronics and Phones\",\n       \"deliveryInstructions\": \"Handle with care\"\n     }\n   ],\n   \"DSPs\": [\n     {\n       \"name\": \"FedEx\"\n     },\n     {\n       \"name\": \"Postmates\"\n     }\n   ]\n }")
+
+	req, _ := http.NewRequest("POST", url, payload)
+
+	req.Header.Add("x-api-key", "YOUR_API_KEY")
+	req.Header.Add("content-type", "application/json")
+	req.Header.Add("cache-control", "no-cache")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+
 > Response
 
 ```json
@@ -396,7 +422,7 @@ echo $response->getBody();
 Property | Type | Required | Description
 -------- | ---- | -------- | -----------
 name | string | true | Name of the store (must be unique among other stores)
-storeExternalId | string | true | Unique Id of the store. 
+storeExternalId | string | true | Unique Id of the store. This could be your internal StoreId. e.g. WholeFoodNorthEast15 
 description | string| false | Description of the store.
 timeZone | [Timezone](#timezone) | true | Timezone that the store is located in.
 contact | [Contact](#contact) | true | Contact information for the store.
@@ -430,7 +456,7 @@ $request = new http\Client\Request;
 $request->setRequestUrl('https://sandbox.api.deliverysolutions.co/api/v1/store');
 $request->setRequestMethod('GET');
 $request->setHeaders(array(
-  'postman-token' => '5a0f1b0c-7684-27cc-5fe4-d1785ec364b8',
+  
   'cache-control' => 'no-cache',
   'content-type' => 'application/json',
   'x-api-key' => 'YOUR_API_KEY'
@@ -441,6 +467,36 @@ $response = $client->getResponse();
 
 echo $response->getBody();
 
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://sandbox.api.deliverysolutions.co/api/v1/store"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	req.Header.Add("x-api-key", "YOUR_API_KEY")
+	req.Header.Add("content-type", "application/json")
+	req.Header.Add("cache-control", "no-cache")
+	
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
 ```
 > Response
 
@@ -638,7 +694,41 @@ $response = $client->getResponse();
 echo $response->getBody();
 
 ```
- 
+```go
+
+package main
+
+import (
+	"fmt"
+	"strings"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://sandbox.api.deliverysolutions.co/api/v1/order/estimates"
+
+	payload := strings.NewReader("{\n  \"userEmail\": \"dmart@gmail.com\",\n  \"storeExternalId\": \"Mango101\",\n  \"orderExternalId\": \"223\",\n  \"department\": \"Apparel\",\n  \"orderValue\": 23,\n  \"userPickupTime\": 1600616800000,\n  \"dropOffTime\": null,\n  \"deliveryContact\": {\n    \"name\": \"ali jam\",\n    \"phone\": \"232-323-2323\"\n  },\n  \"deliveryAddress\": {\n    \"street\": \"123 Main Street\",\n    \"street2\": \"\",\n    \"secondary\": \"\",\n    \"city\": \"Irving\",\n    \"state\": \"TX\",\n    \"zipcode\": \"75024\",\n    \"apartment\": \"no\"\n  },\n   \"packages\": [\n    {\n      \"name\": \"custom\",\n      \"size\": {\n        \"length\": 2,\n        \"width\": 22,\n        \"height\": 2\n      },\n      \"weight\": 22\n    }\n  ],\n  \"isSpirit\": false,\n  \"isBeerOrWine\": false,\n  \"isFragile\": false,\n  \"hasRefrigeratedItems\": false,\n  \"hasPerishableItems\": false,\n  \"notifications\": {\n    \"url\": \"\",\n    \"email\": [\n      \"abcd@test.com\",\n      \"abcd@test.com\"\n    ],\n    \"sms\": [\n      \"972-342-2627\",\n      \"232-232-3232\"\n    ]\n  }\n}")
+
+	req, _ := http.NewRequest("POST", url, payload)
+
+	req.Header.Add("x-api-key", "YOUR_API_KEY")
+	req.Header.Add("content-type", "application/json")
+	req.Header.Add("cache-control", "no-cache")
+	req.Header.Add("postman-token", "e45b56db-b415-5e46-bb39-32a28abf11cb")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+
+ ```
  > Response
  
  ```json
@@ -823,14 +913,20 @@ echo $response->getBody();
  
  `POST https://<API_URL>/order/estimates`
  
+ The API resource can be used to obtain estimates from configured DSPs. Every estimate received 
+ has a unique <code>_id</code> assign to it. There can be more than one estimate possible for a given 
+ call.
+ 
+ See `Create Order From Estimate` to place an order for an estimate received.
+ 
   <h3> POST Parameters </h3>
  
  Property | Type | Required | Description
  -------- | ---- | -------- | -----------
- storeExternalId | string | true | StoreId for which the estimate is being requested.
+ storeExternalId | string | true | StoreId for which the estimate is being requested, see 'Create Store'.
  orderExternalId | string | false | Any Id that the corporate system wants to assign to this request.
- department | string | false | Department 
- orderValue | decimal | false | Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur
+ department | string | true | Department 
+ orderValue | decimal | true | Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur
  userPickupTime | string | false | time at which the package will be ready to be picked up, Unix time in milliseconds e.g. 1500616800000
  dropoffTime | string | false | last time to which the package must be delivered by, Unix time in milliseconds e.g. 1500616800000
  deliveryContact | [Customer Info](#customer-info) | true | Customer information to obtain an estimate.
@@ -984,6 +1080,41 @@ $response = $client->getResponse();
 
 echo $response->getBody();
 ```
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://sandbox.api.deliverysolutions.co/api/v1/order/placeorder"
+
+	payload := strings.NewReader("{\n  \"userEmail\": \"dmart@gmail.com\",\n  \"storeExternalId\": \"Mango101\",\n  \"orderExternalId\": \"223\",\n  \"department\": \"Apparel\",\n  \"orderValue\": 23,\n  \"userPickupTime\": 1600616800000,\n  \"dropOffTime\": null,\n  \"deliveryContact\": {\n    \"name\": \"ali jam\",\n    \"phone\": \"232-323-2323\"\n  },\n  \"deliveryAddress\": {\n    \"street\": \"123 Main Street\",\n    \"street2\": \"\",\n    \"secondary\": \"\",\n    \"city\": \"Irving\",\n    \"state\": \"TX\",\n    \"zipcode\": \"75024\",\n    \"apartment\": \"no\"\n  },\n   \"packages\": [\n    {\n      \"name\": \"custom\",\n      \"size\": {\n        \"length\": 2,\n        \"width\": 22,\n        \"height\": 2\n      },\n      \"weight\": 22\n    }\n  ],\n  \"isSpirit\": false,\n  \"isBeerOrWine\": false,\n  \"isFragile\": false,\n  \"hasRefrigeratedItems\": false,\n  \"hasPerishableItems\": false,\n  \"notifications\": {\n    \"url\": \"\",\n    \"email\": [\n      \"abcd@test.com\",\n      \"abcd@test.com\"\n    ],\n    \"sms\": [\n      \"972-342-2627\",\n      \"232-232-3232\"\n    ]\n  }\n}")
+
+	req, _ := http.NewRequest("POST", url, payload)
+
+	req.Header.Add("x-api-key", "YOUR_API_KEY")
+	req.Header.Add("content-type", "application/json")
+	req.Header.Add("tenantid", "Mango")
+	req.Header.Add("cache-control", "no-cache")
+	req.Header.Add("postman-token", "372d5d03-eb6e-29d9-410d-4d0a56ede5b8")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
 > Response
 
 ```json
@@ -1018,10 +1149,10 @@ echo $response->getBody();
 
 Property | Type | Required | Description
  -------- | ---- | -------- | -----------
- store | Store | true | Store
+ storeExternalId | string | true | StoreId for which the order is being placed, see 'Create Store'.
  orderExternalId | string | false | Any Id that the corporate system wants to assign to this request.
- department | string | false | Department 
- orderValue | decimal | false | Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur
+ department | string | true | Department 
+ orderValue | decimal | true | Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur
  userPickupTime | string | false | time at which the package will be ready to be picked up, Unix time in milliseconds e.g. 1500616800000
  dropoffTime | string | false | last time to which the package must be delivered by, Unix time in milliseconds e.g. 1500616800000
  deliveryContact | [Customer Info](#customer-info) | true | Customer information to obtain an estimate.
@@ -1074,6 +1205,37 @@ $response = $client->getResponse();
 echo $response->getBody();
 
 ```
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://sandbox.api.deliverysolutions.co/api/v1/order/createorderfromestimate/5974ceba7b0a620001c253f4"
+
+	req, _ := http.NewRequest("POST", url, nil)
+
+	req.Header.Add("x-api-key", "YOUR_API_KEY")
+	req.Header.Add("content-type", "application/json")
+	req.Header.Add("cache-control", "no-cache")
+	req.Header.Add("postman-token", "e116ad30-ce50-c685-c425-218855af7be5")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+
+```
 > Response
 
 ```json
@@ -1108,11 +1270,14 @@ echo $response->getBody();
 
 Property | Type | Required | Description
 -------- | ---- | -------- | -----------
-estimateId | string | true | ID of an Estimate
+estimateId | string | true | `_id` of an Estimate. `estimateId` is not the `orderId` but `_id` associated with an individual estimate.</b>
 
-<aside class="success">
-<code>estimateId</code> The '_id' obtained from a GetEstimate response e.g. "_id":"5974ceba7b0a620001c253f4"
+
+<aside class="info">
+<code>estimateId</code> The `_id` obtained from a GetEstimate response e.g. "_id":"5974ceba7b0a620001c253f4"
 </aside>
+
+<b>Note : estimateId is not the `orderId` but `_id` associated with an individual estimate.</b>
 
 
 
@@ -1154,6 +1319,36 @@ $response = $client->getResponse();
 
 echo $response->getBody();
 
+```
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://sandbox.api.deliverysolutions.co/api/v1/order/getById/5972ddec72ff1500012b0cd6"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	req.Header.Add("x-api-key", "YOUR_API_KEY")
+	req.Header.Add("content-type", "application/json")
+	req.Header.Add("cache-control", "no-cache")
+	req.Header.Add("postman-token", "384c94b4-e581-3477-1ea4-9e5dde791984")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
 ```
 
 >  Response
@@ -1368,8 +1563,39 @@ $response = $client->getResponse();
 
 echo $response->getBody();
 
+```
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://sandbox.api.deliverysolutions.co/api/v1/order/getOrderStatus/5972ddec72ff1500012b0cd6"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	req.Header.Add("x-api-key", "YOUR_API_KEY")
+	req.Header.Add("content-type", "application/json")
+	req.Header.Add("cache-control", "no-cache")
+	req.Header.Add("postman-token", "cc9fbc49-c550-5e43-a856-593f466b04f9")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
 
 ```
+
 > Response
 
 ```json
@@ -1411,6 +1637,39 @@ orderId | Order id
 
 ## Cancel Order
 > Request
+
+```go
+
+package main
+
+import (
+	"fmt"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://sandbox.api.deliverysolutions.co/api/v1/order/getById/5972ddec72ff1500012b0cd6"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	req.Header.Add("x-api-key", "YOUR_API_KEY")
+	req.Header.Add("content-type", "application/json")
+	req.Header.Add("cache-control", "no-cache")
+	req.Header.Add("postman-token", "be1f2ef1-d62a-178d-198b-773e9e38fcac")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+
+```
 
 ```php
 <?php
@@ -1529,6 +1788,44 @@ curl -X POST \
     }
 }
 '
+
+```
+
+```go
+
+package main
+
+import (
+	"fmt"
+	"strings"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "https://sandbox.api.deliverysolutions.co/api/v1/getAlcoholCompliance"
+
+	payload := strings.NewReader("{\n  \"delivery_from\": {\n    \"address_1\" : \"9019 Jasmine Ln\",\n    \"address_2\" : \"\",\n    \"city\" : \"Irving\",\n    \"state\" : \"TX\",\n    \"zip\" : \"75063\"\n  },\n  \"delivery_to\": {\n      \"address_1\" : \"1111 Christopher Court\",\n      \"address_2\" : \"\",\n      \"city\" : \"Irving\",\n      \"state\": \"az\",\n      \"zip\" : \"75060\"\n    }\n}\n")
+
+	req, _ := http.NewRequest("POST", url, payload)
+
+	req.Header.Add("x-api-key", "YOUR_API_KEY")
+	req.Header.Add("content-type", "application/json")
+	req.Header.Add("tenantid", "Mango")
+	req.Header.Add("cache-control", "no-cache")
+	req.Header.Add("postman-token", "b2266124-dddc-04aa-5c30-d10a984fb8ff")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+
 
 ```
 
