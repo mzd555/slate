@@ -321,6 +321,84 @@ Please replace &lsquo;YOUR_API_KEY&rsquo; with the actual key.
 
 <h1 id="models">Models</h1>
 
+<h2 id="childorder">ChildOrder </h4></h2>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>store</td>
+<td><a href="#storelocation">StoreLocation</a></td>
+<td>true</td>
+<td>An instance of StoreLocation.</td>
+</tr>
+<tr>
+<td>orderExternalId</td>
+<td>string</td>
+<td>false</td>
+<td>Any Id that the corporate system wants to assign to this request.</td>
+</tr>
+<tr>
+<td>department</td>
+<td>string</td>
+<td>true</td>
+<td>Department</td>
+</tr>
+<tr>
+<td>orderValue</td>
+<td>decimal</td>
+<td>true</td>
+<td>Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur</td>
+</tr>
+<tr>
+<td>userPickupTime</td>
+<td>string</td>
+<td>false</td>
+<td>time at which the package will be ready to be picked up, Unix time in milliseconds e.g. 1500616800000</td>
+</tr>
+<tr>
+<td>packages</td>
+<td><a href="#dimension">Dimension[ ]</a></td>
+<td>true</td>
+<td>Array of Dimension of each package.</td>
+</tr>
+<tr>
+<td>isSpirit</td>
+<td>bool</td>
+<td>true</td>
+<td>Contains Spirits</td>
+</tr>
+<tr>
+<td>isBeerOrWine</td>
+<td>bool</td>
+<td>false</td>
+<td>Contains beer or wine</td>
+</tr>
+<tr>
+<td>isFragile</td>
+<td>bool</td>
+<td>false</td>
+<td>Is Fragile.</td>
+</tr>
+<tr>
+<td>hasRefrigeratedItems</td>
+<td>bool</td>
+<td>false</td>
+<td>Has refrigerated items</td>
+</tr>
+<tr>
+<td>hasPerishableItems</td>
+<td>bool</td>
+<td>false</td>
+<td>Has perishable items</td>
+</tr>
+</tbody></table>
+
 <h2 id="contact">Contact</h2>
 
 <table><thead>
@@ -514,60 +592,6 @@ Please replace &lsquo;YOUR_API_KEY&rsquo; with the actual key.
 <td>string</td>
 <td>false</td>
 <td>value of the entity</td>
-</tr>
-</tbody></table>
-
-<h2 id="location">Location</h2>
-
-<table><thead>
-<tr>
-<th>Property</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>street</td>
-<td>string</td>
-<td>true</td>
-<td>Address Line 1</td>
-</tr>
-<tr>
-<td>street2</td>
-<td>string</td>
-<td>true</td>
-<td>Address Line 2</td>
-</tr>
-<tr>
-<td>city</td>
-<td>string</td>
-<td>true</td>
-<td>City</td>
-</tr>
-<tr>
-<td>state</td>
-<td>string</td>
-<td>true</td>
-<td>State</td>
-</tr>
-<tr>
-<td>zipcode</td>
-<td>string</td>
-<td>true</td>
-<td>Zip</td>
-</tr>
-<tr>
-<td>apartment</td>
-<td>string</td>
-<td>true</td>
-<td>yes/no</td>
-</tr>
-<tr>
-<td>apartmentNumber</td>
-<td>string</td>
-<td>false</td>
-<td>Apartment number required if <code>apartment = &#39;yes&#39; </code></td>
 </tr>
 </tbody></table>
 
@@ -792,6 +816,69 @@ Please replace &lsquo;YOUR_API_KEY&rsquo; with the actual key.
 <td>Depth</td>
 </tr>
 </tbody></table>
+
+<h2 id="storelocation">StoreLocation</h2>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>storeExternalId</td>
+<td>conditional</td>
+<td>optional</td>
+<td>StoreId for which the estimate is being requested, see &lsquo;Create Store&rsquo;.</td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>conditional</td>
+<td>Name of the store</td>
+</tr>
+<tr>
+<td>street</td>
+<td>string</td>
+<td>conditional</td>
+<td>Address Line 1</td>
+</tr>
+<tr>
+<td>street2</td>
+<td>string</td>
+<td>optional</td>
+<td>Address Line 2</td>
+</tr>
+<tr>
+<td>city</td>
+<td>string</td>
+<td>conditional</td>
+<td>City</td>
+</tr>
+<tr>
+<td>state</td>
+<td>string</td>
+<td>conditional</td>
+<td>State</td>
+</tr>
+<tr>
+<td>zipcode</td>
+<td>string</td>
+<td>conditional</td>
+<td>Zip</td>
+</tr>
+<tr>
+<td>phone</td>
+<td>string</td>
+<td>conditional</td>
+<td>Phone number for the store.</td>
+</tr>
+</tbody></table>
+
+<p><aside class='info'> Either storeExternalId or name,street,city,state,zipcode,phone is required. 
+</aside></p>
 
 <h2 id="time">Time</h2>
 
@@ -1689,6 +1776,81 @@ curl -X GET <span class="se">\</span>
 </tr>
 </tbody></table>
 
+<h2 id="create-a-multi-pickup-estimate">Create a Multi-Pickup estimate</h2>
+
+<aside class='warning' style='color:white'>
+   This is an under development feature
+</aside>
+ 
+
+<p><code class="prettyprint">POST https://&lt;API_URL&gt;/order/multiple/estimates</code></p>
+
+<p><h3> POST Parameters </h3></p>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>storeExternalId</td>
+<td>string</td>
+<td>true</td>
+<td>StoreId for which the estimate is being requested, see &lsquo;Create Store&rsquo;.</td>
+</tr>
+<tr>
+<td>orderExternalId</td>
+<td>string</td>
+<td>false</td>
+<td>Any Id that the corporate system wants to assign to this request.</td>
+</tr>
+<tr>
+<td>orderValue</td>
+<td>decimal</td>
+<td>true</td>
+<td>Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur</td>
+</tr>
+<tr>
+<td>dropoffTime</td>
+<td>string</td>
+<td>false</td>
+<td>last time to which the package must be delivered by, Unix time in milliseconds e.g. 1500616800000</td>
+</tr>
+<tr>
+<td>deliveryContact</td>
+<td><a href="#customer-info">Customer Info</a></td>
+<td>true</td>
+<td>Customer information to obtain an estimate.</td>
+</tr>
+<tr>
+<td>deliveryAddress</td>
+<td><a href="#location">Location</a></td>
+<td>true</td>
+<td>Address to deliver the package to.</td>
+</tr>
+<tr>
+<td>notifications</td>
+<td>Array of Notification</td>
+<td>true</td>
+<td>Status Update Notification,</td>
+</tr>
+<tr>
+<td>userEmail</td>
+<td>string</td>
+<td>true</td>
+<td>User email</td>
+</tr>
+<tr>
+<td>childOrders</td>
+<td><a href="#childorder">ChildOrder[]</a></td>
+<td>true</td>
+<td>Child Orders for multi-pickup.</td>
+</tr>
+</tbody></table>
+
 <h1 id="order-resource">Order Resource</h1>
 
 <h2 id="create-order">Create Order</h2>
@@ -2008,6 +2170,81 @@ curl -X GET <span class="se">\</span>
 <td>NO_ESTIMATES_FOR_APPROVED_DELIVERY_AMOUNT</td>
 <td>None of the estimates received were below the set threshold amount</td>
 <td>Visit Corporate/Business Rules and check the threshold amount.</td>
+</tr>
+</tbody></table>
+
+<h2 id="create-a-multi-pickup-order">Create a Multi-Pickup Order</h2>
+
+<aside class='warning' style='color:white'>
+   This is an under development feature
+</aside>
+ 
+
+<p><code class="prettyprint">POST https://&lt;API_URL&gt;/order/multiple/order</code></p>
+
+<p><h3> POST Parameters </h3></p>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>storeExternalId</td>
+<td>string</td>
+<td>true</td>
+<td>StoreId for which the estimate is being requested, see &lsquo;Create Store&rsquo;.</td>
+</tr>
+<tr>
+<td>orderExternalId</td>
+<td>string</td>
+<td>false</td>
+<td>Any Id that the corporate system wants to assign to this request.</td>
+</tr>
+<tr>
+<td>orderValue</td>
+<td>decimal</td>
+<td>true</td>
+<td>Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur</td>
+</tr>
+<tr>
+<td>dropoffTime</td>
+<td>string</td>
+<td>false</td>
+<td>last time to which the package must be delivered by, Unix time in milliseconds e.g. 1500616800000</td>
+</tr>
+<tr>
+<td>deliveryContact</td>
+<td><a href="#customer-info">Customer Info</a></td>
+<td>true</td>
+<td>Customer information to obtain an estimate.</td>
+</tr>
+<tr>
+<td>deliveryAddress</td>
+<td><a href="#location">Location</a></td>
+<td>true</td>
+<td>Address to deliver the package to.</td>
+</tr>
+<tr>
+<td>notifications</td>
+<td>Array of Notification</td>
+<td>true</td>
+<td>Status Update Notification,</td>
+</tr>
+<tr>
+<td>userEmail</td>
+<td>string</td>
+<td>true</td>
+<td>User email</td>
+</tr>
+<tr>
+<td>childOrders</td>
+<td><a href="#childorder">ChildOrder[]</a></td>
+<td>true</td>
+<td>Child Orders for multi-pickup.</td>
 </tr>
 </tbody></table>
 
@@ -2731,20 +2968,11 @@ curl -X POST <span class="se">\</span>
     </span><span class="s2">"compliance"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
         </span><span class="s2">"alcohol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Information unavailable"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"zoning"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"result"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"errors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-                </span><span class="p">{</span><span class="w">
-                    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CROSS_STATE_RULE_FAILURE"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"same state delivery rule violated."</span><span class="w">
-                </span><span class="p">},</span><span class="w">
-                </span><span class="p">{</span><span class="w">
-                    </span><span class="s2">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"CROSS_COUNTY_RULE_FAILURE"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"same county delivery rule violated."</span><span class="w">
-                </span><span class="p">}</span><span class="w">
-            </span><span class="p">]</span><span class="w">
+            </span><span class="s2">"result"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
         </span><span class="p">}</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
+
 </span></code></pre>
 <h3 id="http-request">HTTP Request</h3>
 

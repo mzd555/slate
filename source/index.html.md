@@ -79,6 +79,24 @@ Status Code	| Result
 
 # Models
 
+## ChildOrder </h4>
+ 
+Property | Type | Required | Description
+-------- | ---- | -------- | -----------
+store | [StoreLocation](#storelocation) | true | An instance of StoreLocation.
+orderExternalId | string | false | Any Id that the corporate system wants to assign to this request.
+department | string | true | Department 
+orderValue | decimal | true | Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur
+userPickupTime | string | false | time at which the package will be ready to be picked up, Unix time in milliseconds e.g. 1500616800000
+packages | [Dimension[ ]](#dimension) | true | Array of Dimension of each package.
+isSpirit | bool | true | Contains Spirits
+isBeerOrWine | bool | false | Contains beer or wine
+isFragile | bool | false | Is Fragile.
+hasRefrigeratedItems | bool | false | Has refrigerated items
+hasPerishableItems | bool | false | Has perishable items
+
+
+
 ## Contact
 Property | Type | Required | Description
 -------- | ---- | -------- | -----------
@@ -132,17 +150,6 @@ Property | Type | Required | Description
 name | string | true | name of the entity
 value | string | false | value of the entity
 
-## Location
-Property | Type | Required | Description
--------- | ---- | -------- | -----------
-street | string | true | Address Line 1
-street2 | string | true | Address Line 2
-city | string | true | City
-state | string | true | State
-zipcode | string | true | Zip
-apartment | string | true | yes/no
-apartmentNumber |string | false | Apartment number required if <code>apartment = 'yes' </code>
-
 
 ## Notification
 Property | Type | Required | Description
@@ -194,6 +201,22 @@ Property | Type | Required | Description
 height | decimal | false | Height
 width | decimal | false | Width
 depth | decimal | false | Depth
+
+## StoreLocation
+
+Property | Type | Required | Description
+  -------- | ---- | -------- | -----------
+  storeExternalId | conditional | optional | StoreId for which the estimate is being requested, see 'Create Store'.
+  name | string | conditional | Name of the store
+  street | string | conditional | Address Line 1
+  street2 | string | optional | Address Line 2
+  city | string | conditional | City
+  state | string | conditional | State
+  zipcode | string | conditional | Zip
+  phone | string | conditional | Phone number for the store.
+  
+  <aside class='info'> Either storeExternalId or name,street,city,state,zipcode,phone is required. 
+</aside>
 
 ## Time
 Property | Type | Required | Description
@@ -940,6 +963,30 @@ func main() {
  notifications | Array of Notification | true | Status Update Notification,
  userEmail | string | true | User email
 
+## Create a Multi-Pickup estimate 
+
+<aside class='warning' style='color:white'>
+   This is an under development feature
+</aside>
+ 
+ 
+`POST https://<API_URL>/order/multiple/estimates`
+
+ <h3> POST Parameters </h3>
+ 
+ Property | Type | Required | Description
+ -------- | ---- | -------- | -----------
+ storeExternalId | string | true | StoreId for which the estimate is being requested, see 'Create Store'.
+ orderExternalId | string | false | Any Id that the corporate system wants to assign to this request.
+ orderValue | decimal | true | Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur
+ dropoffTime | string | false | last time to which the package must be delivered by, Unix time in milliseconds e.g. 1500616800000
+ deliveryContact | [Customer Info](#customer-info) | true | Customer information to obtain an estimate.
+ deliveryAddress | [Location](#location) | true | Address to deliver the package to.
+ notifications | Array of Notification | true | Status Update Notification,
+ userEmail | string | true | User email
+ childOrders | [ChildOrder[]](#childorder)| true | Child Orders for multi-pickup. 
+ 
+ 
 # Order Resource
 
 ## Create Order
@@ -1171,6 +1218,30 @@ Property | Type | Required | Description
  --------- | ----------- | ---------
  NO_ESTIMATES_FOR_APPROVED_DELIVERY_AMOUNT | None of the estimates received were below the set threshold amount | Visit Corporate/Business Rules and check the threshold amount.
 
+
+## Create a Multi-Pickup Order 
+
+<aside class='warning' style='color:white'>
+   This is an under development feature
+</aside>
+ 
+ 
+`POST https://<API_URL>/order/multiple/order`
+
+ <h3> POST Parameters </h3>
+ 
+ Property | Type | Required | Description
+ -------- | ---- | -------- | -----------
+ storeExternalId | string | true | StoreId for which the estimate is being requested, see 'Create Store'.
+ orderExternalId | string | false | Any Id that the corporate system wants to assign to this request.
+ orderValue | decimal | true | Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur
+ dropoffTime | string | false | last time to which the package must be delivered by, Unix time in milliseconds e.g. 1500616800000
+ deliveryContact | [Customer Info](#customer-info) | true | Customer information to obtain an estimate.
+ deliveryAddress | [Location](#location) | true | Address to deliver the package to.
+ notifications | Array of Notification | true | Status Update Notification,
+ userEmail | string | true | User email
+ childOrders | [ChildOrder[]](#childorder)| true | Child Orders for multi-pickup. 
+ 
 
 ## Create Order From Estimate
 
@@ -1893,20 +1964,11 @@ echo $response->getBody();
     "compliance": {
         "alcohol": "Information unavailable",
         "zoning": {
-            "result": false,
-            "errors": [
-                {
-                    "type": "CROSS_STATE_RULE_FAILURE",
-                    "description": "same state delivery rule violated."
-                },
-                {
-                    "type": "CROSS_COUNTY_RULE_FAILURE",
-                    "description": "same county delivery rule violated."
-                }
-            ]
+            "result": false
         }
     }
 }
+
 ```
 
 ### HTTP Request
