@@ -79,24 +79,6 @@ Status Code	| Result
 
 # Models
 
-## ChildOrder </h4>
- 
-Property | Type | Required | Description
--------- | ---- | -------- | -----------
-store | [StoreLocation](#storelocation) | true | An instance of StoreLocation.
-orderExternalId | string | false | Any Id that the corporate system wants to assign to this request.
-department | string | true | Department 
-orderValue | decimal | true | Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur
-userPickupTime | string | false | time at which the package will be ready to be picked up, Unix time in milliseconds e.g. 1500616800000
-packages | [Dimension[ ]](#dimension) | true | Array of Dimension of each package.
-isSpirit | bool | true | Contains Spirits
-isBeerOrWine | bool | false | Contains beer or wine
-isFragile | bool | false | Is Fragile.
-hasRefrigeratedItems | bool | false | Has refrigerated items
-hasPerishableItems | bool | false | Has perishable items
-
-
-
 ## Contact
 Property | Type | Required | Description
 -------- | ---- | -------- | -----------
@@ -181,6 +163,23 @@ Property | Type | Required | Description
 number | string | true | Number
 extension | string | true | Extension
 department | string | true | Department
+
+## PickupStop </h4>
+ 
+Property | Type | Required | Description
+-------- | ---- | -------- | -----------
+store | [StoreLocation](#storelocation) | true | An instance of StoreLocation.
+orderExternalId | string | false | Any Id that the corporate system wants to assign to this request.
+department | string | true | Department 
+orderValue | decimal | true | Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur
+userPickupTime | string | false | time at which the package will be ready to be picked up, Unix time in milliseconds e.g. 1500616800000
+packages | [Dimension[ ]](#dimension) | true | Array of Dimension of each package.
+isSpirit | bool | true | Contains Spirits
+isBeerOrWine | bool | false | Contains beer or wine
+isFragile | bool | false | Is Fragile.
+hasRefrigeratedItems | bool | false | Has refrigerated items
+hasPerishableItems | bool | false | Has perishable items
+
 
 ## Product
 Property | Type | Required | Description
@@ -962,11 +961,17 @@ func main() {
  hasPerishableItems | bool | false | Has perishable items
  notifications | Array of Notification | true | Status Update Notification,
  userEmail | string | true | User email
+ tips | decimal | false | driver tips e.g. 9.00 or 6.50
 
 ## Create a Multi-Pickup estimate 
 
 <aside class='warning' style='color:white'>
    This is an under development feature
+</aside>
+
+<aside class='info'>
+   Get an estimate for multi-pickup order. This is a call where a supported DSP is being asked to deliver pakcages
+   from multiple pickup point.
 </aside>
  
  
@@ -984,8 +989,9 @@ func main() {
  deliveryAddress | [Location](#location) | true | Address to deliver the package to.
  notifications | Array of Notification | true | Status Update Notification,
  userEmail | string | true | User email
- childOrders | [ChildOrder[]](#childorder)| true | Child Orders for multi-pickup. 
- 
+ tips | decimal | false | driver tips e.g. 9.00 or 6.50
+ pickupStops | [PickupStop[]](#pickupstop)| true | Pickup Details for individual pickup. 
+
  
 # Order Resource
 
@@ -1212,7 +1218,7 @@ Property | Type | Required | Description
  hasPerishableItems | bool | false | Has perishable items
  notifications | Array of [Notification](#notification)|false| email/sms/status update notification
  userEmail | string | true | User email
- 
+ tips | decimal | false | driver tips e.g. 9.00 or 6.50
  
  Error Code |  Detail | Resolution
  --------- | ----------- | ---------
@@ -1225,6 +1231,11 @@ Property | Type | Required | Description
    This is an under development feature
 </aside>
  
+<aside class='info'>
+    Create a multi-pickup order. This is a call where a supported DSP is being asked to deliver pakcages
+    from multiple pickup point.
+</aside>
+
  
 `POST https://<API_URL>/order/multiple/order`
 
@@ -1240,7 +1251,8 @@ Property | Type | Required | Description
  deliveryAddress | [Location](#location) | true | Address to deliver the package to.
  notifications | Array of Notification | true | Status Update Notification,
  userEmail | string | true | User email
- childOrders | [ChildOrder[]](#childorder)| true | Child Orders for multi-pickup. 
+ tips | decimal | false | driver tips e.g. 9.00 or 6.50 
+ pickupStops | [PickupStop[]](#pickupstop)| true | Pickup Details for individual pickup. 
  
 
 ## Create Order From Estimate
@@ -1944,12 +1956,17 @@ echo $response->getBody();
 
 ```
 
-> Response [200]
+> Sample Responses [200]
 
 ```json
 {
     "compliance": {
-        "alcohol": "Beer/Wine",
+        "value": "Wet",
+        "alcohol": [
+            "Beer",
+            "Wine",
+            "Spirits"
+        ],
         "zoning": {
             "result": true
         }
@@ -1957,7 +1974,31 @@ echo $response->getBody();
 }
 ```
 
-> Response
+```json
+{
+    "compliance": {
+        "value": "Dry",
+        "alcohol": [],
+        "zoning": {
+            "result": true
+        }
+    }
+}
+```
+```json
+{
+    "compliance": {
+        "value": "Moist",
+        "alcohol": [
+            "Beer",
+            "Wine"
+        ],
+        "zoning": {
+            "result": true
+        }
+    }
+}
+```
 
 ```json
 {

@@ -321,84 +321,6 @@ Please replace &lsquo;YOUR_API_KEY&rsquo; with the actual key.
 
 <h1 id="models">Models</h1>
 
-<h2 id="childorder">ChildOrder </h4></h2>
-
-<table><thead>
-<tr>
-<th>Property</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>store</td>
-<td><a href="#storelocation">StoreLocation</a></td>
-<td>true</td>
-<td>An instance of StoreLocation.</td>
-</tr>
-<tr>
-<td>orderExternalId</td>
-<td>string</td>
-<td>false</td>
-<td>Any Id that the corporate system wants to assign to this request.</td>
-</tr>
-<tr>
-<td>department</td>
-<td>string</td>
-<td>true</td>
-<td>Department</td>
-</tr>
-<tr>
-<td>orderValue</td>
-<td>decimal</td>
-<td>true</td>
-<td>Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur</td>
-</tr>
-<tr>
-<td>userPickupTime</td>
-<td>string</td>
-<td>false</td>
-<td>time at which the package will be ready to be picked up, Unix time in milliseconds e.g. 1500616800000</td>
-</tr>
-<tr>
-<td>packages</td>
-<td><a href="#dimension">Dimension[ ]</a></td>
-<td>true</td>
-<td>Array of Dimension of each package.</td>
-</tr>
-<tr>
-<td>isSpirit</td>
-<td>bool</td>
-<td>true</td>
-<td>Contains Spirits</td>
-</tr>
-<tr>
-<td>isBeerOrWine</td>
-<td>bool</td>
-<td>false</td>
-<td>Contains beer or wine</td>
-</tr>
-<tr>
-<td>isFragile</td>
-<td>bool</td>
-<td>false</td>
-<td>Is Fragile.</td>
-</tr>
-<tr>
-<td>hasRefrigeratedItems</td>
-<td>bool</td>
-<td>false</td>
-<td>Has refrigerated items</td>
-</tr>
-<tr>
-<td>hasPerishableItems</td>
-<td>bool</td>
-<td>false</td>
-<td>Has perishable items</td>
-</tr>
-</tbody></table>
-
 <h2 id="contact">Contact</h2>
 
 <table><thead>
@@ -718,6 +640,84 @@ Please replace &lsquo;YOUR_API_KEY&rsquo; with the actual key.
 <td>string</td>
 <td>true</td>
 <td>Department</td>
+</tr>
+</tbody></table>
+
+<h2 id="pickupstop">PickupStop </h4></h2>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>store</td>
+<td><a href="#storelocation">StoreLocation</a></td>
+<td>true</td>
+<td>An instance of StoreLocation.</td>
+</tr>
+<tr>
+<td>orderExternalId</td>
+<td>string</td>
+<td>false</td>
+<td>Any Id that the corporate system wants to assign to this request.</td>
+</tr>
+<tr>
+<td>department</td>
+<td>string</td>
+<td>true</td>
+<td>Department</td>
+</tr>
+<tr>
+<td>orderValue</td>
+<td>decimal</td>
+<td>true</td>
+<td>Value of the order, though this field is optional but depending upon the DSP mapped to the request a validation failure may occur</td>
+</tr>
+<tr>
+<td>userPickupTime</td>
+<td>string</td>
+<td>false</td>
+<td>time at which the package will be ready to be picked up, Unix time in milliseconds e.g. 1500616800000</td>
+</tr>
+<tr>
+<td>packages</td>
+<td><a href="#dimension">Dimension[ ]</a></td>
+<td>true</td>
+<td>Array of Dimension of each package.</td>
+</tr>
+<tr>
+<td>isSpirit</td>
+<td>bool</td>
+<td>true</td>
+<td>Contains Spirits</td>
+</tr>
+<tr>
+<td>isBeerOrWine</td>
+<td>bool</td>
+<td>false</td>
+<td>Contains beer or wine</td>
+</tr>
+<tr>
+<td>isFragile</td>
+<td>bool</td>
+<td>false</td>
+<td>Is Fragile.</td>
+</tr>
+<tr>
+<td>hasRefrigeratedItems</td>
+<td>bool</td>
+<td>false</td>
+<td>Has refrigerated items</td>
+</tr>
+<tr>
+<td>hasPerishableItems</td>
+<td>bool</td>
+<td>false</td>
+<td>Has perishable items</td>
 </tr>
 </tbody></table>
 
@@ -1774,12 +1774,23 @@ curl -X GET <span class="se">\</span>
 <td>true</td>
 <td>User email</td>
 </tr>
+<tr>
+<td>tips</td>
+<td>decimal</td>
+<td>false</td>
+<td>driver tips e.g. 9.00 or 6.50</td>
+</tr>
 </tbody></table>
 
 <h2 id="create-a-multi-pickup-estimate">Create a Multi-Pickup estimate</h2>
 
 <aside class='warning' style='color:white'>
    This is an under development feature
+</aside>
+
+<aside class='info'>
+   Get an estimate for multi-pickup order. This is a call where a supported DSP is being asked to deliver pakcages
+   from multiple pickup point.
 </aside>
  
 
@@ -1844,10 +1855,16 @@ curl -X GET <span class="se">\</span>
 <td>User email</td>
 </tr>
 <tr>
-<td>childOrders</td>
-<td><a href="#childorder">ChildOrder[]</a></td>
+<td>tips</td>
+<td>decimal</td>
+<td>false</td>
+<td>driver tips e.g. 9.00 or 6.50</td>
+</tr>
+<tr>
+<td>pickupStops</td>
+<td><a href="#pickupstop">PickupStop[]</a></td>
 <td>true</td>
-<td>Child Orders for multi-pickup.</td>
+<td>Pickup Details for individual pickup.</td>
 </tr>
 </tbody></table>
 
@@ -2157,6 +2174,12 @@ curl -X GET <span class="se">\</span>
 <td>true</td>
 <td>User email</td>
 </tr>
+<tr>
+<td>tips</td>
+<td>decimal</td>
+<td>false</td>
+<td>driver tips e.g. 9.00 or 6.50</td>
+</tr>
 </tbody></table>
 
 <table><thead>
@@ -2179,6 +2202,11 @@ curl -X GET <span class="se">\</span>
    This is an under development feature
 </aside>
  
+
+<aside class='info'>
+    Create a multi-pickup order. This is a call where a supported DSP is being asked to deliver pakcages
+    from multiple pickup point.
+</aside>
 
 <p><code class="prettyprint">POST https://&lt;API_URL&gt;/order/multiple/order</code></p>
 
@@ -2241,10 +2269,16 @@ curl -X GET <span class="se">\</span>
 <td>User email</td>
 </tr>
 <tr>
-<td>childOrders</td>
-<td><a href="#childorder">ChildOrder[]</a></td>
+<td>tips</td>
+<td>decimal</td>
+<td>false</td>
+<td>driver tips e.g. 9.00 or 6.50</td>
+</tr>
+<tr>
+<td>pickupStops</td>
+<td><a href="#pickupstop">PickupStop[]</a></td>
 <td>true</td>
-<td>Child Orders for multi-pickup.</td>
+<td>Pickup Details for individual pickup.</td>
 </tr>
 </tbody></table>
 
@@ -2950,21 +2984,43 @@ curl -X POST <span class="se">\</span>
 
 </code></pre>
 <blockquote>
-<p>Response [200]</p>
+<p>Sample Responses [200]</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="s2">"compliance"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"alcohol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Beer/Wine"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Wet"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"alcohol"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="s2">"Beer"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"Wine"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"Spirits"</span><span class="w">
+        </span><span class="p">],</span><span class="w">
         </span><span class="s2">"zoning"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
             </span><span class="s2">"result"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
         </span><span class="p">}</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre>
-<blockquote>
-<p>Response</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+</span></code></pre><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"compliance"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dry"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"alcohol"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+        </span><span class="s2">"zoning"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"result"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"compliance"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Moist"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"alcohol"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="s2">"Beer"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"Wine"</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="s2">"zoning"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"result"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="s2">"compliance"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
         </span><span class="s2">"alcohol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Information unavailable"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"zoning"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
