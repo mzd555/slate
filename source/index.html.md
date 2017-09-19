@@ -860,62 +860,6 @@ func main() {
                 "pickUpTimeByZone": "September 20th 2020, 10:46:40 am"
             },
             "orderId": "5974ceb57b0a620001c253f1",
-            "fullresponse": [
-                {
-                    "chargeDetails": [
-                        {
-                            "name": "Base Rate",
-                            "currencyAmount": {
-                                "currencyCode": "USD",
-                                "amount": 38
-                            }
-                        },
-                        {
-                            "name": "Base Rate Discount (25%)",
-                            "currencyAmount": {
-                                "currencyCode": "USD",
-                                "amount": -9.5
-                            }
-                        },
-                        {
-                            "name": "DIRECT SIGNATURE REQUIRED",
-                            "currencyAmount": {
-                                "currencyCode": "USD",
-                                "amount": 3.75
-                            }
-                        },
-                        {
-                            "name": "Sunday Pickup",
-                            "currencyAmount": {
-                                "currencyCode": "USD",
-                                "amount": 16
-                            }
-                        },
-                        {
-                            "name": "Fuel Surcharge",
-                            "currencyAmount": {
-                                "currencyCode": "USD",
-                                "amount": 1.78
-                            }
-                        }
-                    ],
-                    "shippingService": {
-                        "serviceType": "PR",
-                        "signatureService": "DSR",
-                        "specialServices": null,
-                        "restrictions": null
-                    },
-                    "estPickupTime": 1600625760000,
-                    "estDeliveryTime": 1600627560000,
-                    "pricingZone": "0D",
-                    "totalWeight": {
-                        "units": "LB",
-                        "value": 22
-                    },
-                    "pieces": 1,
-                    "fee": 50.03
-                }
-            ],
             "_id": "5974ceba7b0a620001c253f4"
         }
     ],
@@ -930,7 +874,6 @@ func main() {
 }
  
  ```
- 
   <h3>HTTP Request</h3>
  
  `POST https://<API_URL>/order/estimates`
@@ -973,7 +916,264 @@ func main() {
    Get an estimate for multi-pickup order. This is a call where a supported DSP is being asked to deliver pakcages
    from multiple pickup point.
 </aside>
+  
+> Request
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "http://localhost:8000/api/v1/order/multiple/estimates"
+
+	payload := strings.NewReader("{\n\t\"storeExternalId\": \"YC001\",\n\t\"orderValue\": 1235,\n\t\"dropoffTime\": \"1505934821095\",\n\t\"deliveryContact\": {\n\t\t\"name\": \"Customer Name\",\n\t\t\"phone\": \"1234-123-123\"\n\t},\n\t\"deliveryAddress\": {\n\t\t\"street\": \"9019 Jasmine Ln\",\n\t    \"street2\": \"\",\n\t    \"secondary\": \"\",\n\t    \"city\": \"Irving\",\n\t    \"state\": \"TX\",\n\t    \"zipcode\": \"75063\",\n\t    \"apartment\": \"no\"\n\t},\n\t\"notifications\": {\n\t\t\"url\": \"\",\n\t\t\"email\": [],\n\t\t\"sms\": []\n\t},\n\t\"userEmail\": \"gmart@gmail.com\",\n\t\"tips\": 0,\n\t\"pickupStops\": [\n\t\t{\n\t\t\t\"store\": {\n\t\t       \"storeExternalId\": \"YC001\"\n\t\t    },\n\t\t    \"userPickupTime\": \"1505932821095\",\n\t\t    \"packages\": [{\n\t\t        \"name\": \"medium\",\n\t\t        \"size\": {\n\t\t            \"width\": 10,\n\t\t            \"height\": 10,\n\t\t            \"length\": 10\n\t\t        },\n\t\t        \"weight\": 10\n\t\t    }],\n\t\t    \"isSpirit\": true,\n\t\t    \"isFragile\": true,\n\t\t    \"hasRefrigeratedItems\": false,\n\t\t    \"hasPerishableItems\": false\n\t    },\n\t    {\n\t\t\t\"store\": {\n\t\t        \"street\": \"620 Katy Fwy\",\n\t\t        \"street2\": \"\",\n\t\t        \"secondary\": \"\",\n\t\t        \"city\": \"Houston\",\n\t\t        \"state\": \"TX\",\n\t\t        \"zipcode\": \"77024\"\n\t\t    },\n\t\t    \"userPickupTime\": \"1505932121095\",\n\t\t    \"packages\": [{\n\t\t        \"name\": \"medium\",\n\t\t        \"size\": {\n\t\t            \"width\": 10,\n\t\t            \"height\": 10,\n\t\t            \"length\": 10\n\t\t        },\n\t\t        \"weight\": 10\n\t\t    }],\n\t\t    \"isSpirit\": true,\n\t\t    \"isFragile\": true,\n\t\t    \"hasRefrigeratedItems\": false,\n\t\t    \"hasPerishableItems\": false\n\t    }\n\t]\n}")
+
+	req, _ := http.NewRequest("POST", url, payload)
+
+	req.Header.Add("x-api-key", "5VTCo75ZNLta4DqREPy1CA==")
+	req.Header.Add("content-type", "application/json")
+	req.Header.Add("cache-control", "no-cache")
+	req.Header.Add("postman-token", "2859dd8a-a8b3-6915-0b1e-f7adcfaa9531")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+
+```
+
+```php
+
+<?php
+
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$body = new http\Message\Body;
+$body->append('{
+	"storeExternalId": "YC001",
+	"orderValue": 1235,
+	"dropoffTime": "1505934821095",
+	"deliveryContact": {
+		"name": "Customer Name",
+		"phone": "1234-123-123"
+	},
+	"deliveryAddress": {
+		"street": "9019 Jasmine Ln",
+	    "street2": "",
+	    "secondary": "",
+	    "city": "Irving",
+	    "state": "TX",
+	    "zipcode": "75063",
+	    "apartment": "no"
+	},
+	"notifications": {
+		"url": "",
+		"email": [],
+		"sms": []
+	},
+	"userEmail": "gmart@gmail.com",
+	"tips": 0,
+	"pickupStops": [
+		{
+			"store": {
+		       "storeExternalId": "YC001"
+		    },
+		    "userPickupTime": "1505932821095",
+		    "packages": [{
+		        "name": "medium",
+		        "size": {
+		            "width": 10,
+		            "height": 10,
+		            "length": 10
+		        },
+		        "weight": 10
+		    }],
+		    "isSpirit": true,
+		    "isFragile": true,
+		    "hasRefrigeratedItems": false,
+		    "hasPerishableItems": false
+	    },
+	    {
+			"store": {
+		        "street": "620 Katy Fwy",
+		        "street2": "",
+		        "secondary": "",
+		        "city": "Houston",
+		        "state": "TX",
+		        "zipcode": "77024"
+		    },
+		    "userPickupTime": "1505932121095",
+		    "packages": [{
+		        "name": "medium",
+		        "size": {
+		            "width": 10,
+		            "height": 10,
+		            "length": 10
+		        },
+		        "weight": 10
+		    }],
+		    "isSpirit": true,
+		    "isFragile": true,
+		    "hasRefrigeratedItems": false,
+		    "hasPerishableItems": false
+	    }
+	]
+}');
+
+$request->setRequestUrl('http://localhost:8000/api/v1/order/multiple/estimates');
+$request->setRequestMethod('POST');
+$request->setBody($body);
+
+$request->setHeaders(array(
+  'postman-token' => '52958080-e378-13db-f212-8e63f24908d9',
+  'cache-control' => 'no-cache',
+  'content-type' => 'application/json',
+  'x-api-key' => '5VTCo75ZNLta4DqREPy1CA=='
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+
+```
+  
+```shell
+  
+  curl -X POST \
+    <BASE_API_URL>/api/v1/order/multiple/estimates \
+    -H 'cache-control: no-cache' \
+    -H 'content-type: application/json' \
+    -H 'postman-token: 1fe84863-dbc2-cd69-9549-f75f75433c99' \
+    -H 'x-api-key: <YOUR_API_KEY>' \
+    -d '{
+  	"storeExternalId": "YC001",
+  	"orderValue": 1235,
+  	"dropoffTime": "1505934821095",
+  	"deliveryContact": {
+  		"name": "Customer Name",
+  		"phone": "1234-123-123"
+  	},
+  	"deliveryAddress": {
+  		"street": "9019 Jasmine Ln",
+  	    "street2": "",
+  	    "secondary": "",
+  	    "city": "Irving",
+  	    "state": "TX",
+  	    "zipcode": "75063",
+  	    "apartment": "no"
+  	},
+  	"notifications": {
+  		"url": "",
+  		"email": [],
+  		"sms": []
+  	},
+  	"userEmail": "gmart@gmail.com",
+  	"tips": 0,
+  	"pickupStops": [
+  		{
+  			"store": {
+  		       "storeExternalId": "YC001"
+  		    },
+  		    "userPickupTime": "1505932821095",
+  		    "packages": [{
+  		        "name": "medium",
+  		        "size": {
+  		            "width": 10,
+  		            "height": 10,
+  		            "length": 10
+  		        },
+  		        "weight": 10
+  		    }],
+  		    "isSpirit": true,
+  		    "isFragile": true,
+  		    "hasRefrigeratedItems": false,
+  		    "hasPerishableItems": false
+  	    },
+  	    {
+  			"store": {
+  		        "street": "620 Katy Fwy",
+  		        "street2": "",
+  		        "secondary": "",
+  		        "city": "Houston",
+  		        "state": "TX",
+  		        "zipcode": "77024"
+  		    },
+  		    "userPickupTime": "1505932121095",
+  		    "packages": [{
+  		        "name": "medium",
+  		        "size": {
+  		            "width": 10,
+  		            "height": 10,
+  		            "length": 10
+  		        },
+  		        "weight": 10
+  		    }],
+  		    "isSpirit": true,
+  		    "isFragile": true,
+  		    "hasRefrigeratedItems": false,
+  		    "hasPerishableItems": false
+  	    }
+  	]
+  }'
+  
+ ```
+
+ > Response
  
+ ```json
+ {
+     "estimates": [
+         {
+             "provider": "Lash",
+             "estimatedPickupTime": 1505766878069,
+             "estimatedPickupTimeByZone": "September 18th 2017, 3:34 pm",
+             "estimatedDeliveryTime": 1505779199999,
+             "estimatedDeliveryTimeByZone": "September 18th 2017, 6:59 pm",
+             "pickupStops": [
+                 {
+                     "estimatedPickupTime": 1505765978109,
+                     "estimatedPickupTimeByZone": "September 18th 2017, 3:19 pm",
+                     "store": {
+                         "storeExternalId": "YC001"
+                     }
+                 },
+                 {
+                     "estimatedPickupTime": 1505765978174,
+                     "estimatedPickupTimeByZone": "September 18th 2017, 3:19 pm",
+                     "store": {
+                         "street": "620 Katy Fwy",
+                         "street2": "",
+                         "secondary": "",
+                         "city": "Houston",
+                         "state": "TX",
+                         "zipcode": "77024"
+                     }
+                 }
+             ],
+             "amount": 0,
+             "_id": "59c01c4a69f07f0001e646ee"
+         }
+     ],
+     "orderId" : "59c01c4a69f07f0001e646ef"
+ }
+ 
+ ```
+ 
+
  
 `POST https://<API_URL>/order/multiple/estimates`
 
@@ -1236,8 +1436,281 @@ Property | Type | Required | Description
     from multiple pickup point.
 </aside>
 
- 
-`POST https://<API_URL>/order/multiple/order`
+> Request
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+	"net/http"
+	"io/ioutil"
+)
+
+func main() {
+
+	url := "http://localhost:8000/api/v1/order/multiple/placeorder"
+
+	payload := strings.NewReader("{\n\t\"storeExternalId\": \"YC001\",\n\t\"orderValue\": 1235,\n\t\"dropoffTime\": \"1505934821095\",\n\t\"deliveryContact\": {\n\t\t\"name\": \"Customer Name\",\n\t\t\"phone\": \"1234-123-123\"\n\t},\n\t\"deliveryAddress\": {\n\t\t\"street\": \"9019 Jasmine Ln\",\n\t    \"street2\": \"\",\n\t    \"secondary\": \"\",\n\t    \"city\": \"Irving\",\n\t    \"state\": \"TX\",\n\t    \"zipcode\": \"75063\",\n\t    \"apartment\": \"no\"\n\t},\n\t\"notifications\": {\n\t\t\"url\": \"\",\n\t\t\"email\": [],\n\t\t\"sms\": []\n\t},\n\t\"userEmail\": \"gmart@gmail.com\",\n\t\"tips\": 0,\n\t\"pickupStops\": [\n\t\t{\n\t\t\t\"store\": {\n\t\t       \"storeExternalId\": \"YC001\"\n\t\t    },\n\t\t    \"userPickupTime\": \"1505932821095\",\n\t\t    \"packages\": [{\n\t\t        \"name\": \"medium\",\n\t\t        \"size\": {\n\t\t            \"width\": 10,\n\t\t            \"height\": 10,\n\t\t            \"length\": 10\n\t\t        },\n\t\t        \"weight\": 10\n\t\t    }],\n\t\t    \"isSpirit\": true,\n\t\t    \"isFragile\": true,\n\t\t    \"hasRefrigeratedItems\": false,\n\t\t    \"hasPerishableItems\": false\n\t    },\n\t    {\n\t\t\t\"store\": {\n\t\t        \"street\": \"620 Katy Fwy\",\n\t\t        \"street2\": \"\",\n\t\t        \"secondary\": \"\",\n\t\t        \"city\": \"Houston\",\n\t\t        \"state\": \"TX\",\n\t\t        \"zipcode\": \"77024\"\n\t\t    },\n\t\t    \"userPickupTime\": \"1505932121095\",\n\t\t    \"packages\": [{\n\t\t        \"name\": \"medium\",\n\t\t        \"size\": {\n\t\t            \"width\": 10,\n\t\t            \"height\": 10,\n\t\t            \"length\": 10\n\t\t        },\n\t\t        \"weight\": 10\n\t\t    }],\n\t\t    \"isSpirit\": true,\n\t\t    \"isFragile\": true,\n\t\t    \"hasRefrigeratedItems\": false,\n\t\t    \"hasPerishableItems\": false\n\t    }\n\t]\n}")
+
+	req, _ := http.NewRequest("POST", url, payload)
+
+	req.Header.Add("x-api-key", "5VTCo75ZNLta4DqREPy1CA==")
+	req.Header.Add("content-type", "application/json")
+	req.Header.Add("cache-control", "no-cache")
+	req.Header.Add("postman-token", "2859dd8a-a8b3-6915-0b1e-f7adcfaa9531")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+
+```
+
+```php
+
+<?php
+
+$client = new http\Client;
+$request = new http\Client\Request;
+
+$body = new http\Message\Body;
+$body->append('{
+	"storeExternalId": "YC001",
+	"orderValue": 1235,
+	"dropoffTime": "1505934821095",
+	"deliveryContact": {
+		"name": "Customer Name",
+		"phone": "1234-123-123"
+	},
+	"deliveryAddress": {
+		"street": "9019 Jasmine Ln",
+	    "street2": "",
+	    "secondary": "",
+	    "city": "Irving",
+	    "state": "TX",
+	    "zipcode": "75063",
+	    "apartment": "no"
+	},
+	"notifications": {
+		"url": "",
+		"email": [],
+		"sms": []
+	},
+	"userEmail": "gmart@gmail.com",
+	"tips": 0,
+	"pickupStops": [
+		{
+			"store": {
+		       "storeExternalId": "YC001"
+		    },
+		    "userPickupTime": "1505932821095",
+		    "packages": [{
+		        "name": "medium",
+		        "size": {
+		            "width": 10,
+		            "height": 10,
+		            "length": 10
+		        },
+		        "weight": 10
+		    }],
+		    "isSpirit": true,
+		    "isFragile": true,
+		    "hasRefrigeratedItems": false,
+		    "hasPerishableItems": false
+	    },
+	    {
+			"store": {
+		        "street": "620 Katy Fwy",
+		        "street2": "",
+		        "secondary": "",
+		        "city": "Houston",
+		        "state": "TX",
+		        "zipcode": "77024"
+		    },
+		    "userPickupTime": "1505932121095",
+		    "packages": [{
+		        "name": "medium",
+		        "size": {
+		            "width": 10,
+		            "height": 10,
+		            "length": 10
+		        },
+		        "weight": 10
+		    }],
+		    "isSpirit": true,
+		    "isFragile": true,
+		    "hasRefrigeratedItems": false,
+		    "hasPerishableItems": false
+	    }
+	]
+}');
+
+$request->setRequestUrl('http://localhost:8000/api/v1/order/multiple/placeorder');
+$request->setRequestMethod('POST');
+$request->setBody($body);
+
+$request->setHeaders(array(
+  'postman-token' => '52958080-e378-13db-f212-8e63f24908d9',
+  'cache-control' => 'no-cache',
+  'content-type' => 'application/json',
+  'x-api-key' => '5VTCo75ZNLta4DqREPy1CA=='
+));
+
+$client->enqueue($request)->send();
+$response = $client->getResponse();
+
+echo $response->getBody();
+
+```
+  
+```shell
+  
+  curl -X POST \
+    <BASE_API_URL>/api/v1/order/multiple/placeorder \
+    -H 'cache-control: no-cache' \
+    -H 'content-type: application/json' \
+    -H 'postman-token: 1fe84863-dbc2-cd69-9549-f75f75433c99' \
+    -H 'x-api-key: <YOUR_API_KEY>' \
+    -d '{
+  	"storeExternalId": "YC001",
+  	"orderValue": 1235,
+  	"dropoffTime": "1505934821095",
+  	"deliveryContact": {
+  		"name": "Customer Name",
+  		"phone": "1234-123-123"
+  	},
+  	"deliveryAddress": {
+  		"street": "9019 Jasmine Ln",
+  	    "street2": "",
+  	    "secondary": "",
+  	    "city": "Irving",
+  	    "state": "TX",
+  	    "zipcode": "75063",
+  	    "apartment": "no"
+  	},
+  	"notifications": {
+  		"url": "",
+  		"email": [],
+  		"sms": []
+  	},
+  	"userEmail": "gmart@gmail.com",
+  	"tips": 0,
+  	"pickupStops": [
+  		{
+  			"store": {
+  		       "storeExternalId": "YC001"
+  		    },
+  		    "userPickupTime": "1505932821095",
+  		    "packages": [{
+  		        "name": "medium",
+  		        "size": {
+  		            "width": 10,
+  		            "height": 10,
+  		            "length": 10
+  		        },
+  		        "weight": 10
+  		    }],
+  		    "isSpirit": true,
+  		    "isFragile": true,
+  		    "hasRefrigeratedItems": false,
+  		    "hasPerishableItems": false
+  	    },
+  	    {
+  			"store": {
+  		        "street": "620 Katy Fwy",
+  		        "street2": "",
+  		        "secondary": "",
+  		        "city": "Houston",
+  		        "state": "TX",
+  		        "zipcode": "77024"
+  		    },
+  		    "userPickupTime": "1505932121095",
+  		    "packages": [{
+  		        "name": "medium",
+  		        "size": {
+  		            "width": 10,
+  		            "height": 10,
+  		            "length": 10
+  		        },
+  		        "weight": 10
+  		    }],
+  		    "isSpirit": true,
+  		    "isFragile": true,
+  		    "hasRefrigeratedItems": false,
+  		    "hasPerishableItems": false
+  	    }
+  	]
+  }'
+  
+ ```
+
+
+> Response
+
+```json
+{
+  "provider": "LASH",
+  "trackingNumber": "",
+  "status": "ORDER_PLACED",
+  "estimatedPickupTime": 1600625760000,
+  "estimatedDeliveryTime": 1600627560000,
+  "estimatedPickupTimeByZone": "September 20th 2020, 1:16:00 pm",
+  "estimatedDeliveryTimeByZone": "September 20th 2020, 1:46:00 pm",
+  "currency": "cents",
+  "amount": 5003,
+  "courier": null,
+  "pickupStops": [
+    {
+      "estimatedPickupTime": 1600625760000,
+      "estimatedPickupTimeByZone": "September 20th 2020, 1:16 pm",
+      "store": {
+        "storeExternalId": "YC001"
+      },
+      "labels": [
+        {
+          "trackingNumber": "",
+          "url": "",
+          "code": "",
+          "pdf": "",
+          "qrCodeImage": ""
+        }
+      ],
+    },
+    {
+      "estimatedPickupTime": 1600625770000,
+      "estimatedPickupTimeByZone": "September 20th 2020, 1:45 pm",
+      "store": {
+        "street": "620 Katy Fwy",
+        "street2": "",
+        "secondary": "",
+        "city": "Houston",
+        "state": "TX",
+        "zipcode": "77024"
+      },
+      "labels": [
+        {
+          "trackingNumber": "",
+          "url": "",
+          "code": "",
+          "pdf": "",
+          "qrCodeImage": ""
+        }
+      ],
+    }
+  ],
+  "orderId": "5974d2faa4d9dc0001f2ccd7"
+}
+
+```
+
+`POST https://<API_URL>/order/multiple/placeorder`
 
  <h3> POST Parameters </h3>
  
@@ -2073,6 +2546,26 @@ You can configure a notification url in the corporate profile and also provide u
 Error Code |  Detail | Resolution
 --------- | ----------- | ---------
 NO_ESTIMATES_FOR_APPROVED_DELIVERY_AMOUNT | None of the estimates received were below the set threshold amount | Visit Corporate/Business Rules and check the threshold amount.
+
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+# Updates
+
+Date |  Changes
+----- | -----
+8/13/17 |  Added stub requests for multi-pickup endpoints
+8/21/17 |  Alcohol compliance response refinements
+9/19/17 |  Multi-pickup responses
+ 
 
 
 <br />
