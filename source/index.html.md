@@ -2476,10 +2476,12 @@ echo $response->getBody();
 ```json
 {
     "compliance": {
-        "alcohol": "Information unavailable",
+        "value": null,
+        "alcohol": [],
         "zoning": {
-            "result": false
-        }
+            "result": true
+        },
+        "reason": "Information unavailable"
     }
 }
 
@@ -2565,6 +2567,7 @@ Date |  Changes
 8/13/17 |  Added stub requests for multi-pickup endpoints
 8/21/17 |  Alcohol compliance response refinements
 9/19/17 |  Multi-pickup responses
+9/22/17 |  ADC "Unavailable" response formatting
  
 
 
