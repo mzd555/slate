@@ -602,6 +602,7 @@ curl -X POST \
     "name": "ali jam",
     "phone": "232-323-2323"
   },
+  "deliveryInstructions": "Some delivery instructions",
   "deliveryAddress": {
     "street": "123 Main Street",
     "street2": "",
@@ -661,6 +662,7 @@ $body->append('{
     "name": "ali jam",
     "phone": "232-323-2323"
   },
+  "deliveryInstructions": "Some delivery instructions",
   "deliveryAddress": {
     "street": "123 Main Street",
     "street2": "",
@@ -731,7 +733,7 @@ func main() {
 
 	url := "https://sandbox.api.deliverysolutions.co/api/v1/order/estimates"
 
-	payload := strings.NewReader("{\n  \"userEmail\": \"dmart@gmail.com\",\n  \"storeExternalId\": \"Mango101\",\n  \"orderExternalId\": \"223\",\n  \"department\": \"Apparel\",\n  \"orderValue\": 23,\n  \"userPickupTime\": 1600616800000,\n  \"dropOffTime\": null,\n  \"deliveryContact\": {\n    \"name\": \"ali jam\",\n    \"phone\": \"232-323-2323\"\n  },\n  \"deliveryAddress\": {\n    \"street\": \"123 Main Street\",\n    \"street2\": \"\",\n    \"secondary\": \"\",\n    \"city\": \"Irving\",\n    \"state\": \"TX\",\n    \"zipcode\": \"75024\",\n    \"apartment\": \"no\"\n  },\n   \"packages\": [\n    {\n      \"name\": \"custom\",\n      \"size\": {\n        \"length\": 2,\n        \"width\": 22,\n        \"height\": 2\n      },\n      \"weight\": 22\n    }\n  ],\n  \"isSpirit\": false,\n  \"isBeerOrWine\": false,\n  \"isFragile\": false,\n  \"hasRefrigeratedItems\": false,\n  \"hasPerishableItems\": false,\n  \"notifications\": {\n    \"url\": \"\",\n    \"email\": [\n      \"abcd@test.com\",\n      \"abcd@test.com\"\n    ],\n    \"sms\": [\n      \"972-342-2627\",\n      \"232-232-3232\"\n    ]\n  }\n}")
+	payload := strings.NewReader("{\n  \"userEmail\": \"dmart@gmail.com\",\n  \"deliveryInstructions\": \"Some delivery instructions\",\n  \"storeExternalId\": \"Mango101\",\n  \"orderExternalId\": \"223\",\n  \"department\": \"Apparel\",\n  \"orderValue\": 23,\n  \"userPickupTime\": 1600616800000,\n  \"dropOffTime\": null,\n  \"deliveryContact\": {\n    \"name\": \"ali jam\",\n    \"phone\": \"232-323-2323\"\n  },\n  \"deliveryAddress\": {\n    \"street\": \"123 Main Street\",\n    \"street2\": \"\",\n    \"secondary\": \"\",\n    \"city\": \"Irving\",\n    \"state\": \"TX\",\n    \"zipcode\": \"75024\",\n    \"apartment\": \"no\"\n  },\n   \"packages\": [\n    {\n      \"name\": \"custom\",\n      \"size\": {\n        \"length\": 2,\n        \"width\": 22,\n        \"height\": 2\n      },\n      \"weight\": 22\n    }\n  ],\n  \"isSpirit\": false,\n  \"isBeerOrWine\": false,\n  \"isFragile\": false,\n  \"hasRefrigeratedItems\": false,\n  \"hasPerishableItems\": false,\n  \"notifications\": {\n    \"url\": \"\",\n    \"email\": [\n      \"abcd@test.com\",\n      \"abcd@test.com\"\n    ],\n    \"sms\": [\n      \"972-342-2627\",\n      \"232-232-3232\"\n    ]\n  }\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -860,6 +862,7 @@ func main() {
                 "pickUpTimeByZone": "September 20th 2020, 10:46:40 am"
             },
             "orderId": "5974ceb57b0a620001c253f1",
+            "deliveryInstructions": "Some delivery instructions",
             "_id": "5974ceba7b0a620001c253f4"
         }
     ],
@@ -905,6 +908,7 @@ func main() {
  notifications | Array of Notification | true | Status Update Notification,
  userEmail | string | true | User email
  tips | decimal | false | driver tips e.g. 9.00 or 6.50
+ deliveryInstructions | string OR null | false | Additional delivery instructions
 
 ## Create a Multi-Pickup estimate 
 
@@ -1244,6 +1248,7 @@ curl -X POST \
   "isFragile": false,
   "hasRefrigeratedItems": false,
   "hasPerishableItems": false,
+  "deliveryInstructions": "Some text for delivery instructions",
   "notifications": {
     "url": "",
     "email": [
@@ -1303,6 +1308,7 @@ $body->append('{
   "isFragile": false,
   "hasRefrigeratedItems": false,
   "hasPerishableItems": false,
+  "deliveryInstructions": "Some text for delivery instructions",
   "notifications": {
     "url": "",
     "email": [
@@ -1348,7 +1354,7 @@ func main() {
 
 	url := "https://sandbox.api.deliverysolutions.co/api/v1/order/placeorder"
 
-	payload := strings.NewReader("{\n  \"userEmail\": \"dmart@gmail.com\",\n  \"storeExternalId\": \"Mango101\",\n  \"orderExternalId\": \"223\",\n  \"department\": \"Apparel\",\n  \"orderValue\": 23,\n  \"userPickupTime\": 1600616800000,\n  \"dropOffTime\": null,\n  \"deliveryContact\": {\n    \"name\": \"ali jam\",\n    \"phone\": \"232-323-2323\"\n  },\n  \"deliveryAddress\": {\n    \"street\": \"123 Main Street\",\n    \"street2\": \"\",\n    \"secondary\": \"\",\n    \"city\": \"Irving\",\n    \"state\": \"TX\",\n    \"zipcode\": \"75024\",\n    \"apartment\": \"no\"\n  },\n   \"packages\": [\n    {\n      \"name\": \"custom\",\n      \"size\": {\n        \"length\": 2,\n        \"width\": 22,\n        \"height\": 2\n      },\n      \"weight\": 22\n    }\n  ],\n  \"isSpirit\": false,\n  \"isBeerOrWine\": false,\n  \"isFragile\": false,\n  \"hasRefrigeratedItems\": false,\n  \"hasPerishableItems\": false,\n  \"notifications\": {\n    \"url\": \"\",\n    \"email\": [\n      \"abcd@test.com\",\n      \"abcd@test.com\"\n    ],\n    \"sms\": [\n      \"972-342-2627\",\n      \"232-232-3232\"\n    ]\n  }\n}")
+	payload := strings.NewReader("{\n  \"userEmail\": \"dmart@gmail.com\",\n  \"storeExternalId\": \"Mango101\",\n  \"orderExternalId\": \"223\",\n  \"department\": \"Apparel\",\n  \"orderValue\": 23,\n  \"userPickupTime\": 1600616800000,\n  \"dropOffTime\": null,\n  \"deliveryContact\": {\n    \"name\": \"ali jam\",\n    \"phone\": \"232-323-2323\"\n  },\n  \"deliveryAddress\": {\n    \"street\": \"123 Main Street\",\n    \"street2\": \"\",\n    \"secondary\": \"\",\n    \"city\": \"Irving\",\n    \"state\": \"TX\",\n    \"zipcode\": \"75024\",\n    \"apartment\": \"no\"\n  },\n   \"packages\": [\n    {\n      \"name\": \"custom\",\n      \"size\": {\n        \"length\": 2,\n        \"width\": 22,\n        \"height\": 2\n      },\n      \"weight\": 22\n    }\n  ],\n  \"isSpirit\": false,\n  \"isBeerOrWine\": false,\n  \"isFragile\": false,\n  \"hasRefrigeratedItems\": false,\n  \"hasPerishableItems\": false,\n  \"deliveryInstructions\": \"Some text for delivery instructions\",\n  \"notifications\": {\n    \"url\": \"\",\n    \"email\": [\n      \"abcd@test.com\",\n      \"abcd@test.com\"\n    ],\n    \"sms\": [\n      \"972-342-2627\",\n      \"232-232-3232\"\n    ]\n  }\n}")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -1391,6 +1397,7 @@ func main() {
             "qrCodeImage": "actual data removed for brevity"
         }
     ],
+    "deliveryInstructions": "Some text for delivery instructions",
     "orderId": "5974d2faa4d9dc0001f2ccd7"
 }
 
@@ -1419,6 +1426,7 @@ Property | Type | Required | Description
  notifications | Array of [Notification](#notification)|false| email/sms/status update notification
  userEmail | string | true | User email
  tips | decimal | false | driver tips e.g. 9.00 or 6.50
+ deliveryInstructions | string OR null | false | Additional delivery instructions
  
  Error Code |  Detail | Resolution
  --------- | ----------- | ---------
@@ -1811,10 +1819,11 @@ func main() {
             "trackingNumber": "220088599509",
             "url": "https://staging.fedexsameday.com/fdx_getlabel.aspx?id=8388831095892064030571984856",
             "code": "FXF2200885995092200885995090920209",
-            "pdf": "actual data removed for brevity"
+            "pdf": "actual data removed for brevity",
             "qrCodeImage": "actual data removed for brevity"
         }
     ],
+    "deliveryInstructions": "some delivery instructions",
     "orderId": "5974ceb57b0a620001c253f1"
 }
 
@@ -2072,7 +2081,8 @@ func main() {
             "labelURL": null
         }
     },
-    "estimatedId": "59722f0e7ea0420001ddad7b"
+    "estimatedId": "59722f0e7ea0420001ddad7b",
+    "deliveryInstructions": "Some delivery instructions"
 }
 ```
 `GET https://<BASE_URL>/order/getById/<orderId>`
@@ -2568,6 +2578,7 @@ Date |  Changes
 8/21/17 |  Alcohol compliance response refinements
 9/19/17 |  Multi-pickup responses
 9/22/17 |  ADC "Unavailable" response formatting
+9/28/17 |  "deliveryInstructions" property for Orders was described
  
 
 
