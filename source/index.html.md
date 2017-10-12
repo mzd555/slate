@@ -797,6 +797,35 @@ func main() {
             ],
             "tenantId": "LASH Delivery",
             "active": true,
+            "dspAttributes": {
+                "key": "FedEx",
+                "info": {
+                    "hasTimeEstimate": true,
+                    "hasEstimatesRating": "?",
+                    "hasTrackingLink": "?",
+                    "hasPublishedRates": "?",
+                    "webHookStatusesTranslation": true,
+                    "supportsPickupTime": true,
+                    "supportsDropOffTime": true,
+                    "acceptsAdvancedOrders": "?",
+                    "isOrderValueRequired": true,
+                    "maxOrderValue": "?",
+                    "providesFinalCost": true,
+                    "hasLiveTracking": "?",
+                    "hasEstimateExpiration": false,
+                    "requiresDropOffTime": true,
+                    "requiresPickupTime": true
+                },
+                "actionable": {
+                    "hasTips": false,
+                    "canEditOrder": false,
+                    "isNoCostDsp": false,
+                    "apiUrlSandbox": "https://api.test.samedaycity.fedex.com",
+                    "apiUrl": "https://api.test.samedaycity.fedex.com",
+                    "hasDeliveryWindows": false,
+                    "canDoMultipleStops": false
+                }
+            },
             "RequestBody": {
                 "userEmail": "dmart@gmail.com",
                 "storeExternalId": "Mango101",
@@ -1398,7 +1427,36 @@ func main() {
         }
     ],
     "deliveryInstructions": "Some text for delivery instructions",
-    "orderId": "5974d2faa4d9dc0001f2ccd7"
+    "orderId": "5974d2faa4d9dc0001f2ccd7",
+    "dspAttributes": {
+        "key": "Lash",
+        "info": {
+            "hasTimeEstimate": true,
+            "hasEstimatesRating": false,
+            "hasTrackingLink": false,
+            "hasPublishedRates": false,
+            "webHookStatusesTranslation": "?",
+            "supportsPickupTime": true,
+            "supportsDropOffTime": true,
+            "acceptsAdvancedOrders": "?",
+            "isOrderValueRequired": false,
+            "maxOrderValue": false,
+            "providesFinalCost": false,
+            "hasLiveTracking": false,
+            "hasEstimateExpiration": false,
+            "requiresDropOffTime": false,
+            "requiresPickupTime": false
+        },
+        "actionable": {
+            "hasTips": false,
+            "canEditOrder": false,
+            "isNoCostDsp": true,
+            "apiUrlSandbox": "",
+            "apiUrl": "",
+            "hasDeliveryWindows": false,
+            "canDoMultipleStops": true
+        }
+    }
 }
 
 ```
@@ -1824,6 +1882,35 @@ func main() {
         }
     ],
     "deliveryInstructions": "some delivery instructions",
+    "dspAttributes": {
+        "key": "Lash",
+        "info": {
+            "hasTimeEstimate": true,
+            "hasEstimatesRating": false,
+            "hasTrackingLink": false,
+            "hasPublishedRates": false,
+            "webHookStatusesTranslation": "?",
+            "supportsPickupTime": true,
+            "supportsDropOffTime": true,
+            "acceptsAdvancedOrders": "?",
+            "isOrderValueRequired": false,
+            "maxOrderValue": false,
+            "providesFinalCost": false,
+            "hasLiveTracking": false,
+            "hasEstimateExpiration": false,
+            "requiresDropOffTime": false,
+            "requiresPickupTime": false
+        },
+        "actionable": {
+            "hasTips": false,
+            "canEditOrder": false,
+            "isNoCostDsp": true,
+            "apiUrlSandbox": "",
+            "apiUrl": "",
+            "hasDeliveryWindows": false,
+            "canDoMultipleStops": true
+        }
+    },
     "orderId": "5974ceb57b0a620001c253f1"
 }
 
@@ -2572,16 +2659,15 @@ NO_ESTIMATES_FOR_APPROVED_DELIVERY_AMOUNT | None of the estimates received were 
 
 # Updates
 
-Date |  Changes
------ | -----
-8/13/17 |  Added stub requests for multi-pickup endpoints
-8/21/17 |  Alcohol compliance response refinements
-9/19/17 |  Multi-pickup responses
-9/22/17 |  ADC "Unavailable" response formatting
-9/28/17 |  "deliveryInstructions" property for Orders was described
+ Date    | Changes
+---------|-----------------------------------------------
+ 8/13/17 | Added stub requests for multi-pickup endpoints
+ 8/21/17 | Alcohol compliance response refinements
+ 9/19/17 | Multi-pickup responses
+ 9/22/17 | ADC "Unavailable" response formatting
+ 9/28/17 | "deliveryInstructions" property for Orders was described
+10/12/17 | DSP attributes were added to "Create Order", "Create Estimates" and "Create order from an Estimate" responses
  
-
-
 <br />
 <br />
 <br />
