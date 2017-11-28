@@ -2657,6 +2657,41 @@ NO_ESTIMATES_FOR_APPROVED_DELIVERY_AMOUNT | None of the estimates received were 
 <br />
 <br />
 
+# Labels
+
+Composes PDF document with Labels for a specific Order.
+
+### HTTP Request
+
+`GET https://<BASE_URL>/v2/label?orderId=<orderId>&token=<token>`
+
+### URL Parameters
+
+Parameter | Description | Example 
+--------- | ----------- | -------
+orderId | Order id | 59de23ad9f6a530001faf1a0
+token | Order Id dependent token. Token is `base64` encoded orderId | NTlkZTIzYWQ5ZjZhNTMwMDAxZmFmMWEw
+
+### Response
+
+PDF document is returned as a Response.
+
+> Response [403] - if token is not valid
+
+```json
+{
+    "Message": "User is not authorized to access this resource with an explicit deny"
+}
+```
+
+> Response [401] - if token parameter is absent
+
+```json
+{
+    "message": "Unauthorized"
+}
+```
+
 # Updates
 
  Date    | Changes
@@ -2667,6 +2702,7 @@ NO_ESTIMATES_FOR_APPROVED_DELIVERY_AMOUNT | None of the estimates received were 
  9/22/17 | ADC "Unavailable" response formatting
  9/28/17 | "deliveryInstructions" property for Orders was described
 10/12/17 | DSP attributes were added to "Create Order", "Create Estimates" and "Create order from an Estimate" responses
+11/28/17 | Label feature was added
  
 <br />
 <br />

@@ -1,0 +1,22 @@
+{
+  "provider": "FedEx",
+  "trackingNumber": "220088590854",
+  "status": "RECEIVED_BY_LMA",
+  "estimatedPickupTime": 1600625760000,
+  "estimatedDeliveryTime": 1600627560000,
+  "estimatedPickupTimeByZone": "September 20th 2020, 1:16:00 pm",
+  "estimatedDeliveryTimeByZone": "September 20th 2020, 1:46:00 pm",
+  "currency": "cents",
+  "amount": 5003,
+  "courier": null,
+  "labels": [
+    {
+      "trackingNumber": "220088590854",
+      "url": "https://staging.fedexsameday.com/fdx_getlabel.aspx?id=2247631406612007918524668364",
+      "code": "FXF2200885908542200885908540920207",
+      "pdf": "",
+      "qrCodeImage": ""
+    }
+  ],
+  "orderId": "5972d96472ff1500012b0cc1"
+}
