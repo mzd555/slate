@@ -22,10 +22,10 @@ search: true
 ## API URL 
 
  <h3>Sandbox</b>
- <h3> API  : https://sandbox.api.deliverysolutions.co/api/v1 </h3>
+ <h3> API Base Url  : https://sandbox.api.deliverysolutions.co </h3>
  <h3> Portal : https://sandbox.portal.deliverysolutions.co </h3>
 <h3>Production</h4>
-<h3> API : https://production.deliverysolutions.co/api/v1 </h3>
+<h3> API Base Url : https://production.deliverysolutions.co </h3>
 <h3> Portal : https://production.portal.deliverysolutions.co </h3>
 
 
@@ -78,6 +78,11 @@ Status Code	| Result
 <b>50X Errors </b> |	Occur when something goes wrong in the API.
 
 # Models
+
+## Order Attributes
+Name | Required | Description
+----- | ------- | -----
+thresholdamount_bypass | false | set this to 'true' to bypass 'Max Estimate Amount' 
 
 ## Contact
 Property | Type | Required | Description
@@ -438,7 +443,7 @@ func main() {
 
 ### HTTP Request
 
-`POST https://<API_URL>/api/v1/store`
+`POST https://<base_url>/api/v1/store`
 
 
 Property | Type | Required | Description
@@ -573,7 +578,7 @@ func main() {
 
 ```
 
-`GET https://<BASE_URL>/store`
+`GET https://<base_url>/v1/store`
 
 Get all the configured stores for your account.
 
@@ -628,6 +633,7 @@ curl -X POST \
   "isFragile": false,
   "hasRefrigeratedItems": false,
   "hasPerishableItems": false,
+  "orderAttributes" : { "thresholdamount_bypass" : true },
   "notifications": {
     "url": "",
     "email": [
@@ -688,6 +694,7 @@ $body->append('{
   "isFragile": false,
   "hasRefrigeratedItems": false,
   "hasPerishableItems": false,
+  "orderAttributes" : { "thresholdamount_bypass" : true },
   "notifications": {
     "url": "",
     "email": [
@@ -799,32 +806,10 @@ func main() {
             "active": true,
             "dspAttributes": {
                 "key": "FedEx",
-                "info": {
-                    "hasTimeEstimate": true,
-                    "hasEstimatesRating": "?",
-                    "hasTrackingLink": "?",
-                    "hasPublishedRates": "?",
-                    "webHookStatusesTranslation": true,
-                    "supportsPickupTime": true,
-                    "supportsDropOffTime": true,
-                    "acceptsAdvancedOrders": "?",
-                    "isOrderValueRequired": true,
-                    "maxOrderValue": "?",
-                    "providesFinalCost": true,
-                    "hasLiveTracking": "?",
-                    "hasEstimateExpiration": false,
-                    "requiresDropOffTime": true,
-                    "requiresPickupTime": true
-                },
-                "actionable": {
-                    "hasTips": false,
-                    "canEditOrder": false,
-                    "isNoCostDsp": false,
-                    "apiUrlSandbox": "https://api.test.samedaycity.fedex.com",
-                    "apiUrl": "https://api.test.samedaycity.fedex.com",
-                    "hasDeliveryWindows": false,
-                    "canDoMultipleStops": false
-                }
+                "hasTips": true,
+                "isNoCostDsp": false,
+                "hasDeliveryWindows": false,
+                "canDoMultipleStops": false
             },
             "RequestBody": {
                 "userEmail": "dmart@gmail.com",
@@ -908,7 +893,7 @@ func main() {
  ```
   <h3>HTTP Request</h3>
  
- `POST https://<API_URL>/order/estimates`
+ `POST https://<base_url>/api/v1/order/estimates`
  
  The API resource can be used to obtain estimates from configured DSPs. Every estimate received 
  has a unique <code>_id</code> assign to it. There can be more than one estimate possible for a given 
@@ -938,6 +923,7 @@ func main() {
  userEmail | string | true | User email
  tips | decimal | false | driver tips e.g. 9.00 or 6.50
  deliveryInstructions | string OR null | false | Additional delivery instructions
+ orderAttributes | Order Attributes collection | false | See [Order Attributes](#order-attributes) for supported list. e.g. "order_attributes : { "attribute_name" : "attribute_value" }"
 
 ## Create a Multi-Pickup estimate 
 
@@ -1208,7 +1194,7 @@ echo $response->getBody();
  
 
  
-`POST https://<API_URL>/order/multiple/estimates`
+`POST https://<base_url>/api/v1/order/multiple/estimates`
 
  <h3> POST Parameters </h3>
  
@@ -1430,39 +1416,20 @@ func main() {
     "orderId": "5974d2faa4d9dc0001f2ccd7",
     "dspAttributes": {
         "key": "Lash",
-        "info": {
-            "hasTimeEstimate": true,
-            "hasEstimatesRating": false,
-            "hasTrackingLink": false,
-            "hasPublishedRates": false,
-            "webHookStatusesTranslation": "?",
-            "supportsPickupTime": true,
-            "supportsDropOffTime": true,
-            "acceptsAdvancedOrders": "?",
-            "isOrderValueRequired": false,
-            "maxOrderValue": false,
-            "providesFinalCost": false,
-            "hasLiveTracking": false,
-            "hasEstimateExpiration": false,
-            "requiresDropOffTime": false,
-            "requiresPickupTime": false
-        },
         "actionable": {
-            "hasTips": false,
-            "canEditOrder": false,
-            "isNoCostDsp": true,
-            "apiUrlSandbox": "",
-            "apiUrl": "",
-            "hasDeliveryWindows": false,
-            "canDoMultipleStops": true
+             "hasTips": true,
+             "isNoCostDsp": false,
+             "hasDeliveryWindows": false,
+             "canDoMultipleStops": false
         }
-    }
+    },
+    "labelLink" : "https://7a3tre8ov7.execute-api.us-west-2.amazonaws.com/development/v2/label?orderId=5a2eea0c6d2b7100011445d1&token=NWEyZWVhMGM2ZDJiNzEwMDAxMTQ0NWQx"
 }
 
 ```
 
 <h3>HTTP Request</h3>
-`POST https://<BASE_URL>/order/placeorder`
+`POST https://<base_url>/api/v1/order/placeorder`
 ### Post Parameters
 
 Property | Type | Required | Description
@@ -1485,11 +1452,22 @@ Property | Type | Required | Description
  userEmail | string | true | User email
  tips | decimal | false | driver tips e.g. 9.00 or 6.50
  deliveryInstructions | string OR null | false | Additional delivery instructions
+ orderAttributes | Order Attributes collection | false | See [Order Attributes](#order-attributes) for supported list. e.g. "order_attributes : { "attribute_name" : "attribute_value" }"
  
  Error Code |  Detail | Resolution
  --------- | ----------- | ---------
  NO_ESTIMATES_FOR_APPROVED_DELIVERY_AMOUNT | None of the estimates received were below the set threshold amount | Visit Corporate/Business Rules and check the threshold amount.
-
+OUTSIDE_THE_COVERAGE_AREA | Either pickup or dropoff address is outside the DSP coverage area.
+    NON_SUPPORTED_PICKUP_TIME | Pickup time is either invalid or outside the supported time-frame of the DSP.
+    INVALID_DSP_STORE_ID | If the DSP has store configuration, provided value is incorrect.
+    INVALID_PHONE_NUMBER | Dropoff Phone number is invalid,
+    INVALID_PICKUP_ADDRESS| Invalid pickup address/
+    MAX_DISTANCE_EXCEEDED | Maximum delivery distance exceeded.
+    PACKAGES_SIZE_OVER_LIMIT| Size of the package above the DSP required limits.
+    DEL_ADDR_LN1_INVALID | Address Line 1 invalid.
+    PACKAGE_WEIGHT_OVER_LIMIT | Weight of the package above the DSP required limits.
+    DELIVERY_TIME_TOO_SOON | Dropoff time too soon for the DSP to give estimates or receive the order.
+    INVALID_STORE_PHONE_NUMBER | Invalid store phone number.
 
 ## Create a Multi-Pickup Order 
 
@@ -1771,12 +1749,13 @@ echo $response->getBody();
       ],
     }
   ],
-  "orderId": "5974d2faa4d9dc0001f2ccd7"
+  "orderId": "5974d2faa4d9dc0001f2ccd7",
+  "labelLink" : "https://7a3tre8ov7.execute-api.us-west-2.amazonaws.com/development/v2/label?orderId=5a2eea0c6d2b7100011445d1&token=NWEyZWVhMGM2ZDJiNzEwMDAxMTQ0NWQx"
 }
 
 ```
 
-`POST https://<API_URL>/order/multiple/placeorder`
+`POST https://<base_url>/api/v1/order/multiple/placeorder`
 
  <h3> POST Parameters </h3>
  
@@ -1902,13 +1881,10 @@ func main() {
             "requiresPickupTime": false
         },
         "actionable": {
-            "hasTips": false,
-            "canEditOrder": false,
-            "isNoCostDsp": true,
-            "apiUrlSandbox": "",
-            "apiUrl": "",
+            "hasTips": true,
+            "isNoCostDsp": false,
             "hasDeliveryWindows": false,
-            "canDoMultipleStops": true
+            "canDoMultipleStops": false
         }
     },
     "orderId": "5974ceb57b0a620001c253f1"
@@ -2172,7 +2148,7 @@ func main() {
     "deliveryInstructions": "Some delivery instructions"
 }
 ```
-`GET https://<BASE_URL>/order/getById/<orderId>`
+`GET https://<base_url>/api/v1/order/getById/<orderId>`
 
 ### URL Parameters
 
@@ -2278,7 +2254,7 @@ func main() {
 
 ### HTTP Request
 
-`PUT https://<BASE_URL>/order/getOrderStatus/<orderId>`
+`PUT https://<base_url>/api/v1/order/getOrderStatus/<orderId>`
 
 ### URL Parameters
 
@@ -2400,7 +2376,7 @@ curl -X DELETE \
 
 ### HTTP Request
 
-`DELETE https://<BASE_URL>/v1/order/<orderId>`
+`DELETE https://<base_url>/api/v1/order/<orderId>`
 
 ### URL Parameters
 
@@ -2586,7 +2562,7 @@ echo $response->getBody();
 
 ### HTTP Request
 
-`POST https://<BASE_URL>/getAlcoholCompliance`
+`POST https://<base_url>/api/v1/getAlcoholCompliance`
 
 ### POST Parameters
 
@@ -2645,6 +2621,17 @@ You can configure a notification url in the corporate profile and also provide u
 Error Code |  Detail | Resolution
 --------- | ----------- | ---------
 NO_ESTIMATES_FOR_APPROVED_DELIVERY_AMOUNT | None of the estimates received were below the set threshold amount | Visit Corporate/Business Rules and check the threshold amount.
+OUTSIDE_THE_COVERAGE_AREA | Either pickup or dropoff address is outside the DSP coverage area.
+    NON_SUPPORTED_PICKUP_TIME | Pickup time is either invalid or outside the supported time-frame of the DSP.
+    INVALID_DSP_STORE_ID | If the DSP has store configuration, provided value is incorrect.
+    INVALID_PHONE_NUMBER | Drop-off Phone number is invalid,
+    INVALID_PICKUP_ADDRESS| Invalid pickup address/
+    MAX_DISTANCE_EXCEEDED | Maximum delivery distance exceeded.
+    PACKAGES_SIZE_OVER_LIMIT| Size of the package above the DSP required limits.
+    DEL_ADDR_LN1_INVALID | Address Line 1 invalid.
+    PACKAGE_WEIGHT_OVER_LIMIT | Weight of the package above the DSP required limits.
+    DELIVERY_TIME_TOO_SOON | Dropoff time too soon for the DSP to give estimates or receive the order.
+    INVALID_STORE_PHONE_NUMBER | Invalid store phone number.
 
 
 <br />
@@ -2663,14 +2650,14 @@ Composes PDF document with Labels for a specific Order.
 
 ### HTTP Request
 
-`GET https://<BASE_URL>/v2/label?orderId=<orderId>&token=<token>`
+`GET https://<base_url>/api/v2/label?orderId=<orderId>&token=<token>`
 
 ### URL Parameters
 
 Parameter | Description | Example 
 --------- | ----------- | -------
 orderId | Order id | 59de23ad9f6a530001faf1a0
-token | Order Id dependent token. Token is `base64` encoded orderId | NTlkZTIzYWQ5ZjZhNTMwMDAxZmFmMWEw
+token | Order Id dependent token. Generated token to secure the printing of the labels from unknown sources.
 
 ### Response
 
@@ -2696,6 +2683,8 @@ PDF document is returned as a Response.
 
  Date    | Changes
 ---------|-----------------------------------------------
+ 11/27/17 | Added orderAttributes
+ 11/24/17 | Added Shipping Label
  8/13/17 | Added stub requests for multi-pickup endpoints
  8/21/17 | Alcohol compliance response refinements
  9/19/17 | Multi-pickup responses
