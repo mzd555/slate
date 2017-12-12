@@ -883,10 +883,12 @@ func main() {
             "active": true,
             "dspAttributes": {
                 "key": "FedEx",
-                "hasTips": true,
-                "isNoCostDsp": false,
-                "hasDeliveryWindows": false,
-                "canDoMultipleStops": false
+                "actionable" :{
+                    "hasTips": true,
+                    "isNoCostDsp": false,
+                    "hasDeliveryWindows": false,
+                    "canDoMultipleStops": false
+                }
             },
             "RequestBody": {
                 "userEmail": "dmart@gmail.com",
@@ -1940,23 +1942,6 @@ func main() {
     "deliveryInstructions": "some delivery instructions",
     "dspAttributes": {
         "key": "Lash",
-        "info": {
-            "hasTimeEstimate": true,
-            "hasEstimatesRating": false,
-            "hasTrackingLink": false,
-            "hasPublishedRates": false,
-            "webHookStatusesTranslation": "?",
-            "supportsPickupTime": true,
-            "supportsDropOffTime": true,
-            "acceptsAdvancedOrders": "?",
-            "isOrderValueRequired": false,
-            "maxOrderValue": false,
-            "providesFinalCost": false,
-            "hasLiveTracking": false,
-            "hasEstimateExpiration": false,
-            "requiresDropOffTime": false,
-            "requiresPickupTime": false
-        },
         "actionable": {
             "hasTips": true,
             "isNoCostDsp": false,

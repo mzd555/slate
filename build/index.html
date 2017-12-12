@@ -1626,10 +1626,12 @@ curl -X GET <span class="se">\</span>
             </span><span class="s2">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
             </span><span class="s2">"dspAttributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
                 </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FedEx"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"hasTips"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"isNoCostDsp"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"hasDeliveryWindows"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"canDoMultipleStops"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+                </span><span class="s2">"actionable"</span><span class="w"> </span><span class="p">:{</span><span class="w">
+                    </span><span class="s2">"hasTips"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"isNoCostDsp"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"hasDeliveryWindows"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"canDoMultipleStops"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+                </span><span class="p">}</span><span class="w">
             </span><span class="p">},</span><span class="w">
             </span><span class="s2">"RequestBody"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
                 </span><span class="s2">"userEmail"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dmart@gmail.com"</span><span class="p">,</span><span class="w">
@@ -3027,23 +3029,6 @@ curl -X GET <span class="se">\</span>
     </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"some delivery instructions"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"dspAttributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
         </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Lash"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"info"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"hasTimeEstimate"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"hasEstimatesRating"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"hasTrackingLink"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"hasPublishedRates"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"webHookStatusesTranslation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"?"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"supportsPickupTime"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"supportsDropOffTime"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"acceptsAdvancedOrders"</span><span class="p">:</span><span class="w"> </span><span class="s2">"?"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"isOrderValueRequired"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"maxOrderValue"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"providesFinalCost"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"hasLiveTracking"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"hasEstimateExpiration"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"requiresDropOffTime"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"requiresPickupTime"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
-        </span><span class="p">},</span><span class="w">
         </span><span class="s2">"actionable"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
             </span><span class="s2">"hasTips"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
             </span><span class="s2">"isNoCostDsp"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
