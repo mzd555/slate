@@ -582,6 +582,83 @@ func main() {
 
 Get all the configured stores for your account.
 
+## Store Boundaries
+
+### HTTP Request
+
+> Request <base_url>/v2/store/boundaries/?address=537%20Houston%20St,%20Coppell,%20TX%2075019
+
+```shell
+
+curl -X GET \
+  https://sandbox.api.deliverysolutions.co/v2/store/boundaries/?address=537%20Houston%20St,%20Coppell,%20TX%2075019 \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'x-api-key: YOUR_API_KEY'
+
+```
+
+> Response : Multiple stores matched
+
+```json
+
+{
+  "stores":["Dallas101","Dallas102"]
+}
+
+```
+> Response : Single store matched
+
+```json
+
+{
+  "stores":["Dallas101"]
+}
+
+```
+
+> Response : No store matched
+
+```json
+
+{
+  "stores":[]
+}
+
+```
+
+> Request <base_url>/v2/store/boundaries/?address=537%20Noexisting%20IL%20-%209999
+
+```shell
+
+curl -X GET \
+  https://sandbox.api.deliverysolutions.co/v2/store/boundaries/?address=537%20Noexisting%20IL%20-%209999 \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'x-api-key: YOUR_API_KEY'
+
+```
+
+> Response 400
+
+```json
+
+{
+    "error":"ADDRESS_CONVERSION_ERROR",
+    "message":"Zero results were returned."
+}
+
+```
+
+
+
+`GET https://<base_url>/v2/store/boundaries?address=<address>`
+
+Property | Type | Required | Description
+-------- | ---- | -------- | -----------
+address | string | true | Url encoded standard formatted address ( e.g. 537 Houston St, Coppell, TX 75019). 
+
+
 # Estimate Resource
 
 ## Create an Estimate
@@ -2140,12 +2217,12 @@ func main() {
             "estPickupTime": 1500663420000,
             "estDeliveryTime": 1500674400000,
             "externalReferences": null,
-            "accessCode": null,
-            "labelURL": null
+            "accessCode": null
         }
     },
     "estimatedId": "59722f0e7ea0420001ddad7b",
-    "deliveryInstructions": "Some delivery instructions"
+    "deliveryInstructions": "Some delivery instructions",
+    "labelLink" : "https://7a3tre8ov7.execute-api.us-west-2.amazonaws.com/development/v2/label?orderId=5a2eea0c6d2b7100011445d1&token=NWEyZWVhMGM2ZDJiNzEwMDAxMTQ0NWQx"
 }
 ```
 `GET https://<base_url>/api/v1/order/getById/<orderId>`
@@ -2683,15 +2760,15 @@ PDF document is returned as a Response.
 
  Date    | Changes
 ---------|-----------------------------------------------
- 11/27/17 | Added orderAttributes
- 11/24/17 | Added Shipping Label
- 8/13/17 | Added stub requests for multi-pickup endpoints
- 8/21/17 | Alcohol compliance response refinements
- 9/19/17 | Multi-pickup responses
- 9/22/17 | ADC "Unavailable" response formatting
- 9/28/17 | "deliveryInstructions" property for Orders was described
+08/13/17 | Added stub requests for multi-pickup endpoints
+08/21/17 | Alcohol compliance response refinements
+09/19/17 | Multi-pickup responses
+09/22/17 | ADC "Unavailable" response formatting
+09/28/17 | "deliveryInstructions" property for Orders was described
 10/12/17 | DSP attributes were added to "Create Order", "Create Estimates" and "Create order from an Estimate" responses
-11/28/17 | Label feature was added
+11/24/17 | Added Shipping Label
+11/27/17 | Added orderAttributes
+12/10/17 | Added Store boundaries to the Store resource
  
 <br />
 <br />

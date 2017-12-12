@@ -233,10 +233,10 @@
 <h2 id="api-url">API URL</h2>
 
 <p><h3>Sandbox</b>
- <h3> API  : https://sandbox.api.deliverysolutions.co/api/v1 </h3>
+ <h3> API Base Url  : https://sandbox.api.deliverysolutions.co </h3>
  <h3> Portal : https://sandbox.portal.deliverysolutions.co </h3>
 <h3>Production</h4>
-<h3> API : https://production.deliverysolutions.co/api/v1 </h3>
+<h3> API Base Url : https://production.deliverysolutions.co </h3>
 <h3> Portal : https://production.portal.deliverysolutions.co </h3></p>
 
 <h2 id="authentication">Authentication</h2>
@@ -320,6 +320,22 @@ Please replace &lsquo;YOUR_API_KEY&rsquo; with the actual key.
 </tbody></table>
 
 <h1 id="models">Models</h1>
+
+<h2 id="order-attributes">Order Attributes</h2>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>thresholdamount_bypass</td>
+<td>false</td>
+<td>set this to &lsquo;true&rsquo; to bypass &lsquo;Max Estimate Amount&rsquo;</td>
+</tr>
+</tbody></table>
 
 <h2 id="contact">Contact</h2>
 
@@ -1127,7 +1143,7 @@ Please replace &lsquo;YOUR_API_KEY&rsquo; with the actual key.
 </span></code></pre>
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">POST https://&lt;API_URL&gt;/api/v1/store</code></p>
+<p><code class="prettyprint">POST https://&lt;base_url&gt;/api/v1/store</code></p>
 
 <table><thead>
 <tr>
@@ -1306,9 +1322,90 @@ curl -X GET <span class="se">\</span>
 </span><span class="p">]</span><span class="w">
 
 </span></code></pre>
-<p><code class="prettyprint">GET https://&lt;BASE_URL&gt;/store</code></p>
+<p><code class="prettyprint">GET https://&lt;base_url&gt;/v1/store</code></p>
 
 <p>Get all the configured stores for your account.</p>
+
+<h2 id="store-boundaries">Store Boundaries</h2>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<blockquote>
+<p>Request <base_url>/v2/store/boundaries/?address=537%20Houston%20St,%20Coppell,%20TX%2075019</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>
+curl -X GET <span class="se">\</span>
+  https://sandbox.api.deliverysolutions.co/v2/store/boundaries/?address<span class="o">=</span>537%20Houston%20St,%20Coppell,%20TX%2075019 <span class="se">\</span>
+  -H <span class="s1">'cache-control: no-cache'</span> <span class="se">\</span>
+  -H <span class="s1">'content-type: application/json'</span> <span class="se">\</span>
+  -H <span class="s1">'x-api-key: YOUR_API_KEY'</span>
+
+</code></pre>
+<blockquote>
+<p>Response : Multiple stores matched</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+</span><span class="p">{</span><span class="w">
+  </span><span class="s2">"stores"</span><span class="p">:[</span><span class="s2">"Dallas101"</span><span class="p">,</span><span class="s2">"Dallas102"</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<blockquote>
+<p>Response : Single store matched</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+</span><span class="p">{</span><span class="w">
+  </span><span class="s2">"stores"</span><span class="p">:[</span><span class="s2">"Dallas101"</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<blockquote>
+<p>Response : No store matched</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+</span><span class="p">{</span><span class="w">
+  </span><span class="s2">"stores"</span><span class="p">:[]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<blockquote>
+<p>Request <base_url>/v2/store/boundaries/?address=537%20Noexisting%20IL%20-%209999</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>
+curl -X GET <span class="se">\</span>
+  https://sandbox.api.deliverysolutions.co/v2/store/boundaries/?address<span class="o">=</span>537%20Noexisting%20IL%20-%209999 <span class="se">\</span>
+  -H <span class="s1">'cache-control: no-cache'</span> <span class="se">\</span>
+  -H <span class="s1">'content-type: application/json'</span> <span class="se">\</span>
+  -H <span class="s1">'x-api-key: YOUR_API_KEY'</span>
+
+</code></pre>
+<blockquote>
+<p>Response 400</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="w">
+</span><span class="p">{</span><span class="w">
+    </span><span class="s2">"error"</span><span class="p">:</span><span class="s2">"ADDRESS_CONVERSION_ERROR"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"message"</span><span class="p">:</span><span class="s2">"Zero results were returned."</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p><code class="prettyprint">GET https://&lt;base_url&gt;/v2/store/boundaries?address=&lt;address&gt;</code></p>
+
+<table><thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>address</td>
+<td>string</td>
+<td>true</td>
+<td>Url encoded standard formatted address ( e.g. 537 Houston St, Coppell, TX 75019).</td>
+</tr>
+</tbody></table>
 
 <h1 id="estimate-resource">Estimate Resource</h1>
 
@@ -1361,6 +1458,7 @@ curl -X GET <span class="se">\</span>
   "isFragile": false,
   "hasRefrigeratedItems": false,
   "hasPerishableItems": false,
+  "orderAttributes" : { "thresholdamount_bypass" : true },
   "notifications": {
     "url": "",
     "email": [
@@ -1418,6 +1516,7 @@ curl -X GET <span class="se">\</span>
   "isFragile": false,
   "hasRefrigeratedItems": false,
   "hasPerishableItems": false,
+  "orderAttributes" : { "thresholdamount_bypass" : true },
   "notifications": {
     "url": "",
     "email": [
@@ -1527,32 +1626,10 @@ curl -X GET <span class="se">\</span>
             </span><span class="s2">"active"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
             </span><span class="s2">"dspAttributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
                 </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FedEx"</span><span class="p">,</span><span class="w">
-                </span><span class="s2">"info"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                    </span><span class="s2">"hasTimeEstimate"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"hasEstimatesRating"</span><span class="p">:</span><span class="w"> </span><span class="s2">"?"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"hasTrackingLink"</span><span class="p">:</span><span class="w"> </span><span class="s2">"?"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"hasPublishedRates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"?"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"webHookStatusesTranslation"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"supportsPickupTime"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"supportsDropOffTime"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"acceptsAdvancedOrders"</span><span class="p">:</span><span class="w"> </span><span class="s2">"?"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"isOrderValueRequired"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"maxOrderValue"</span><span class="p">:</span><span class="w"> </span><span class="s2">"?"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"providesFinalCost"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"hasLiveTracking"</span><span class="p">:</span><span class="w"> </span><span class="s2">"?"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"hasEstimateExpiration"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"requiresDropOffTime"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"requiresPickupTime"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-                </span><span class="p">},</span><span class="w">
-                </span><span class="s2">"actionable"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                    </span><span class="s2">"hasTips"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"canEditOrder"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"isNoCostDsp"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"apiUrlSandbox"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://api.test.samedaycity.fedex.com"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"apiUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://api.test.samedaycity.fedex.com"</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"hasDeliveryWindows"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-                    </span><span class="s2">"canDoMultipleStops"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
-                </span><span class="p">}</span><span class="w">
+                </span><span class="s2">"hasTips"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"isNoCostDsp"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"hasDeliveryWindows"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"canDoMultipleStops"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
             </span><span class="p">},</span><span class="w">
             </span><span class="s2">"RequestBody"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
                 </span><span class="s2">"userEmail"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dmart@gmail.com"</span><span class="p">,</span><span class="w">
@@ -1636,7 +1713,7 @@ curl -X GET <span class="se">\</span>
 </span></code></pre>
 <p><h3>HTTP Request</h3></p>
 
-<p><code class="prettyprint">POST https://&lt;API_URL&gt;/order/estimates</code></p>
+<p><code class="prettyprint">POST https://&lt;base_url&gt;/api/v1/order/estimates</code></p>
 
 <p>The API resource can be used to obtain estimates from configured DSPs. Every estimate received 
  has a unique <code>_id</code> assign to it. There can be more than one estimate possible for a given 
@@ -1761,6 +1838,12 @@ curl -X GET <span class="se">\</span>
 <td>string OR null</td>
 <td>false</td>
 <td>Additional delivery instructions</td>
+</tr>
+<tr>
+<td>orderAttributes</td>
+<td>Order Attributes collection</td>
+<td>false</td>
+<td>See <a href="#order-attributes">Order Attributes</a> for supported list. e.g. &ldquo;order_attributes : { &quot;attribute_name&rdquo; : &ldquo;attribute_value&rdquo; }&ldquo;</td>
 </tr>
 </tbody></table>
 
@@ -2024,7 +2107,7 @@ curl -X GET <span class="se">\</span>
  </span><span class="p">}</span><span class="w">
 
 </span></code></pre>
-<p><code class="prettyprint">POST https://&lt;API_URL&gt;/order/multiple/estimates</code></p>
+<p><code class="prettyprint">POST https://&lt;base_url&gt;/api/v1/order/multiple/estimates</code></p>
 
 <p><h3> POST Parameters </h3></p>
 
@@ -2296,39 +2379,20 @@ curl -X GET <span class="se">\</span>
     </span><span class="s2">"orderId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5974d2faa4d9dc0001f2ccd7"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"dspAttributes"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
         </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Lash"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"info"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"hasTimeEstimate"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"hasEstimatesRating"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"hasTrackingLink"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"hasPublishedRates"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"webHookStatusesTranslation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"?"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"supportsPickupTime"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"supportsDropOffTime"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"acceptsAdvancedOrders"</span><span class="p">:</span><span class="w"> </span><span class="s2">"?"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"isOrderValueRequired"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"maxOrderValue"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"providesFinalCost"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"hasLiveTracking"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"hasEstimateExpiration"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"requiresDropOffTime"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"requiresPickupTime"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
-        </span><span class="p">},</span><span class="w">
         </span><span class="s2">"actionable"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"hasTips"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"canEditOrder"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"isNoCostDsp"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"apiUrlSandbox"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"apiUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"hasDeliveryWindows"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"canDoMultipleStops"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+             </span><span class="s2">"hasTips"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+             </span><span class="s2">"isNoCostDsp"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+             </span><span class="s2">"hasDeliveryWindows"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+             </span><span class="s2">"canDoMultipleStops"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
         </span><span class="p">}</span><span class="w">
-    </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"labelLink"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"https://7a3tre8ov7.execute-api.us-west-2.amazonaws.com/development/v2/label?orderId=5a2eea0c6d2b7100011445d1&amp;token=NWEyZWVhMGM2ZDJiNzEwMDAxMTQ0NWQx"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 
 </span></code></pre>
 <h3>HTTP Request</h3>
 
-<p><code class="prettyprint">POST https://&lt;BASE_URL&gt;/order/placeorder</code></p>
+<p><code class="prettyprint">POST https://&lt;base_url&gt;/api/v1/order/placeorder</code></p>
 
 <h3 id="post-parameters">Post Parameters</h3>
 
@@ -2448,6 +2512,12 @@ curl -X GET <span class="se">\</span>
 <td>false</td>
 <td>Additional delivery instructions</td>
 </tr>
+<tr>
+<td>orderAttributes</td>
+<td>Order Attributes collection</td>
+<td>false</td>
+<td>See <a href="#order-attributes">Order Attributes</a> for supported list. e.g. &quot;order_attributes : { &quot;attribute_name&rdquo; : &ldquo;attribute_value&rdquo; }&ldquo;</td>
+</tr>
 </tbody></table>
 
 <table><thead>
@@ -2461,6 +2531,61 @@ curl -X GET <span class="se">\</span>
 <td>NO_ESTIMATES_FOR_APPROVED_DELIVERY_AMOUNT</td>
 <td>None of the estimates received were below the set threshold amount</td>
 <td>Visit Corporate/Business Rules and check the threshold amount.</td>
+</tr>
+<tr>
+<td>OUTSIDE_THE_COVERAGE_AREA</td>
+<td>Either pickup or dropoff address is outside the DSP coverage area.</td>
+<td></td>
+</tr>
+<tr>
+<td>NON_SUPPORTED_PICKUP_TIME</td>
+<td>Pickup time is either invalid or outside the supported time-frame of the DSP.</td>
+<td></td>
+</tr>
+<tr>
+<td>INVALID_DSP_STORE_ID</td>
+<td>If the DSP has store configuration, provided value is incorrect.</td>
+<td></td>
+</tr>
+<tr>
+<td>INVALID_PHONE_NUMBER</td>
+<td>Dropoff Phone number is invalid,</td>
+<td></td>
+</tr>
+<tr>
+<td>INVALID_PICKUP_ADDRESS</td>
+<td>Invalid pickup address/</td>
+<td></td>
+</tr>
+<tr>
+<td>MAX_DISTANCE_EXCEEDED</td>
+<td>Maximum delivery distance exceeded.</td>
+<td></td>
+</tr>
+<tr>
+<td>PACKAGES_SIZE_OVER_LIMIT</td>
+<td>Size of the package above the DSP required limits.</td>
+<td></td>
+</tr>
+<tr>
+<td>DEL_ADDR_LN1_INVALID</td>
+<td>Address Line 1 invalid.</td>
+<td></td>
+</tr>
+<tr>
+<td>PACKAGE_WEIGHT_OVER_LIMIT</td>
+<td>Weight of the package above the DSP required limits.</td>
+<td></td>
+</tr>
+<tr>
+<td>DELIVERY_TIME_TOO_SOON</td>
+<td>Dropoff time too soon for the DSP to give estimates or receive the order.</td>
+<td></td>
+</tr>
+<tr>
+<td>INVALID_STORE_PHONE_NUMBER</td>
+<td>Invalid store phone number.</td>
+<td></td>
 </tr>
 </tbody></table>
 
@@ -2737,11 +2862,12 @@ curl -X GET <span class="se">\</span>
       </span><span class="p">],</span><span class="w">
     </span><span class="p">}</span><span class="w">
   </span><span class="p">],</span><span class="w">
-  </span><span class="s2">"orderId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5974d2faa4d9dc0001f2ccd7"</span><span class="w">
+  </span><span class="s2">"orderId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5974d2faa4d9dc0001f2ccd7"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"labelLink"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"https://7a3tre8ov7.execute-api.us-west-2.amazonaws.com/development/v2/label?orderId=5a2eea0c6d2b7100011445d1&amp;token=NWEyZWVhMGM2ZDJiNzEwMDAxMTQ0NWQx"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 
 </span></code></pre>
-<p><code class="prettyprint">POST https://&lt;API_URL&gt;/order/multiple/placeorder</code></p>
+<p><code class="prettyprint">POST https://&lt;base_url&gt;/api/v1/order/multiple/placeorder</code></p>
 
 <p><h3> POST Parameters </h3></p>
 
@@ -2919,13 +3045,10 @@ curl -X GET <span class="se">\</span>
             </span><span class="s2">"requiresPickupTime"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
         </span><span class="p">},</span><span class="w">
         </span><span class="s2">"actionable"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"hasTips"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"canEditOrder"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"isNoCostDsp"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"apiUrlSandbox"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"apiUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"hasTips"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"isNoCostDsp"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
             </span><span class="s2">"hasDeliveryWindows"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"canDoMultipleStops"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+            </span><span class="s2">"canDoMultipleStops"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
         </span><span class="p">}</span><span class="w">
     </span><span class="p">},</span><span class="w">
     </span><span class="s2">"orderId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5974ceb57b0a620001c253f1"</span><span class="w">
@@ -2953,7 +3076,7 @@ curl -X GET <span class="se">\</span>
 </tbody></table>
 
 <aside class="info">
-<code>estimateId</code> The `_id` obtained from a GetEstimate response e.g. &ldquo;_id&rdquo;:&ldquo;5974ceba7b0a620001c253f4&rdquo;
+<code>estimateId</code> The `_id` obtained from a GetEstimate response e.g. &rdquo;_id&quot;:&ldquo;5974ceba7b0a620001c253f4&rdquo;
 </aside>
 
 <p><b>Note : estimateId is not the <code class="prettyprint">orderId</code> but <code class="prettyprint">_id</code> associated with an individual estimate.</b></p>
@@ -3183,15 +3306,15 @@ curl -X GET <span class="se">\</span>
             </span><span class="s2">"estPickupTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1500663420000</span><span class="p">,</span><span class="w">
             </span><span class="s2">"estDeliveryTime"</span><span class="p">:</span><span class="w"> </span><span class="mi">1500674400000</span><span class="p">,</span><span class="w">
             </span><span class="s2">"externalReferences"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"accessCode"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"labelURL"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
+            </span><span class="s2">"accessCode"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="w">
         </span><span class="p">}</span><span class="w">
     </span><span class="p">},</span><span class="w">
     </span><span class="s2">"estimatedId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"59722f0e7ea0420001ddad7b"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Some delivery instructions"</span><span class="w">
+    </span><span class="s2">"deliveryInstructions"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Some delivery instructions"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"labelLink"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"https://7a3tre8ov7.execute-api.us-west-2.amazonaws.com/development/v2/label?orderId=5a2eea0c6d2b7100011445d1&amp;token=NWEyZWVhMGM2ZDJiNzEwMDAxMTQ0NWQx"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p><code class="prettyprint">GET https://&lt;BASE_URL&gt;/order/getById/&lt;orderId&gt;</code></p>
+<p><code class="prettyprint">GET https://&lt;base_url&gt;/api/v1/order/getById/&lt;orderId&gt;</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -3299,7 +3422,7 @@ curl -X GET <span class="se">\</span>
 </span></code></pre>
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">PUT https://&lt;BASE_URL&gt;/order/getOrderStatus/&lt;orderId&gt;</code></p>
+<p><code class="prettyprint">PUT https://&lt;base_url&gt;/api/v1/order/getOrderStatus/&lt;orderId&gt;</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -3421,7 +3544,7 @@ curl -X DELETE <span class="se">\</span>
 </span></code></pre>
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">DELETE https://&lt;BASE_URL&gt;/v1/order/&lt;orderId&gt;</code></p>
+<p><code class="prettyprint">DELETE https://&lt;base_url&gt;/api/v1/order/&lt;orderId&gt;</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -3598,7 +3721,7 @@ curl -X POST <span class="se">\</span>
 </span></code></pre>
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">POST https://&lt;BASE_URL&gt;/getAlcoholCompliance</code></p>
+<p><code class="prettyprint">POST https://&lt;base_url&gt;/api/v1/getAlcoholCompliance</code></p>
 
 <h3 id="post-parameters">POST Parameters</h3>
 
@@ -3705,6 +3828,61 @@ You can view the configuration by visiting the <a href="https://sandbox.portal.d
 <td>None of the estimates received were below the set threshold amount</td>
 <td>Visit Corporate/Business Rules and check the threshold amount.</td>
 </tr>
+<tr>
+<td>OUTSIDE_THE_COVERAGE_AREA</td>
+<td>Either pickup or dropoff address is outside the DSP coverage area.</td>
+<td></td>
+</tr>
+<tr>
+<td>NON_SUPPORTED_PICKUP_TIME</td>
+<td>Pickup time is either invalid or outside the supported time-frame of the DSP.</td>
+<td></td>
+</tr>
+<tr>
+<td>INVALID_DSP_STORE_ID</td>
+<td>If the DSP has store configuration, provided value is incorrect.</td>
+<td></td>
+</tr>
+<tr>
+<td>INVALID_PHONE_NUMBER</td>
+<td>Drop-off Phone number is invalid,</td>
+<td></td>
+</tr>
+<tr>
+<td>INVALID_PICKUP_ADDRESS</td>
+<td>Invalid pickup address/</td>
+<td></td>
+</tr>
+<tr>
+<td>MAX_DISTANCE_EXCEEDED</td>
+<td>Maximum delivery distance exceeded.</td>
+<td></td>
+</tr>
+<tr>
+<td>PACKAGES_SIZE_OVER_LIMIT</td>
+<td>Size of the package above the DSP required limits.</td>
+<td></td>
+</tr>
+<tr>
+<td>DEL_ADDR_LN1_INVALID</td>
+<td>Address Line 1 invalid.</td>
+<td></td>
+</tr>
+<tr>
+<td>PACKAGE_WEIGHT_OVER_LIMIT</td>
+<td>Weight of the package above the DSP required limits.</td>
+<td></td>
+</tr>
+<tr>
+<td>DELIVERY_TIME_TOO_SOON</td>
+<td>Dropoff time too soon for the DSP to give estimates or receive the order.</td>
+<td></td>
+</tr>
+<tr>
+<td>INVALID_STORE_PHONE_NUMBER</td>
+<td>Invalid store phone number.</td>
+<td></td>
+</tr>
 </tbody></table>
 
 <p><br />
@@ -3723,7 +3901,7 @@ You can view the configuration by visiting the <a href="https://sandbox.portal.d
 
 <h3 id="http-request">HTTP Request</h3>
 
-<p><code class="prettyprint">GET https://&lt;BASE_URL&gt;/v2/label?orderId=&lt;orderId&gt;&amp;token=&lt;token&gt;</code></p>
+<p><code class="prettyprint">GET https://&lt;base_url&gt;/api/v2/label?orderId=&lt;orderId&gt;&amp;token=&lt;token&gt;</code></p>
 
 <h3 id="url-parameters">URL Parameters</h3>
 
@@ -3741,8 +3919,8 @@ You can view the configuration by visiting the <a href="https://sandbox.portal.d
 </tr>
 <tr>
 <td>token</td>
-<td>Order Id dependent token. Token is <code class="prettyprint">base64</code> encoded orderId</td>
-<td>NTlkZTIzYWQ5ZjZhNTMwMDAxZmFmMWEw</td>
+<td>Order Id dependent token. Generated token to secure the printing of the labels from unknown sources.</td>
+<td></td>
 </tr>
 </tbody></table>
 
@@ -3773,23 +3951,23 @@ You can view the configuration by visiting the <a href="https://sandbox.portal.d
 </tr>
 </thead><tbody>
 <tr>
-<td>8/13/17</td>
+<td>08/13/17</td>
 <td>Added stub requests for multi-pickup endpoints</td>
 </tr>
 <tr>
-<td>8/21/17</td>
+<td>08/21/17</td>
 <td>Alcohol compliance response refinements</td>
 </tr>
 <tr>
-<td>9/19/17</td>
+<td>09/19/17</td>
 <td>Multi-pickup responses</td>
 </tr>
 <tr>
-<td>9/22/17</td>
+<td>09/22/17</td>
 <td>ADC &ldquo;Unavailable&rdquo; response formatting</td>
 </tr>
 <tr>
-<td>9/28/17</td>
+<td>09/28/17</td>
 <td>&ldquo;deliveryInstructions&rdquo; property for Orders was described</td>
 </tr>
 <tr>
@@ -3797,8 +3975,16 @@ You can view the configuration by visiting the <a href="https://sandbox.portal.d
 <td>DSP attributes were added to &ldquo;Create Order&rdquo;, &ldquo;Create Estimates&rdquo; and &ldquo;Create order from an Estimate&rdquo; responses</td>
 </tr>
 <tr>
-<td>11/28/17</td>
-<td>Label feature was added</td>
+<td>11/24/17</td>
+<td>Added Shipping Label</td>
+</tr>
+<tr>
+<td>11/27/17</td>
+<td>Added orderAttributes</td>
+</tr>
+<tr>
+<td>12/10/17</td>
+<td>Added Store boundaries to the Store resource</td>
 </tr>
 </tbody></table>
 
