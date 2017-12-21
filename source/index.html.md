@@ -588,6 +588,7 @@ Get all the configured stores for your account.
 
 > Request <base_url>/v2/store/boundaries/?address=537%20Houston%20St,%20Coppell,%20TX%2075019
 
+
 ```shell
 
 curl -X GET \
@@ -595,6 +596,7 @@ curl -X GET \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/json' \
   -H 'x-api-key: YOUR_API_KEY'
+  -H 'tenantid : YOUR_TENANT_ID'
 
 ```
 
@@ -629,6 +631,7 @@ curl -X GET \
 
 > Request <base_url>/v2/store/boundaries/?address=537%20Noexisting%20IL%20-%209999
 
+
 ```shell
 
 curl -X GET \
@@ -636,6 +639,7 @@ curl -X GET \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/json' \
   -H 'x-api-key: YOUR_API_KEY'
+  -H 'tenantid : YOUR_TENANT_ID'
 
 ```
 
@@ -657,6 +661,15 @@ curl -X GET \
 Property | Type | Required | Description
 -------- | ---- | -------- | -----------
 address | string | true | Url encoded standard formatted address ( e.g. 537 Houston St, Coppell, TX 75019). 
+
+<aside class="notice">
+
+To find out the 'YOUR_TENANT_ID', Please log on to the 
+<a href="https://sandbox.portal.deliverysolutions.co/#/corporate/profile">Customer Service Portal </a> and go to "Corporate" section. 
+TenantId is the value for "Corporate Name".
+
+</aside>
+
 
 
 # Estimate Resource
