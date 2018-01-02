@@ -572,7 +572,13 @@ func main() {
                 "name": "Postmates",
                 "corporateDspId": "597398c63e526c00012078f3"
             }
-        ]
+        ],
+        "geo": {
+            "coords": {
+                "lat": 32.9204096,
+                "lng": -96.9653215
+            }
+        }
     }
 ]
 
@@ -2767,6 +2773,7 @@ PDF document is returned as a Response.
 11/24/17 | Added Shipping Label
 11/27/17 | Added orderAttributes
 12/10/17 | Added Store boundaries to the Store resource
+01/01/18 | Added geo data to Store resource
  
 <br />
 <br />
