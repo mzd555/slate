@@ -1317,7 +1317,13 @@ curl -X GET <span class="se">\</span>
                 </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Postmates"</span><span class="p">,</span><span class="w">
                 </span><span class="s2">"corporateDspId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"597398c63e526c00012078f3"</span><span class="w">
             </span><span class="p">}</span><span class="w">
-        </span><span class="p">]</span><span class="w">
+        </span><span class="p">],</span><span class="w">
+        </span><span class="s2">"geo"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"coords"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"lat"</span><span class="p">:</span><span class="w"> </span><span class="mf">32.9204096</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"lng"</span><span class="p">:</span><span class="w"> </span><span class="mf">-96.9653215</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">]</span><span class="w">
 
@@ -3555,6 +3561,76 @@ curl -X DELETE <span class="se">\</span>
 </tr>
 </tbody></table>
 
+<h2 id="get-clients-signature">Get client&rsquo;s signature</h2>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">PUT https://&lt;base_url&gt;/api/v1/order/getSignature/&lt;orderId&gt;</code></p>
+
+<h3 id="url-parameters">URL Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>orderId</td>
+<td>Order id</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p>Responses [200]</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://s3.us-west-2.amazonaws.com/development.files.deliverysolutions.co/signatures/2018-1/f623efd67d1b0f79f020cebbd23bb84c1538d6be3502448d1bcfe6e55a635260.jpg"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>Response [404]</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ORDER_ID_NOT_FOUND"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Order #5a5765f27c99c10001ef4bacs was not found"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>Response [400]</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Point Pickup"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ORDER_SIGNATURE_IS_NOT_SUPPORTED"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Signature is not supported by Point Pickup DSP"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>Response [400]</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Point Pickup"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ORDER_SIGNATURE_IS_NOT_SUPPORTED"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Signature is not supported by Point Pickup DSP"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>Response [400]</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ORDER_WAS_NOT_PLACED"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Order #59566d3f7659d3465444a499 was not yet placed to any DSP"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>Response [500]</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SIGNATURE_FAILURE"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Couldn't get a signature: StatusCodeError: 404 - Requested signature not available"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FedEx"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
 <h1 id="alcohol-compliance">Alcohol Compliance</h1>
 
 <h2 id="get-alcohol-compliance">Get Alcohol Compliance</h2>
@@ -3980,6 +4056,14 @@ You can view the configuration by visiting the <a href="https://sandbox.portal.d
 <tr>
 <td>12/10/17</td>
 <td>Added Store boundaries to the Store resource</td>
+</tr>
+<tr>
+<td>01/01/18</td>
+<td>Added geo data to Store resource</td>
+</tr>
+<tr>
+<td>01/12/18</td>
+<td>Added get signature endpoint</td>
 </tr>
 </tbody></table>
 

@@ -2465,6 +2465,74 @@ Parameter | Description
 --------- | -----------
 orderId | Order id
 
+## Get client's signature
+
+### HTTP Request
+
+`PUT https://<base_url>/api/v1/order/getSignature/<orderId>`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+orderId | Order id
+
+> Responses [200]
+
+```json
+{
+    "url": "https://s3.us-west-2.amazonaws.com/development.files.deliverysolutions.co/signatures/2018-1/f623efd67d1b0f79f020cebbd23bb84c1538d6be3502448d1bcfe6e55a635260.jpg"
+}
+```
+
+> Response [404]
+
+```json
+{
+    "name": "ORDER_ID_NOT_FOUND",
+    "message": "Order #5a5765f27c99c10001ef4bacs was not found"
+}
+```
+
+> Response [400]
+
+```json
+{
+    "provider": "Point Pickup",
+    "name": "ORDER_SIGNATURE_IS_NOT_SUPPORTED",
+    "message": "Signature is not supported by Point Pickup DSP"
+}
+```
+
+> Response [400]
+
+```json
+{
+    "provider": "Point Pickup",
+    "name": "ORDER_SIGNATURE_IS_NOT_SUPPORTED",
+    "message": "Signature is not supported by Point Pickup DSP"
+}
+```
+
+> Response [400]
+
+```json
+{
+    "name": "ORDER_WAS_NOT_PLACED",
+    "message": "Order #59566d3f7659d3465444a499 was not yet placed to any DSP"
+}
+```
+
+> Response [500]
+
+```json
+{
+    "name": "SIGNATURE_FAILURE",
+    "message": "Couldn't get a signature: StatusCodeError: 404 - Requested signature not available",
+    "provider": "FedEx"
+}
+```
+
 
 # Alcohol Compliance
 
@@ -2696,7 +2764,6 @@ You can view the configuration by visiting the <a href="https://sandbox.portal.d
 <h3>Webhooks Url</h3>
 You can configure a notification url in the corporate profile and also provide url with in the notification item with each order.
 
-
 # Errors
 
 Error Code |  Detail | Resolution
@@ -2774,6 +2841,7 @@ PDF document is returned as a Response.
 11/27/17 | Added orderAttributes
 12/10/17 | Added Store boundaries to the Store resource
 01/01/18 | Added geo data to Store resource
+01/12/18 | Added get signature endpoint
  
 <br />
 <br />
