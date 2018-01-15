@@ -2465,7 +2465,7 @@ Parameter | Description
 --------- | -----------
 orderId | Order id
 
-## Get client's signature
+## Get delivery signature
 
 ### HTTP Request
 
@@ -2508,9 +2508,8 @@ orderId | Order id
 
 ```json
 {
-    "provider": "Point Pickup",
-    "name": "ORDER_SIGNATURE_IS_NOT_SUPPORTED",
-    "message": "Signature is not supported by Point Pickup DSP"
+    "name": "ORDER_HAS_NOT_BEEN_PLACED",
+    "message": "Order #59566d3f7659d3465444a499 was not yet placed to any DSP"
 }
 ```
 
@@ -2518,8 +2517,9 @@ orderId | Order id
 
 ```json
 {
-    "name": "ORDER_WAS_NOT_PLACED",
-    "message": "Order #59566d3f7659d3465444a499 was not yet placed to any DSP"
+    "name": "SIGNATURE_NOT_YET_AVAILABLE",
+    "message": "404 - {\"code\":\"404\",\"desc\":\"Requested signature not available\"}",
+    "provider": "FedEx"
 }
 ```
 
@@ -2528,7 +2528,7 @@ orderId | Order id
 ```json
 {
     "name": "SIGNATURE_FAILURE",
-    "message": "Couldn't get a signature: StatusCodeError: 404 - Requested signature not available",
+    "message": "Couldn't get a signature",
     "provider": "FedEx"
 }
 ```
