@@ -3561,7 +3561,7 @@ curl -X DELETE <span class="se">\</span>
 </tr>
 </tbody></table>
 
-<h2 id="get-clients-signature">Get client&rsquo;s signature</h2>
+<h2 id="get-delivery-signature">Get delivery signature</h2>
 
 <h3 id="http-request">HTTP Request</h3>
 
@@ -3609,17 +3609,17 @@ curl -X DELETE <span class="se">\</span>
 <p>Response [400]</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-    </span><span class="s2">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Point Pickup"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ORDER_SIGNATURE_IS_NOT_SUPPORTED"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Signature is not supported by Point Pickup DSP"</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ORDER_HAS_NOT_BEEN_PLACED"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Order #59566d3f7659d3465444a499 was not yet placed to any DSP"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <blockquote>
 <p>Response [400]</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ORDER_WAS_NOT_PLACED"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Order #59566d3f7659d3465444a499 was not yet placed to any DSP"</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SIGNATURE_NOT_YET_AVAILABLE"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"404 - {</span><span class="se">\"</span><span class="s2">code</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">404</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">desc</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">Requested signature not available</span><span class="se">\"</span><span class="s2">}"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FedEx"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 <blockquote>
@@ -3627,7 +3627,7 @@ curl -X DELETE <span class="se">\</span>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"SIGNATURE_FAILURE"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Couldn't get a signature: StatusCodeError: 404 - Requested signature not available"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Couldn't get a signature"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FedEx"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
