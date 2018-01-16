@@ -592,13 +592,13 @@ Get all the configured stores for your account.
 
 ### HTTP Request
 
-> Request <base_url>/v2/store/boundaries/?address=537%20Houston%20St,%20Coppell,%20TX%2075019
+> Request <base_url>/store/boundaries/?address=537%20Houston%20St,%20Coppell,%20TX%2075019
 
 
 ```shell
 
 curl -X GET \
-  https://sandbox.api.deliverysolutions.co/v2/store/boundaries/?address=537%20Houston%20St,%20Coppell,%20TX%2075019 \
+  https://sandbox.api.deliverysolutions.co/store/boundaries/?address=537%20Houston%20St,%20Coppell,%20TX%2075019 \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/json' \
   -H 'x-api-key: YOUR_API_KEY'
@@ -662,7 +662,7 @@ curl -X GET \
 
 
 
-`GET https://<base_url>/v2/store/boundaries?address=<address>`
+`GET https://<base_url>/store/boundaries/?address=<address>`
 
 Property | Type | Required | Description
 -------- | ---- | -------- | -----------
