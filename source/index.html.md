@@ -11,7 +11,6 @@ toc_footers:
 - <b><a href='https://deliverysolutions.co'>Back to Delivery Solution</a></b>
 - <b><a href='https://sandbox.portal.deliverysolutions.co'>Sandbox Portal</a></b>
 
-
 includes:
 
 search: true
@@ -2798,7 +2797,7 @@ Composes PDF document with Labels for a specific Order.
 
 ### HTTP Request
 
-`GET https://<base_url>/api/v2/label?orderId=<orderId>&token=<token>`
+`GET https://<base_url>/label/printlabel?orderId=<orderId>&token=<token>`
 
 ### URL Parameters
 
